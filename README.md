@@ -6,6 +6,7 @@ Make sure you have the latest version of Python installed.
 
 ```bash
 git clone <repo-url>
+cd Elderly-Wellbeing
 ```
 
 Important! Make sure you are in a Python Virtual Environment before using pip install.
