@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <form method="POST">
+        <!--    <textarea name="note" id="note" class="form-control"></textarea>-->
+        <div id="chart" class="chart"></div>
+        <br/>
+        <div align="center">
+            <button type="submit" class="btn btn-primary">Add Note</button>
+        </div>
+    </form>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+  var graphs = {{ graphJSON | safe }};
+  Plotly.plot('chart', graphs, {});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+{% endblock %}
