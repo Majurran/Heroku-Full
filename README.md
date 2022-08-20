@@ -36,3 +36,19 @@ python main.py
 ## Viewing The App
 
 Go to `http://127.0.0.1:5000`
+
+
+## (Optional) djLint Formatter 
+Using the Prettier formatter messes up the Jinja2 format in the HTML files.
+You can use djLint to format the HTML pages with Jinja2.
+djLint documentation: https://djlint.com/docs/formatter/
+
+To review what may change in formatting run:
+```bash
+djlint . --check
+```
+
+To format the code and update files run:
+```bash
+djlint . --reformat
+```
