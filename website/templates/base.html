@@ -10,6 +10,7 @@
         <link rel="stylesheet"
               href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
               crossorigin="anonymous"/>
+        <link rel="stylesheet" type="text/css" href="../static/style.css" />
         <title>
             {% block title %}Home{% endblock %}
         </title>
@@ -28,6 +29,7 @@
                         <a class="nav-item nav-link" id="home" href="/">Home</a>
                         <a class="nav-item nav-link" id="inputs" href="/inputs">Inputs</a>
                         <a class="nav-item nav-link" id="outputs" href="/outputs">Outputs</a>
+                        <a class="nav-item nav-link" id="instructions" href="/instructions">Instructions</a>
                         <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
                     {% else %}
                         <a class="nav-item nav-link" id="login" href="/login">Login</a>

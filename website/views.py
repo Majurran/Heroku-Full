@@ -26,23 +26,23 @@ def home():
 
     return render_template("home.html", user=current_user)
 
+# Don't need for project, but can keep for comments as reference for now
+# @views.route('/delete-note', methods=['POST'])
+# def delete_note():
+#     note = json.loads(request.data)
+#     noteId = note['noteId']
+#     note = Note.query.get(noteId)
+#     if note:
+#         if note.user_id == current_user.id:
+#             db.session.delete(note)
+#             db.session.commit()
 
-@views.route('/delete-note', methods=['POST'])
-def delete_note():
-    note = json.loads(request.data)
-    noteId = note['noteId']
-    note = Note.query.get(noteId)
-    if note:
-        if note.user_id == current_user.id:
-            db.session.delete(note)
-            db.session.commit()
-
-    return jsonify({})
+#     return jsonify({})
 
 @views.route('/inputs', methods=['GET', 'POST'])
 @login_required
 def user_input_page():
-    return render_template("inputs.html",user=current_user)
+    return render_template("inputs.html", user=current_user)
 
 
 @views.route('/outputs', methods=['GET'])
@@ -56,4 +56,9 @@ def dashboard_page():
     fig = px.bar(df, x="Fruit", y="Number Eaten", color="Contestant", barmode="group")
     fig.update_yaxes(title_text="Number Eaten")
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("outputs.html",user=current_user,graphJSON=graphJSON)
+    return render_template("outputs.html", user=current_user, graphJSON=graphJSON)
+
+@views.route('/instructions', methods=['GET'])
+@login_required
+def instruction():
+    return render_template("instruction.html", user=current_user)
