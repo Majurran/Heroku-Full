@@ -65,7 +65,7 @@ def instruction():
     return render_template("instruction.html", user=current_user)
 
 
-@views.route('/edit_input_options', methods=['GET', 'POST'])
+@views.route('/edit-input-options', methods=['GET', 'POST'])
 @login_required
 def edit_input_options():
     return render_template("edit_input.html", user=current_user)
