@@ -1,6 +1,7 @@
 ##### User Added Ignores #####
 website/__pycache__
 website/database.db
+website/*.db
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,flask,python,pycharm
