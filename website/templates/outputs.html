@@ -1,14 +1,55 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-    <form method="POST">
-        <!--    <textarea name="note" id="note" class="form-control"></textarea>-->
-        <div id="chart" class="chart"></div>
-        <br/>
-        <div align="center">
-            <button type="submit" class="btn btn-primary">Add Note</button>
+
+  <div class="output-page">
+    {#left#}
+    <div class="left">
+      <div class="top block">
+        <div class="title">Quick Facts</div>
+        <div>
+          <div class="item">
+            There are <i>&lt;NumOfElderly&gt;</i> residents living in the nursing home
+          </div>
+
+          <div class="item">
+            <i>&lt;Name of that emoji&gt;</i> can best represent the wellbeing of the aged residents.
+          </div>
+
+          <div class="item">
+            <i>&lt;Name of that emoji&gt;</i> is the activity that most of the aged residents will do.
+          </div>
+
+          <div class="item">
+            Positive feeling is growing, with <i>&lt;% of emoji are positive&gt;</i> of emoji indicate that aged residents are happy
+          </div>
         </div>
-    </form>
+      </div>
+      <div class="bottom block">
+        <div class="title">Message Box</div>
+        <div class="item">
+          &lt;Voice message from the residents&gt;
+        </div>
+      </div>
+    </div>
+
+    {#right#}
+    <div class="right">
+      <div class="top block">
+        <div class="title">Trends of Activity</div>
+        <div class="item">
+          &lt;bar chart of ranking of most popular emoji (activity)&gt;
+        </div>
+      </div>
+      <div class="bottom block">
+        <div class="title">Trends of Activity</div>
+        <div class="item">
+          &lt;bar chart of ranking of most popular emoji (activity)&gt;
+        </div>
+      </div>
+    </div>
+  </div>
+
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
   var graphs = {{ graphJSON | safe }};

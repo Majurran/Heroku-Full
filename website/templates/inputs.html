@@ -1,22 +1,88 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-    <h1 align="center">Notes</h1>
-    <ul class="list-group list-group-flush" id="notes">
-        {% for note in user.notes %}
-            <li class="list-group-item">
-                {{ note.data }}
-                <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </li>
-        {% endfor %}
-    </ul>
-    <form method="POST">
-        <textarea name="note" id="note" class="form-control"></textarea>
-        <br />
-        <div align="center">
-            <button type="submit" class="btn btn-primary">Add Note</button>
+
+  <div class="input-page">
+    <div class="icon-container">
+      <h3>Activity</h3>
+      <h6>What are you planning to do today?</h6>
+      <div class="icon-grid">
+        <div><img src="../static/img/Go Cycling.png"><span>Go Cycling</span></div>
+        <div><img src="../static/img/Go Travel.png"><span>Go Travel</span></div>
+        <div><img src="../static/img/Birthday Party.png"><span>Birthday Party</span></div>
+        <div><img src="../static/img/Go Boating.png"><span>Go Boating</span></div>
+        <div><img src="../static/img/Write Diary.png"><span>Write Diary</span></div>
+        <div><img src="../static/img/Drinking.png"><span>Drinking</span></div>
+        <div><img src="../static/img/Play the Piano.png"><span>Play the Piano</span></div>
+        <div><img src="../static/img/Online Shopping.png"><span>Online Shopping</span></div>
+        <div id="more" style="font-weight: 600; font-size: 24px;">
+          More...
         </div>
-    </form>
+      </div>
+      <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitActivity()">Submit</button>
+    </div>
+
+    <div class="icon-container">
+      <h3>Wellbeing</h3>
+      <h6>Tell us about your feeling now~</h6>
+      <div class="icon-grid">
+        <div><img src="../static/img/Happy.png"><span>Happy</span></div>
+        <div><img src="../static/img/Upvote.png"><span>Upvote</span></div>
+        <div><img src="../static/img/Congratulations.png"><span>Congratulations</span></div>
+        <div><img src="../static/img/Love.png"><span>Love</span></div>
+        <div><img src="../static/img/Upset.png"><span>Upset</span></div>
+        <div><img src="../static/img/Sick.png"><span>Sick</span></div>
+        <div><img src="../static/img/Sleeping.png"><span>Sleeping</span></div>
+        <div><img src="../static/img/Angry.png"><span>Angry</span></div>
+        <div id="more" style="font-weight: 600; font-size: 24px;">
+          More...
+        </div>
+      </div>
+      <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitFeeling()">Submit</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body" style="    height: 200px; display: flex; align-items: center;">
+          <img src="../static/img/Happy.png" style="width: 70px;height: 70px;">
+          <span style="font-size: 20px; font-weight: 600;" id="infoId">
+
+          </span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Go Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.icon-grid div').forEach(div=>{
+      if(div.id !== 'more'){
+        div.addEventListener('click', ()=>{
+          if(div.getAttribute("choosed") == 'Y') {
+            div.setAttribute("choosed", '')
+            div.style.background = '#e6e6e6'
+          }else{
+            div.setAttribute("choosed", 'Y')
+            div.style.background = '#f15a24'
+          }
+        })
+      }
+    })
+
+
+    function submitActivity(){
+      $('#infoId').html('Your activity plan have been submitted!')
+    }
+
+    function submitFeeling(){
+      $('#infoId').html('Your feelings have been submitted!')
+    }
+
+  </script>
+
 {% endblock %}

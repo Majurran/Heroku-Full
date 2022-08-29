@@ -1,4 +1,102 @@
-/* Example CSS, replace this */
-.example {
-    color: limegreen;
+body{
+    background: rgb(199,178,153);
 }
+
+/* input */
+.input-page {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 130px);
+    grid-template-rows: repeat(3, 130px);
+    margin: 30px 0;
+    background: #e6e6e6;
+}
+
+.icon-grid div {
+    border: solid 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-grid span {
+    font-weight: 600;
+    font-size:14px;
+}
+
+.icon-grid img {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+/* output */
+.output-page{
+    display: flex;
+    height: calc(100vh - 111px);
+}
+.output-page .block{
+    background: #e6e6e6;
+    margin: 15px;
+    border: solid 1px;
+    padding: 5px;
+    color: rgb(67,33,11);
+    position: relative;
+}
+.block .title{
+    font-weight: 600;
+    font-size: 24px;
+}
+.output-page .left{
+    width: 40%;
+}
+.output-page .left .top{
+    height: 66.66%;
+}
+.output-page .left .bottom{
+    height: 33.33%;
+}
+.output-page .right{
+    width: 60%;
+}
+.output-page .right .top{
+    height: 50%;
+}
+.output-page .right .bottom{
+    height: 50%;
+}
+
+.output-page .left .top .item{
+    margin: 19px 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+.output-page .right .top .item, .output-page .right .bottom .item{
+    margin: 25px 0;
+    font-size: 22px;
+    font-weight: 500;
+    left: 5%;
+    top: 40%;
+    position: absolute;
+}
+.output-page .left .bottom .item{
+    margin: 25px 0;
+    font-size: 22px;
+    font-weight: 500;
+    left: 5%;
+    top: 36%;
+    position: absolute;
+}
+i{
+    font-size: 26px;
+    font-weight: 600;
+}
+
+
+
