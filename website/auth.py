@@ -46,7 +46,7 @@ def sign_up():
     if request.method == 'POST':
         # Default activity and wellbeing list
         activity_list = "bowling,tennis,golf,bike,tea,chess"
-        wellbeing_list = "flat,very-sad,happy,sick,sad,angry"
+        wellbeing_list = "neutral,very-sad,happy,sick,sad,angry"
         
         # Creates the one admin profile for each nursing home for now
         nursing_home_name = request.form.get('nursing-home-name')

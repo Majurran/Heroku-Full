@@ -69,3 +69,8 @@ def instruction():
 @login_required
 def edit_input_options():
     return render_template("edit_input.html", user=current_user)
+
+@views.route('/temporary-inputs', methods=['GET', 'POST'])
+@login_required
+def prototype_input_replace():
+    return render_template("prototype_input_replace.html", user=current_user)
