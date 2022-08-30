@@ -39,22 +39,32 @@ def home():
 
 #     return jsonify({})
 
-@views.route('/inputs', methods=['GET', 'POST'])
+@views.route('/inputs', methods=['GET'])
 @login_required
 def user_input_page():
     return render_template("inputs.html", user=current_user)
 
+@views.route('/inputs', methods=['POST'])
+@login_required
+def user_input_page_post():
+    my_var = request.form.get('json')
+    print(my_var)
+    return render_template("inputs.html", user=current_user)
 
 @views.route('/outputs', methods=['GET'])
 @login_required
 def dashboard_page():
-    df = pd.DataFrame({
-        "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-        "Contestant": ["Alex", "Alex", "Alex", "Jordan", "Jordan", "Jordan"],
-        "Number Eaten": [2, 1, 3, 1, 3, 2],
-    })
-    fig = px.bar(df, x="Fruit", y="Number Eaten", color="Contestant", barmode="group")
-    fig.update_yaxes(title_text="Number Eaten")
+    df = pd.DataFrame(dict(
+        date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10"],
+        happiness=[75, 78, 81, 71, 74, 79]
+    ))
+    df2 = pd.DataFrame(dict(
+        date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10"],
+        happiness=[67, 75, 84, 64, 71, 75]
+    ))
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(name="Happiness Proportion - Macquarie Nursing Home",x=df["date"], y=df["happiness"]))
+    fig.add_trace(go.Scatter(name="Happiness Proportion - National Average",x=df2["date"], y=df2["happiness"]))
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return render_template("outputs.html", user=current_user, graphJSON=graphJSON)
 
@@ -72,5 +82,10 @@ def edit_input_options():
 
 @views.route('/temporary-inputs', methods=['GET', 'POST'])
 @login_required
-def prototype_input_replace():
+def temporary_input():
     return render_template("temporary-inputs-presentation.html", user=current_user)
+
+@views.route('/temporary-outputs', methods=['GET', 'POST'])
+@login_required
+def temporary_output():
+    return render_template("temporary-outputs-presentation.html", user=current_user)

@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-
+<form id="inputs-form" name="inputs-form" method="POST">
   <div class="input-page">
     <div class="icon-container">
       <h3>Activity</h3>
       <h6>What are you planning to do today?</h6>
       <div class="icon-grid">
-        <div><img src="../static/img/Go Cycling.png"><span>Go Cycling</span></div>
-        <div><img src="../static/img/Go Travel.png"><span>Go Travel</span></div>
-        <div><img src="../static/img/Birthday Party.png"><span>Birthday Party</span></div>
-        <div><img src="../static/img/Go Boating.png"><span>Go Boating</span></div>
-        <div><img src="../static/img/Write Diary.png"><span>Write Diary</span></div>
-        <div><img src="../static/img/Drinking.png"><span>Drinking</span></div>
-        <div><img src="../static/img/Play the Piano.png"><span>Play the Piano</span></div>
-        <div><img src="../static/img/Online Shopping.png"><span>Online Shopping</span></div>
-        <div id="more" style="font-weight: 600; font-size: 24px;">
+        <div id="cycling" name="cycling"><img src="../static/img/Go Cycling.png"><span>Go Cycling</span></div>
+        <div id="traveling" name="traveling"><img src="../static/img/Go Travel.png"><span>Go Travel</span></div>
+        <div id="birthday-party" name="birthday-party"><img src="../static/img/Birthday Party.png"><span>Birthday Party</span></div>
+        <div id="boating" name="boating"><img src="../static/img/Go Boating.png"><span>Go Boating</span></div>
+        <div id="diary" name="diary"><img src="../static/img/Write Diary.png"><span>Write Diary</span></div>
+        <div id="drinking" name="drinking"><img src="../static/img/Drinking.png"><span>Drinking</span></div>
+        <div id="piano" name="piano"><img src="../static/img/Play the Piano.png"><span>Play the Piano</span></div>
+        <div id="shopping" name="shopping"><img src="../static/img/Online Shopping.png"><span>Online Shopping</span></div>
+        <div id="more" name="more" style="font-weight: 600; font-size: 24px;">
           More...
         </div>
       </div>
@@ -58,7 +58,7 @@
       </div>
     </div>
   </div>
-
+  <input id="json" name="json" value="" style="" type="hidden" readonly/>
   <script>
     document.querySelectorAll('.icon-grid div').forEach(div=>{
       if(div.id !== 'more'){
@@ -76,6 +76,15 @@
 
 
     function submitActivity(){
+      $('#json').val('');
+      document.querySelectorAll('.icon-grid div').forEach(div=>{
+        if(div.id !== 'more-activities'){
+          if(div.getAttribute("choosed") == 'Y') {
+
+            $('#json').val($('#json').val()+div.getAttribute("id")+',');
+          }
+        }
+      })
       $('#infoId').html('Your activity plan have been submitted!')
     }
 
@@ -84,5 +93,5 @@
     }
 
   </script>
-
+</form>
 {% endblock %}
