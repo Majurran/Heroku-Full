@@ -73,4 +73,4 @@ def edit_input_options():
 @views.route('/temporary-inputs', methods=['GET', 'POST'])
 @login_required
 def prototype_input_replace():
-    return render_template("prototype_input_replace.html", user=current_user)
+    return render_template("temporary-inputs-presentation.html", user=current_user)
