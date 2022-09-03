@@ -1,3 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
-{% block content %}{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col home-item" onclick="location.href='/instructions'">
+        <img src="../static/img/Instruction.png">
+        <div>Instruction</div>
+      </div>
+      <div class="col home-item" onclick="location.href='/inputs'">
+        <div>
+          <img class="small-img" src="../static/img/Go Cycling.png">
+          <img class="small-img" src="../static/img/Happy.png">
+          <img class="small-img" src="../static/img/Upvote.png">
+        </div>
+        <div>Emoji Maintenance</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col home-item" onclick="location.href='/outputs'">
+        <img src="../static/img/Dashboard.png">
+        <div>Dashboard</div>
+      </div>
+      <div class="col home-item" onclick="location.href='/profile'">
+        <img src="../static/img/Profile.png">
+        <div>Profile Maintenance</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

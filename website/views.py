@@ -44,12 +44,14 @@ def home():
 def user_input_page():
     return render_template("inputs.html", user=current_user)
 
+
 @views.route('/inputs', methods=['POST'])
 @login_required
 def user_input_page_post():
     my_var = request.form.get('json')
     print(my_var)
     return render_template("inputs.html", user=current_user)
+
 
 @views.route('/outputs', methods=['GET'])
 @login_required
@@ -75,17 +77,25 @@ def instruction():
     return render_template("instruction.html", user=current_user)
 
 
+@views.route('/profile', methods=['GET'])
+@login_required
+def profile():
+    return render_template("profile.html", user=current_user)
+
+
 @views.route('/edit-input-options', methods=['GET', 'POST'])
 @login_required
 def edit_input_options():
     return render_template("edit_input.html", user=current_user)
 
-@views.route('/temporary-inputs', methods=['GET', 'POST'])
-@login_required
-def temporary_input():
-    return render_template("temporary-inputs-presentation.html", user=current_user)
 
-@views.route('/temporary-outputs', methods=['GET', 'POST'])
-@login_required
-def temporary_output():
-    return render_template("temporary-outputs-presentation.html", user=current_user)
+# @views.route('/temporary-inputs', methods=['GET', 'POST'])
+# @login_required
+# def temporary_input():
+#     return render_template("temporary-inputs-presentation.html", user=current_user)
+
+
+# @views.route('/temporary-outputs', methods=['GET', 'POST'])
+# @login_required
+# def temporary_output():
+#     return render_template("temporary-outputs-presentation.html", user=current_user)

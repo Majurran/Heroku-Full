@@ -9,7 +9,7 @@ auth = Blueprint('auth', __name__)
 
 
 """
-LOGIN PAGE NOTES:
+LOGIN PAGE RANDOM NOTES:
     Add the radiobox option whether to sign in as admin or guest? Instead of creating a separate guest account each time 
     for each nursing home from the signup page. Though it does create some security risk if the staff member saves the 
     account email and password to the web browser, but can assume that they don't do that? Oh well it's just a prototype anyway.
@@ -19,11 +19,15 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+        
+        # Might change this
+        homeID = request.form.get('homeId')
+        print(homeID)
 
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
+                # flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
             else:
@@ -40,7 +44,7 @@ def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
-
+# TODO: Needs some clean up and the front end as well, need to decide which input labels to record/keep
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
@@ -50,9 +54,14 @@ def sign_up():
         
         # Creates the one admin profile for each nursing home for now
         nursing_home_name = request.form.get('nursing-home-name')
-        email = request.form.get('email-admin')
-        password1 = request.form.get('password1-admin')
-        password2 = request.form.get('password2-admin')
+        email = request.form.get('email')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+        
+        # Might change this 
+        agreeCheck = request.form.get('agreeCheck')
+        staffId = request.form.get('staffId')
+        homeId = request.form.get('homeId')
         admin = True # Can remove if using the radiobox signin feature
 
         # Look up email and nursing home name to see if they exist in the database already
@@ -63,11 +72,11 @@ def sign_up():
         elif existing_nursing_home_name:
             flash('Nursing Home Name already exists.', category='error')
         elif len(email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
+            flash('Email must be greater than 4 characters.', category='error')
         elif password1 != password2:
             flash('Passwords don\'t match.', category='error')
-        elif len(password1) < 7:
-            flash('Password must be at least 7 characters.', category='error')
+        elif len(password1) < 6:
+            flash('Password must be at least 6 characters.', category='error')
         else:
             # Add new NursingHome
             new_nursing_home = NursingHome(activity_list=activity_list, wellbeing_list=wellbeing_list, name=nursing_home_name)
@@ -79,8 +88,9 @@ def sign_up():
             db.session.add(new_user)
             db.session.commit()
             
-            login_user(new_user, remember=True)
-            flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            # login_user(new_user, remember=True)
+            # flash('Account created!', category='success')
+            # return redirect(url_for('views.home'))
+            return render_template("sign_up_ver2.html", success='OK')
 
-    return render_template("sign_up.html", user=current_user)
+    return render_template("sign_up_ver2.html", user=current_user, success='')
