@@ -9,19 +9,19 @@
         <div class="title">Quick Facts</div>
         <div>
           <div class="item">
-            There are <i>&lt;NumOfElderly&gt;</i> residents living in the nursing home
+            There are currently {{ num_elderly }} residents in the nursing home using the website. 
           </div>
 
           <div class="item">
-            <i>&lt;Name of that emoji&gt;</i> can best represent the wellbeing of the aged residents.
+            Most residents identify {{ emoji_name }}  can best represent the wellbeing of the aged residents.
           </div>
 
           <div class="item">
-            <i>&lt;Name of that emoji&gt;</i> is the activity that most of the aged residents will do.
+            {{ activity_name }} is the activity that most of the aged residents will do.
           </div>
 
           <div class="item">
-            Positive feeling is growing, with <i>&lt;% of emoji are positive&gt;</i> of emoji indicate that aged residents are happy
+            Positive feeling is growing, with {{ percentage_happiness }} % of emoji indicate that aged residents are happy
           </div>
         </div>
       </div>
@@ -37,14 +37,14 @@
     <div class="right">
       <div class="top block">
         <div class="title">Trends of Activity</div>
-        <div class="item">
-          &lt;bar chart of ranking of most popular emoji (activity)&gt;
+        <div class="item" style="top:5%">
+          <div id="chart" class="chart"></div>
         </div>
       </div>
       <div class="bottom block">
         <div class="title">Trends of Activity</div>
-        <div class="item">
-          &lt;bar chart of ranking of most popular emoji (activity)&gt;
+        <div class="item" style="top:5%">
+          <div id="activity-chart" class="activity-chart"></div>
         </div>
       </div>
     </div>
@@ -52,10 +52,11 @@
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
-  var graphs = {{ graphJSON | safe }};
-  Plotly.plot('chart', graphs, {});
+      var graphs = {{ graphJSON | safe }};
+      Plotly.plot('chart', graphs, {});
 
-
+      var activites = {{ graphJSON_activities | safe }};
+      Plotly.plot('activity-chart', activites, {});
 
 
 

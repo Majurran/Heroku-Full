@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 import pandas as pd
 views = Blueprint('views', __name__)
-
+ 
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
@@ -56,10 +56,12 @@ def user_input_page_post():
 @views.route('/outputs', methods=['GET'])
 @login_required
 def dashboard_page():
+    # Nursing home data
     df = pd.DataFrame(dict(
         date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10"],
         happiness=[75, 78, 81, 71, 74, 79]
     ))
+    # National Data
     df2 = pd.DataFrame(dict(
         date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10"],
         happiness=[67, 75, 84, 64, 71, 75]
@@ -67,8 +69,30 @@ def dashboard_page():
     fig = go.Figure()
     fig.add_trace(go.Scatter(name="Happiness Proportion - Macquarie Nursing Home",x=df["date"], y=df["happiness"]))
     fig.add_trace(go.Scatter(name="Happiness Proportion - National Average",x=df2["date"], y=df2["happiness"]))
+    fig.update_layout(
+                width=580,
+                height=280,
+    )
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("outputs.html", user=current_user, graphJSON=graphJSON)
+
+
+    activity=["Cycling", "Travelling", "Boating", "Write Diary", "Drinking", "Playing the piano"]
+    activity_frequency=[15, 17, 9, 12, 11,15]
+
+    activities_bar_chart = go.Figure(data=[go.Bar(x=activity, y=activity_frequency)])
+    activities_bar_chart.update_layout(
+                width=580,
+                height=280,
+    )
+    graphJSON_activities = json.dumps(activities_bar_chart, cls=plotly.utils.PlotlyJSONEncoder)
+
+    num_elderly = 4
+    emoji_name = "Happy"
+    activity_name = "Drinking"
+    percentage_happiness = 80
+
+    return render_template("outputs.html", user=current_user, graphJSON=graphJSON, graphJSON_activities=graphJSON_activities, num_elderly=num_elderly,
+        emoji_name = emoji_name, activity_name=activity_name, percentage_happiness=percentage_happiness)
 
 
 @views.route('/instructions', methods=['GET'])
