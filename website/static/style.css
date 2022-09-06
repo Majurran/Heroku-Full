@@ -1,4 +1,8 @@
 /* Example CSS, replace this */
+@font-face {
+        font-family: 'cru';
+        src:url('/static/fonts/CRU-chotichaItalic.ttf');
+    }
 .example {
     color: limegreen;
 }
@@ -17,12 +21,17 @@
     align-items: center;
     padding: 10px;
 }
+.cru {
+    /* font-family: cru;
+    font-size: large; */
+}
 .btn{
     margin: 8px;
     width: 170px;
     font-size: 18px !important;
     border-radius: 10px !important;
     padding:10px;
+
 }
 input.form-control{
     border-radius: 19px;
