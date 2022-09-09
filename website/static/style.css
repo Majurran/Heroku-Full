@@ -47,6 +47,7 @@ body{
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
+    flex-wrap: wrap;
 }
 
 .icon-grid {
@@ -71,15 +72,17 @@ body{
 }
 
 .icon-grid img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     cursor: pointer;
 }
 
 /* output */
 .output-page{
     display: flex;
-    height: calc(100vh - 111px);
+
+    width: 100%;
+    flex-wrap: wrap;
 }
 .output-page .block{
     background: #e6e6e6;
@@ -95,6 +98,8 @@ body{
 }
 .output-page .left{
     width: 40%;
+    min-width: 330px;
+    min-height: 800px;
 }
 .output-page .left .top{
     height: 66.66%;
@@ -104,6 +109,8 @@ body{
 }
 .output-page .right{
     width: 60%;
+    min-width: 666px;
+    min-height: 800px;
 }
 .output-page .right .top{
     height: 50%;
@@ -191,7 +198,7 @@ i{
 .signup-page{
     display: flex;
     justify-content: center;
-    height: 100vh
+    /*height: 100vh*/
 }
 .signup-page form{
 
@@ -233,6 +240,15 @@ i{
     align-items: center;
     flex-direction: column;
     cursor: pointer;
+    /*min-width: 300px;*/
+    /* max-height: 356px; */
+  
+}
+.home-item div{
+ 
+    min-width: 300px;
+    /* max-height: 356px; */
+  
 }
 .home-item img{
     width: 20vh;
@@ -246,5 +262,6 @@ i{
     font-size: 28px;
     color: rgb(193,39,45);
     font-weight: 600;
+    text-align: center;
 }
 

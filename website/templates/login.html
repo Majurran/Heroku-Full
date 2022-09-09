@@ -9,8 +9,59 @@
   <title>
     Login
   </title>
+  <style>
+    .form-group {
+      display:flex;justify-content: center;
+    }
+      
+    @media screen and (max-width: 1350px) {
+      .right {
+        display: none !important;
+      }
+      .login-page .left {
+        width: 90%;
+  
+    }
+  
+  
+
+      
+    }
+    @media screen and (max-width: 500px) {
+    
+  
+    .left form {
+      width: 100% !important;
+    }
+
+      
+    }
+  
+  </style>
 </head>
 <body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if
+              messages %}
+    {% for category, message in messages %}
+      {% if category == 'error' %}
+        <div class="alert alert-danger alter-dismissable fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% else %}
+        <div class="alert alert-success alter-dismissable fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
   <div class="login-page">
     <div class="left">
       <div class="logo">
@@ -20,24 +71,24 @@
 
       <h2 align="center" class="cru">Welcome to Elderly Home</h2>
 
-      <form method="POST" style="width: 70%;margin-top: 30px;margin-left:50px;">
+      <form method="POST" style="width: 70%;margin-top: 30px;">
         <div class="form-group">
           <input type="email"
                  class="form-control cru"
                  id="email"
                  name="email"
-                 placeholder="Enter email" style="width:80%"/>
+                 placeholder="Enter email" style="width:70%"/>
         </div>
-        <div class="form-group d-flex">
+        <div class="form-group flex-form-group">
           <input type="password"
                  class="form-control cru"
                  id="password"
                  name="password"
-                 placeholder="Enter password" style="width:80%"/>
+                 placeholder="Enter password" style="width:70%;margin-left:50px"/>
           <button type="submit" class="circle-btn"></button>
         </div>
         <br/>
-        <div class="d-flex flex-column" style="width: 60%;margin-left: 62px;">
+        <div class="d-flex flex-column" style="width: 100%;align-items:center">
           <button type="button" class="btn btn-danger cru" data-toggle="modal" data-target="#guestLoginModalId">Login as a guest</button>
           <button type="button" class="btn btn-warning cru" onclick="location.href='/sign-up'">New to Here?</button>
           <button type="submit" class="btn btn-secondary cru">Forget Password</button>
