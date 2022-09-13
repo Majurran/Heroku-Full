@@ -112,3 +112,9 @@ def edit_input_options():
 # @login_required
 # def temporary_output():
 #     return render_template("temporary-outputs-presentation.html", user=current_user)
+
+
+@views.route('/guest-inputs', methods=['GET', 'POST'])
+@login_required
+def guest_inputs():
+    return render_template("guest_inputs.html", user=current_user)

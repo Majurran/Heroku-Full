@@ -18,7 +18,7 @@ def login():
             email = request.form.get('email')
             password = request.form.get('password')
             
-            staff_admin = NursingHome.query.filter_by(email=email).first()
+            staff_admin = User.query.filter_by(email=email).first()
             if staff_admin:
                 # if check_password_hash(user.password, password):
                 if staff_admin.password == password:
@@ -33,10 +33,10 @@ def login():
         elif login_type == "login-guest":
             nursing_home_ID = request.form.get('homeId')
             
-            guest = NursingHome.query.filter_by(id=nursing_home_ID).first()
+            guest = User.query.filter_by(nursing_home_id=nursing_home_ID).first()
             if guest:
                 login_user(guest, remember=True)
-                return redirect(url_for('views.home'))
+                return redirect(url_for('views.guest_inputs'))
             else:
                 flash('Wrong Nursing Home ID', category='error')
         else:
@@ -92,18 +92,11 @@ def sign_up():
             db.session.add(new_nursing_home)
             db.session.commit()
             
+            # Can use the generate_password_hash(password1) in production but for developing/testing no need 
+            # Add new User (admin/guest) account associated with new NursingHome
             new_admin_account = User(email=email, password=password1, nursing_home_id=nursing_home_id, admin=True)
             db.session.add(new_admin_account)
             db.session.commit()
-            
-            # Add new Admin account associated with new Nursing
-            # new_nursing_home = NursingHome(id=nursing_home_id, name=nursing_home_name, email=email, password=generate_password_hash(password1))
-            # new_nursing_home = NursingHome(id=nursing_home_id, name=nursing_home_name, email=email, password=password1)
-            
-            # Add associated Guest for new NursingHome
-            # new_guest_account = Guest(nursing_home_id=nursing_home_id)
-            # db.session.add(new_guest_account)
-            # db.session.commit()
             
             # login_user(new_user, remember=True)
             # flash('Account created!', category='success')
