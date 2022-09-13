@@ -4,7 +4,7 @@ from os import path
 from flask_login import LoginManager
 
 db = SQLAlchemy()
-DB_NAME = "database_ver4.db"  # Change name if the models.py gets updated for now
+DB_NAME = "database_ver6.db"  # Change name if the models.py gets updated for now
 
 
 def create_app():
@@ -20,7 +20,7 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
 
     # from .models import User, Note
-    from .models import User, NursingHome
+    from .models import User
 
     create_database(app)
 

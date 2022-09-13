@@ -8,32 +8,39 @@ from flask_login import login_user, login_required, logout_user, current_user
 auth = Blueprint('auth', __name__)
 
 
-"""
-LOGIN PAGE RANDOM NOTES:
-    Add the radiobox option whether to sign in as admin or guest? Instead of creating a separate guest account each time 
-    for each nursing home from the signup page. Though it does create some security risk if the staff member saves the 
-    account email and password to the web browser, but can assume that they don't do that? Oh well it's just a prototype anyway.
-"""
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        login_type = request.form.get('login-type') # Staff/User is "login" while Guest is "login-guest"
         
-        # Might change this
-        homeID = request.form.get('homeId')
-        print(homeID)
-
-        user = User.query.filter_by(email=email).first()
-        if user:
-            if check_password_hash(user.password, password):
-                # flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
+        # Staff/User
+        if login_type == "login":
+            email = request.form.get('email')
+            password = request.form.get('password')
+            
+            staff_admin = NursingHome.query.filter_by(email=email).first()
+            if staff_admin:
+                # if check_password_hash(user.password, password):
+                if staff_admin.password == password:
+                    # flash('Logged in successfully!', category='success')
+                    login_user(staff_admin, remember=True)
+                    return redirect(url_for('views.home'))
+                else:
+                    flash('Incorrect password, try again.', category='error')
+            else:
+                flash('Email does not exist.', category='error')
+        # Guest
+        elif login_type == "login-guest":
+            nursing_home_ID = request.form.get('homeId')
+            
+            guest = NursingHome.query.filter_by(id=nursing_home_ID).first()
+            if guest:
+                login_user(guest, remember=True)
                 return redirect(url_for('views.home'))
             else:
-                flash('Incorrect password, try again.', category='error')
+                flash('Wrong Nursing Home ID', category='error')
         else:
-            flash('Email does not exist.', category='error')
+            flash('Something went wrong, could not find the right login form', category='error')
 
     return render_template("login.html", user=current_user)
 
@@ -52,22 +59,18 @@ def sign_up():
         activity_list = "bowling,tennis,golf,bike,tea,chess"
         wellbeing_list = "neutral,very-sad,happy,sick,sad,angry"
         
-        # Creates the one admin profile for each nursing home for now
+        # Creates the one admin profile for each nursing home
         nursing_home_name = request.form.get('nursing-home-name')
+        nursing_home_id = request.form.get('homeId')
         email = request.form.get('email')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        
-        # Might change this 
         agreeCheck = request.form.get('agreeCheck')
-        staffId = request.form.get('staffId')
-        homeId = request.form.get('homeId')
-        admin = True # Can remove if using the radiobox signin feature
 
         # Look up email and nursing home name to see if they exist in the database already
-        user = User.query.filter_by(email=email).first()
+        existing_nursing_home_admin_email = User.query.filter_by(email=email).first()
         existing_nursing_home_name = NursingHome.query.filter_by(name=nursing_home_name).first()
-        if user:
+        if existing_nursing_home_admin_email:
             flash('Email already exists.', category='error')
         elif existing_nursing_home_name:
             flash('Nursing Home Name already exists.', category='error')
@@ -77,16 +80,30 @@ def sign_up():
             flash('Passwords don\'t match.', category='error')
         elif len(password1) < 6:
             flash('Password must be at least 6 characters.', category='error')
+        elif not nursing_home_id.isdigit():
+            flash('Nursing home ID must use digits only.', category='error')
+        elif len(nursing_home_id) < 6:
+            flash('Nursing home ID must be at least 6 digits.', category='error')
+        elif not agreeCheck:
+            flash('Must agree to Terms and Conditions.', category='error')
         else:
             # Add new NursingHome
-            new_nursing_home = NursingHome(activity_list=activity_list, wellbeing_list=wellbeing_list, name=nursing_home_name)
+            new_nursing_home = NursingHome(id=nursing_home_id, name=nursing_home_name)
             db.session.add(new_nursing_home)
             db.session.commit()
             
-            # Add new User
-            new_user = User(admin=admin, email=email, password=generate_password_hash(password1, method='sha256'), nursing_home_id=new_nursing_home.id) 
-            db.session.add(new_user)
+            new_admin_account = User(email=email, password=password1, nursing_home_id=nursing_home_id, admin=True)
+            db.session.add(new_admin_account)
             db.session.commit()
+            
+            # Add new Admin account associated with new Nursing
+            # new_nursing_home = NursingHome(id=nursing_home_id, name=nursing_home_name, email=email, password=generate_password_hash(password1))
+            # new_nursing_home = NursingHome(id=nursing_home_id, name=nursing_home_name, email=email, password=password1)
+            
+            # Add associated Guest for new NursingHome
+            # new_guest_account = Guest(nursing_home_id=nursing_home_id)
+            # db.session.add(new_guest_account)
+            # db.session.commit()
             
             # login_user(new_user, remember=True)
             # flash('Account created!', category='success')

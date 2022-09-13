@@ -30,8 +30,27 @@
 
 </head>
 <body>
-
-
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="alert alert-danger alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% else %}
+          <div class="alert alert-success alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
   <div class="signup-page">
     <img class="img1" src="../static/img/login_maple2.png">
     <img class="img2" src="../static/img/login_maple2.png">
@@ -40,7 +59,7 @@
     <div style="" class="form_div">
       <form method="POST">
         <h3 align="center" style="margin-bottom: 30px; border-bottom: solid 3px rgb(140,98,57); padding-bottom: 30px;">
-          Sign Up
+          Sign Up Nursing Home
         </h3>
 
         <div class="form-group">
@@ -51,15 +70,23 @@
                    placeholder="Enter name of nursing home"/>
           </div>
 
-        <div class="form-group">
-          <input type="text"
-                 class="form-control"
-                 id="username"
-                 name="username"
-                 placeholder="Set your username"/>
-        </div>
+          <div class="form-group">
+            <input type="text"
+                   class="form-control"
+                   id="homeId"
+                   name="homeId"
+                   placeholder="Nursing home ID with at least 6 digits"/>
+          </div>
 
-        <div class="form-group">
+          <div class="form-group">
+            <input type="email"
+                   class="form-control"
+                   id="email"
+                   name="email"
+                   placeholder="Email"/>
+          </div>
+
+          <div class="form-group">
           <input type="password"
                  class="form-control"
                  id="password1"
@@ -76,39 +103,15 @@
           </div>
 
         <div class="form-group" style="margin-left: 1.25rem;">
-          <input class="form-check-input" type="checkbox" value="" name="agreeCheck" id="defaultCheck1">
+          <input class="form-check-input" type="checkbox" value="True" name="agreeCheck" id="defaultCheck1">
           <label class="form-check-label" for="defaultCheck1">
             I agree the Terms and Conditions of using this platform
           </label>
         </div>
 
-        <div class="form-group">
-          <input type="text"
-                 class="form-control"
-                 id="staffId"
-                 name="staffId"
-                 placeholder="Staff ID (Optional if applying for a guest access)"/>
-        </div>
-
-        <div class="form-group">
-          <input type="email"
-                 class="form-control"
-                 id="email"
-                 name="email"
-                 placeholder="Email"/>
-        </div>
-
-        <div class="form-group">
-          <input type="text"
-                 class="form-control"
-                 id="homeId"
-                 name="homeId"
-                 placeholder="Nursing home ID"/>
-        </div>
-
-        <div class="form-group">
+        <!-- <div class="form-group">
           <div class="form-check form-check-inline">
-            <label class="form-check-label" >I’m a(n)</label>
+            <label class="form-check-label" >I'm a(n)</label>
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
@@ -118,7 +121,7 @@
             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
             <label class="form-check-label" for="inlineRadio2">New staff</label>
           </div>
-        </div>
+        </div> -->
 
         <div class="form-group">
           <button type="button" class="btn btn-secondary float-right" onclick="location.href='/'">Go To Login</button>

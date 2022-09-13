@@ -41,27 +41,26 @@
 </head>
 <body>
   {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if
-              messages %}
-    {% for category, message in messages %}
-      {% if category == 'error' %}
-        <div class="alert alert-danger alter-dismissable fade show" role="alert">
-          {{ message }}
-          <button type="button" class="close" data-dismiss="alert">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      {% else %}
-        <div class="alert alert-success alter-dismissable fade show" role="alert">
-          {{ message }}
-          <button type="button" class="close" data-dismiss="alert">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+    {% if messages %}      
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="alert alert-danger alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% else %}
+          <div class="alert alert-success alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
   <div class="login-page">
     <div class="left">
       <div class="logo">
@@ -87,8 +86,11 @@
                  placeholder="Enter password" style="width:70%;margin-left:50px"/>
           <button type="submit" class="circle-btn"></button>
         </div>
+        
         <br/>
         <div class="d-flex flex-column" style="width: 100%;align-items:center">
+          <!-- Staff/User Login Form Type -->
+          <input type="hidden" name="login-type" value="login">
           <button type="button" class="btn btn-danger cru" data-toggle="modal" data-target="#guestLoginModalId">Login as a guest</button>
           <button type="button" class="btn btn-warning cru" onclick="location.href='/sign-up'">New to Here?</button>
           <button type="submit" class="btn btn-secondary cru">Forget Password</button>
@@ -101,6 +103,7 @@
   </div>
 
   <!-- Modal for guest login -->
+  <form method="POST" class="form-inline">
   <div class="modal fade" id="guestLoginModalId" tabindex="-1" aria-labelledby="guestLoginModalIdLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content" style="background: #e6e6e6;">
@@ -111,43 +114,42 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-
-        <div class="modal-body">
-
-          <form method="POST" class="form-inline">
-            <div class="form-row mb-2">
-              To login as a guest, just simply provide the nursing home ID.
-            </div>
-
-            <div class="form-row mb-2">
-              <div class="form-group">
-                <label for="homeId" style="margin-right: 20px;">Nursing home ID</label>
-                <input class="form-control"
-                       id="homeId"
-                       name="homeId"
-                       placeholder=""/>
+        
+          <div class="modal-body">
+              <div class="form-row mb-2">
+                To login as a guest, just simply provide the nursing home ID.
               </div>
-            </div>
 
-            <div class="form-row mb-2">
-              <div class="form-group">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                <label class="form-check-label" for="defaultCheck1">
-                  I agree the Terms and Conditions of using this platform
-                </label>
+              <div class="form-row mb-2">
+                <div class="form-group">
+                  <label for="homeId" style="margin-right: 20px;">Nursing home ID</label>
+                  <input class="form-control"
+                        id="homeId"
+                        name="homeId"
+                        placeholder=""/>
+                </div>
               </div>
-            </div>
 
-          </form>
-        </div>
-        <div class="my-modal-footer">
-          <button type="submit" class="btn btn-warning mr-2" data-dismiss="modal">Login as a guest</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
-        </div>
+              <div class="form-row mb-2">
+                <div class="form-group">
+                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">
+                    I agree the Terms and Conditions of using this platform
+                  </label>
+                </div>
+              </div> 
+          </div>
+          <div class="my-modal-footer">
+            <!-- Guest Login Form Type -->
+            <input type="hidden" name="login-type" value="login-guest">
+            <button type="submit" class="btn btn-warning mr-2">Login as a guest</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+          </div>
+        
       </div>
     </div>
   </div>
-
+  </form>
   <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
