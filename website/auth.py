@@ -18,13 +18,18 @@ def login():
             email = request.form.get('email')
             password = request.form.get('password')
             
-            staff_admin = User.query.filter_by(email=email).first()
-            if staff_admin:
+            user = User.query.filter_by(email=email).first()
+            admin = user.admin
+            if user:
                 # if check_password_hash(user.password, password):
-                if staff_admin.password == password:
+                if user.password == password:
                     # flash('Logged in successfully!', category='success')
-                    login_user(staff_admin, remember=True)
-                    return redirect(url_for('views.home'))
+                    login_user(user, remember=True)
+                    if admin:
+                        return redirect(url_for('views.home'))
+                    else:
+                        return redirect(url_for('views.home_user'))
+                        
                 else:
                     flash('Incorrect password, try again.', category='error')
             else:
@@ -70,6 +75,7 @@ def sign_up():
         # Look up email and nursing home name to see if they exist in the database already
         existing_nursing_home_admin_email = User.query.filter_by(email=email).first()
         existing_nursing_home_name = NursingHome.query.filter_by(name=nursing_home_name).first()
+        
         if existing_nursing_home_admin_email:
             flash('Email already exists.', category='error')
         elif existing_nursing_home_name:
@@ -104,3 +110,51 @@ def sign_up():
             return render_template("sign_up_ver2.html", success='OK')
 
     return render_template("sign_up_ver2.html", user=current_user, success='')
+
+
+# TODO: Resident User needs to merge together with the original sign up page, for the time being just getting the functionality working
+@auth.route('/sign-up-user-temp', methods=['GET', 'POST'])
+def sign_up_user_temporary():
+    if request.method == 'POST':       
+        # User form
+        nursing_home_name = request.form.get('nursing-home-name')   # Use for verification
+        nursing_home_id = request.form.get('homeId')                # Use for verification
+        first_name = request.form.get('first-name')
+        last_name = request.form.get('last-name')
+        phone_number = request.form.get('phone-number')
+        gender = request.form.get('gender')                         
+        email = request.form.get('email')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+        agreeCheck = request.form.get('agreeCheck')
+
+        # Look up nursing_home_name and nursing_home_id to verify 
+        verify_nursing_home_name = NursingHome.query.filter_by(name=nursing_home_name).first()
+        verify_nursing_home_id = NursingHome.query.filter_by(id=nursing_home_id).first()
+        existing_email = User.query.filter_by(email=email).first()
+        
+        # If name and id is correct, proceed with user creation
+        if verify_nursing_home_id and verify_nursing_home_name:
+            if existing_email:
+                flash('Email already exists.', category='error')
+            elif len(email) < 4:
+                flash('Email must be greater than 4 characters.', category='error')
+            elif password1 != password2:
+                flash('Passwords don\'t match.', category='error')
+            elif len(password1) < 6:
+                flash('Password must be at least 6 characters.', category='error')
+            elif not agreeCheck:
+                flash('Must agree to Terms and Conditions.', category='error')
+            else:
+                # Can use the generate_password_hash(password1) in production but for developing/testing no need 
+                # Add new User (admin/guest) account associated with new NursingHome
+                new_account = User(first_name=first_name, last_name=last_name, phone=phone_number, email=email, gender=gender,
+                                            password=password1, nursing_home_id=nursing_home_id, admin=False)
+                db.session.add(new_account)
+                db.session.commit()
+                
+                return render_template("sign_up_custom_user.html", success='OK')
+        else:
+            flash('Incorrect nursing home ID and nursing home name.', category='error')
+
+    return render_template("sign_up_custom_user.html", user=current_user, success='')

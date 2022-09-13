@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 import pandas as pd
 views = Blueprint('views', __name__)
- 
+
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
@@ -118,3 +118,8 @@ def edit_input_options():
 @login_required
 def guest_inputs():
     return render_template("guest_inputs.html", user=current_user)
+
+@views.route('/home_user', methods=['GET', 'POST'])
+@login_required
+def home_user():
+    return render_template("home_user.html", user=current_user)
