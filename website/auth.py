@@ -19,11 +19,12 @@ def login():
             password = request.form.get('password')
             
             user = User.query.filter_by(email=email).first()
-            admin = user.admin
+            
             if user:
                 # if check_password_hash(user.password, password):
                 if user.password == password:
                     # flash('Logged in successfully!', category='success')
+                    admin = user.admin
                     login_user(user, remember=True)
                     if admin:
                         return redirect(url_for('views.home'))
