@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User, NursingHome
+from .models import User, NursingHome, InputOptions
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -60,10 +60,6 @@ def logout():
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
-        # Default activity and wellbeing list
-        activity_list = "bowling,tennis,golf,bike,tea,chess"
-        wellbeing_list = "neutral,very-sad,happy,sick,sad,angry"
-        
         # Creates the one admin profile for each nursing home
         nursing_home_name = request.form.get('nursing-home-name')
         nursing_home_id = request.form.get('homeId')
@@ -103,6 +99,44 @@ def sign_up():
             new_admin_account = User(email=email, password=password1, nursing_home_id=nursing_home_id, admin=True)
             db.session.add(new_admin_account)
             db.session.commit()
+            
+            # Add default input options for wellbeing and activity for new NursingHome
+            # Default activity and wellbeing list from prototype design
+            activity_list = ['Go Cycling', 'Go Travel', 'Birthday Party', 'Go Boating', 'Write Diary', 'Drinking', 'Play the Piano', 'Online Shopping']
+            wellbeing_list = ['Happy', 'Upvote', 'Congratulations', 'Love', 'Upset', 'Sick', 'Sleeping', 'Angry']
+            
+            activity_list_file_path = [
+                "./static/input_option_img/Go Cycling.png",
+                "./static/img/Go Travel.png",
+                "./static/img/Birthday Party.png",
+                "./static/img/Go Boating.png",
+                "./static/img/Write Diary.png",
+                "./static/img/Drinking.png",
+                "./static/img/Play the Piano.png",
+                "./static/img/Online Shopping.png"
+            ]
+            
+            wellbeing_list_file_path = [
+                "./static/img/Happy.png",
+                "./static/img/Upvote.png",
+                "./static/img/Congratulations.png",
+                "./static/img/Love.png",
+                "./static/img/Upset.png",
+                "./static/img/Sick.png",
+                "./static/img/Sleeping.png",
+                "./static/img/Angry.png"
+            ]
+            
+            for i,activity in enumerate(activity_list):
+                new_activity = InputOptions(category="activity", name=activity, file_path=activity_list_file_path[i], nursing_home_id=nursing_home_id)
+                db.session.add(new_activity)
+                db.session.commit()
+                
+            for i,wellbeing in enumerate(wellbeing_list):
+                new_wellbeing = InputOptions(category="wellbeing", name=wellbeing, file_path=wellbeing_list_file_path[i], nursing_home_id=nursing_home_id)
+                db.session.add(new_wellbeing)
+                db.session.commit()
+            
             
             # login_user(new_user, remember=True)
             # flash('Account created!', category='success')
