@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-# from .models import Note
+from .models import InputOptions
 from . import db
 import json
 import plotly
@@ -31,7 +31,8 @@ def home():
 @views.route('/inputs', methods=['GET'])
 @login_required
 def user_input_page():
-    return render_template("inputs.html", user=current_user)
+    input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    return render_template("inputs.html", user=current_user, rows=input_options_rows)
 
 
 @views.route('/inputs', methods=['POST'])
@@ -39,7 +40,10 @@ def user_input_page():
 def user_input_page_post():
     my_var = request.form.get('json')
     print(my_var)
-    return render_template("inputs.html", user=current_user)
+    
+    input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    
+    return render_template("inputs.html", user=current_user, rows=input_options_rows)
 
 
 @views.route('/outputs', methods=['GET'])
@@ -117,7 +121,13 @@ def edit_input_options():
 @views.route('/guest-inputs', methods=['GET', 'POST'])
 @login_required
 def guest_inputs():
-    return render_template("guest_inputs.html", user=current_user)
+    input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    
+    if request.method == 'POST': 
+        my_var = request.form.get('json')
+        print(my_var)
+    
+    return render_template("guest_inputs.html", user=current_user, rows=input_options_rows)
 
 @views.route('/home_user', methods=['GET', 'POST'])
 @login_required

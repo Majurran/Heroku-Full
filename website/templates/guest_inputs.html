@@ -7,17 +7,13 @@
       <h3>Activity</h3>
       <h6>What are you planning to do today?</h6>
       <div class="icon-grid">
-        <div id="cycling" name="cycling"><img src="../static/img/Go Cycling.png"><span>Go Cycling</span></div>
-        <div id="traveling" name="traveling"><img src="../static/img/Go Travel.png"><span>Go Travel</span></div>
-        <div id="birthday-party" name="birthday-party"><img src="../static/img/Birthday Party.png"><span>Birthday Party</span></div>
-        <div id="boating" name="boating"><img src="../static/img/Go Boating.png"><span>Go Boating</span></div>
-        <div id="diary" name="diary"><img src="../static/img/Write Diary.png"><span>Write Diary</span></div>
-        <div id="drinking" name="drinking"><img src="../static/img/Drinking.png"><span>Drinking</span></div>
-        <div id="piano" name="piano"><img src="../static/img/Play the Piano.png"><span>Play the Piano</span></div>
-        <div id="shopping" name="shopping"><img src="../static/img/Online Shopping.png"><span>Online Shopping</span></div>
-        <div id="more" name="more" style="font-weight: 600; font-size: 24px;">
-          More...
-        </div>
+
+        {% for row in rows %}
+          {% if row.category == "activity" %}
+            <div id="{{ row.name }}" name="{{ row.name }}"><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
+          {% endif%}
+        {% endfor %}
+
       </div>
       <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitActivity()">Submit</button>
     </div>
@@ -26,17 +22,13 @@
       <h3>Wellbeing</h3>
       <h6>Tell us about your feeling now~</h6>
       <div class="icon-grid">
-        <div><img src="../static/img/Happy.png"><span>Happy</span></div>
-        <div><img src="../static/img/Upvote.png"><span>Upvote</span></div>
-        <div><img src="../static/img/Congratulations.png"><span>Congratulations</span></div>
-        <div><img src="../static/img/Love.png"><span>Love</span></div>
-        <div><img src="../static/img/Upset.png"><span>Upset</span></div>
-        <div><img src="../static/img/Sick.png"><span>Sick</span></div>
-        <div><img src="../static/img/Sleeping.png"><span>Sleeping</span></div>
-        <div><img src="../static/img/Angry.png"><span>Angry</span></div>
-        <div id="more" style="font-weight: 600; font-size: 24px;">
-          More...
-        </div>
+
+        {% for row in rows %}
+          {% if row.category == "wellbeing" %}
+            <div><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
+          {% endif%}
+        {% endfor %}
+        
       </div>
       <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitFeeling()">Submit</button>
     </div>
@@ -73,7 +65,6 @@
         })
       }
     })
-
 
     function submitActivity(){
       $('#json').val('');
