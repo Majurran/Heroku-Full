@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import InputOptions
+from .models import InputOptions, Input
 from . import db
 import json
 import plotly
@@ -123,9 +123,30 @@ def edit_input_options():
 def guest_inputs():
     input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
     
+    """ 
+    Clicks on either wellbeing or activity submit button, assumes only one category submit at a time, because it will ignore
+    the other options if other category input options are chosen. 
+    Eg. Happy is selected, click the activity submit button, nothing happens.
+    """
     if request.method == 'POST': 
-        my_var = request.form.get('json')
-        print(my_var)
+        # Empty strings returned if no options are selected
+        activity_csv = request.form.get('json_activity')
+        wellbeing_csv = request.form.get('json_wellbeing')
+        print(activity_csv)
+        print(wellbeing_csv)
+
+        activity_list = activity_csv.split(',')[:-1]
+        wellbeing_list = wellbeing_csv.split(',')[:-1]
+        
+        for activity in activity_list:
+            # input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+            # new_wellbeing = InputOptions(category="wellbeing", name=wellbeing, file_path=wellbeing_list_file_path[i], nursing_home_id=nursing_home_id)
+            # db.session.add(new_wellbeing)
+            # db.session.commit()
+            
+            # activity_input = Input(category="activity", name=activity, date= )
+            # print(activity)
+            pass
     
     return render_template("guest_inputs.html", user=current_user, rows=input_options_rows)
 
