@@ -132,21 +132,25 @@ def guest_inputs():
         # Empty strings returned if no options are selected
         activity_csv = request.form.get('json_activity')
         wellbeing_csv = request.form.get('json_wellbeing')
-        print(activity_csv)
-        print(wellbeing_csv)
+        # print(activity_csv)
+        # print(wellbeing_csv)
 
         activity_list = activity_csv.split(',')[:-1]
         wellbeing_list = wellbeing_csv.split(',')[:-1]
         
-        for activity in activity_list:
-            # input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-            # new_wellbeing = InputOptions(category="wellbeing", name=wellbeing, file_path=wellbeing_list_file_path[i], nursing_home_id=nursing_home_id)
-            # db.session.add(new_wellbeing)
-            # db.session.commit()
-            
-            # activity_input = Input(category="activity", name=activity, date= )
-            # print(activity)
-            pass
+        for activity in activity_list:          
+            # user_id=0 means Guest account for the nursing home
+            activity_input = Input(category="activity", name=activity, user_id=0, nursing_home_id=current_user.nursing_home_id)
+            db.session.add(activity_input)
+            db.session.commit()
+            print(activity)
+        
+        for wellbeing in wellbeing_list:          
+            # user_id=0 means Guest account for the nursing home
+            wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=0, nursing_home_id=current_user.nursing_home_id)
+            db.session.add(wellbeing_input)
+            db.session.commit()
+            print(wellbeing)
     
     return render_template("guest_inputs.html", user=current_user, rows=input_options_rows)
 
