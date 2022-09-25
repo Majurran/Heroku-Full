@@ -87,6 +87,29 @@ def dashboard_page():
     return render_template("outputs.html", user=current_user, graphJSON=graphJSON, graphJSON_activities=graphJSON_activities, num_elderly=num_elderly,
         emoji_name = emoji_name, activity_name=activity_name, percentage_happiness=percentage_happiness)
 
+@views.route('/public-dashboard', methods=['GET'])
+def public_dashboard_page():
+    activity=["Cycling", "Travelling", "Boating", "Write Diary", "Drinking", "Playing the piano"]
+    activity_frequency=[15, 17, 9, 12, 11,15]
+
+    activities_bar_chart = go.Figure(data=[go.Bar(x=activity, y=activity_frequency)])
+    activities_bar_chart.update_layout(
+                width=1500,
+                height=600,
+    )
+    graph_activities = json.dumps(activities_bar_chart, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+    moods = ['happy', 'sad', 'ok']
+    percentage = [35, 15, 50]
+    mood_pie_chart = go.Figure(data = [go.Pie(labels = moods, values = percentage)])
+    mood_pie_chart.update_layout(
+                width=1500,
+                height=600,
+    )
+    mood_ratio = json.dumps(mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    return render_template("public-dashboard.html",graph_activities=graph_activities, mood_ratio=mood_ratio)
 
 @views.route('/instructions', methods=['GET'])
 @login_required
