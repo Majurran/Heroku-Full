@@ -1,7 +1,7 @@
 /* Example CSS, replace this */
 @font-face {
         font-family: 'cru';
-        src:url('/static/fonts/CRU-chotichaItalic.ttf');
+        src:url('../static/fonts/CRU-chotichaItalic.ttf');
     }
 .example {
     color: limegreen;
@@ -52,8 +52,8 @@ body{
 
 .icon-grid {
     display: grid;
-    grid-template-columns: repeat(3, 130px);
-    grid-template-rows: repeat(3, 130px);
+    grid-template-columns: repeat(5,130px);
+    /*grid-template-rows: repeat(2, 130px);*/
     margin: 30px 0;
     background: #e6e6e6;
 }
@@ -75,6 +75,127 @@ body{
     width: 80px;
     height: 80px;
     cursor: pointer;
+}
+
+/* edit page use*/
+.edit-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 130px);
+    /*grid-template-rows: repeat(3, 130px);*/
+    margin: 30px 0;
+    background: #e6e6e6;
+}
+
+.edit-icon-grid div {
+    border: solid 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-icon-grid span {
+    font-weight: 600;
+    font-size:14px;
+}
+
+.edit-icon-grid img {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+}
+
+/* feeling selection icon grid*/
+.feel-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 130px);
+    grid-template-rows: repeat(1, 130px);
+    /*margin: 30px 0;*/
+    background: #e6e6e6;
+}
+
+.feel-icon-grid div {
+    border: solid 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.feel-icon-grid span {
+    font-weight: 600;
+    font-size:16px;
+}
+
+.feel-icon-grid img {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+}
+
+/* negative reaction icon grid*/
+.reaction-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 130px);
+    grid-template-rows: repeat(1, 130px);
+    /*margin: 30px 0;*/
+    background: #e6e6e6;
+}
+
+.reaction-icon-grid div {
+    border: solid 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.reaction-icon-grid span {
+    font-weight: 800;
+    font-size:32px;
+}
+
+/* add text in line */
+.separator>*{
+  display: inline-block;
+  vertical-align: middle;
+}
+.separator {
+    text-align: center;
+    border: 0;
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+.separator:before, .separator:after {
+    content: "";
+    height: 2px;
+    width: 50%;
+    background-color: gray;
+    margin: 0 5px 0 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.separator:before {
+    margin-left: -100%;
+}
+.separator:after {
+    margin-right: -100%;
+}
+
+.left-texture {
+    float: left;
+    display: inline-block;
+    width: 60%;
+  padding: 10px;
+}
+.right-texture {
+    float: right;
+    display: inline-block;
+    width: 40%;
+  padding: 10px;
 }
 
 /* output */
@@ -263,5 +384,37 @@ i{
     color: rgb(193,39,45);
     font-weight: 600;
     text-align: center;
+}
+
+.btn-add{
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    margin-left: 60px;
+    background: url(../static/img/add.png);
+    background-size: cover;
+    border: none;
+}
+.btn-del{
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    margin-left: 10px;
+    background: url(../static/img/delete.png);
+    background-size: cover;
+    border: none;
+}
+
+
+/* not active */
+.nav-pills .nav-link:not(.active) {
+    background-color: #c8c8c8;
+    color: white;
+}
+
+/* active*/
+.nav-pills .nav-link .active {
+    background-color: #e6e6e6;
+    color: black;
 }
 

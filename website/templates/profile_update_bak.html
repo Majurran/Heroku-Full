@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/style.css"/>
+    <title>
+        profile update
+    </title>
+    <style>
+        .form-group {
+            display: flex;
+            justify-content: center;
+        }
+
+        .img4 {
+            width: 150px;
+            position: absolute;
+            top: 20%;
+            left: 10%;
+        }
+
+        .img2 {
+            width: 250px;
+            position: absolute;
+            left: 5%;
+            bottom: 10%;
+            transform: rotateY(180deg);
+        }
+
+        .img3 {
+            width: 150px;
+            position: absolute;
+            top: 20%;
+            right: 10%;
+        }
+
+        .img1 {
+            width: 250px;
+            position: absolute;
+            right: 5%;
+            bottom: 10%;
+            transform: rotateY(180deg);
+        }
+    </style>
+    <style>
+        .form_div {
+            padding: 30px;
+            background: #e6e6e6;
+            width: 80%;
+        }
+
+
+        @media screen and (max-width: 1270px) {
+            .form_div {
+                width: 80%;
+            }
+
+            div img {
+                display: none;
+            }
+
+
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <img class="img4" src="../static/img/login_maple4.png">
+    <img class="img2" src="../static/img/login_maple1.png">
+    <img class="img3" src="../static/img/login_maple4.png">
+    <img class="img1" src="../static/img/login_maple1.png">
+</div>
+<div class="container h-100 col-6 rounded" style="background: #e6e6e6; min-height: 90vh; padding-top: 2.0rem">
+    <div class="row h-100 justify-content-center align-items-center">
+        <h2 align="center">Welcome to Elderly Home</h2><br>
+    </div>
+    <hr class="col-8" color="red"/>
+    <br/>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+            your current nursing home name: {{ user.nursing_home_name }}<br>
+            your current nursing home ID: {{ user.nursing_home_id }}
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="form_div">
+            <form method="POST" style="margin-top: 30px;">
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control"
+                           id="nursing-home-name"
+                           name="nursing-home-name"
+                           placeholder="Change the name of nursing home"
+                           required/>
+
+                </div>
+
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control"
+                           id="homeId"
+                           name="homeId"
+                           placeholder="Change the nursing home ID"
+                           required/>
+                </div>
+
+                <div class="form-group">
+                    <input type="email"
+                           class="form-control"
+                           id="email"
+                           name="email"
+                           placeholder="Change your email"
+                           required/>
+                </div>
+
+                {% if not user.admin %}
+                    <div class="form-group">
+                        <input type="email"
+                               class="form-control"
+                               id="email"
+                               name="email"
+                               placeholder="Change your email"
+                               required/>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <input type="password"
+                           class="form-control"
+                           id="password1"
+                           name="password1"
+                           placeholder="Set a new password"
+                           required/>
+                </div>
+
+                <div class="form-group">
+                    <input type="password"
+                           class="form-control"
+                           id="password2"
+                           name="password2"
+                           placeholder="Confirm your new password"
+                           required/>
+                </div>
+
+                <div class="form-group" style="margin-left: 1.25rem;">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" value="True">I agree the Terms and
+                            Conditions of using this platform
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-warning float-right mr-2">Submit</button>
+                    <button type="button" class="btn btn-secondary float-right" onclick="location.href='/'">Go
+                        To
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</form>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+{#<script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>#}
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+</body>
+</html>
+

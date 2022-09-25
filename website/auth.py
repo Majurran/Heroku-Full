@@ -142,9 +142,9 @@ def sign_up():
             # login_user(new_user, remember=True)
             # flash('Account created!', category='success')
             # return redirect(url_for('views.home'))
-            return render_template("sign_up_ver2.html", success='OK')
+            return render_template("sign_up.html", success='OK')
 
-    return render_template("sign_up_ver2.html", user=current_user, success='')
+    return render_template("sign_up.html", user=current_user, success='')
 
 
 # TODO: Resident User needs to merge together with the original sign up page, for the time being just getting the functionality working

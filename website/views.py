@@ -97,7 +97,8 @@ def instruction():
 @views.route('/profile', methods=['GET'])
 @login_required
 def profile():
-    return render_template("profile.html", user=current_user)
+    # return render_template("profile.html", user=current_user)
+    return render_template("profile_update.html", user=current_user)
 
 
 @views.route('/edit-input-options', methods=['GET', 'POST'])

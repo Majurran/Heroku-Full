@@ -1,92 +1,345 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
+{% block style %}
+    <style>
+
+
+    </style>
+{% endblock %}
 {% block content %}
+    <form id="inputs-form" name="inputs-form" method="POST">
+        <div class="input-page">
+            <div class="icon-container">
+                <div style="height: 50px">
+                    <div style="float:left"><h3>Activity</h3></div>
+                </div>
+                <div><h5> What are you planning to do today?</h5></div>
+                <div id="activity" name="activity" class="icon-grid">
+                    {% for row in rows %}
+                        {% if row.category == "activity" %}
+                            <div id="{{ row.name }}" name="{{ row.name }}"><img
+                                    src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button type="button" class="btn btn-danger"
+                        onclick="submitActivity()">Submit
+                </button>
+                <br><br><br>
+                <div style="height: 50px">
+                    <div class="d-inline" style="float:left"><h3>Wellbeing</h3></div>
+                </div>
+                <div><h5>Tell us about your feeling now~</h5></div>
+                <div id="wellbeing" name="wellbeing" class="icon-grid">
+                    {% for row in rows %}
+                        {% if row.category == "wellbeing" %}
+                            <div id="{{ row.name }}" name="{{ row.name }}"><img
+                                    src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button type="button" class="btn btn-danger"
+                        onclick="submitFeeling()">Submit
+                </button>
+                <br><br><br>
 
-<!-- TODO: This edits page needs to be updated with the new edit-input page version -->
-<h4>TODO: This should be edit-input page, this html is currently showing the guest inputs html. Still waiting on the new edit-input page prototype design with the plus and minus sign</h4>
+                <div><h5>Do you have a negative reaction to any medication you have to take?</h5></div>
+                <br>
+                <div id="reaction" name="reaction" class="reaction-icon-grid" style="width: 260px">
+                    <div id="negative_reaction_yes" name="negative_reaction_yes"><span style="color: #c82333">YES</span>
+                    </div>
+                    <div id="negative_reaction_no" name="negative_reaction_no"><span style="color: #1c7430">NO</span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger"
+                        onclick="submitReaction()">Submit
+                </button>
+                <br><br><br>
 
-<form id="inputs-form" name="inputs-form" method="POST">
-  <div class="input-page">
-    <div class="icon-container">
-      <h3>Activity</h3>
-      <h6>What are you planning to do today?</h6>
-      <div class="icon-grid">
+                <div><h5>Do you have any difficulty in walking?</h5></div>
+                <br>
+                <div id="have_difficult_walking" name="feed_difficult_walking" class="feel-icon-grid">
+                    <div id="walk_difficult_1" name="walk_difficult_1"><img src="../static/img/level_1.png"><span
+                            style="font-weight: 300; font-size: 12px">Unable to leave bed</span>
+                    </div>
+                    <div id="walk_difficult_2" name="walk_difficult_2"><img src="../static/img/level_2.png"><span
+                            style="font-weight: 300; font-size: 12px">Wheelchair is required</span>
+                    </div>
+                    <div id="walk_difficult_3" name="walk_difficult_3"><img src="../static/img/level_3.png"><span
+                            style="font-weight: 300; font-size: 12px">Walk stick is required</span>
+                    </div>
+                    <div id="walk_difficult_4" name="walk_difficult_4"><img src="../static/img/level_4.png"><span
+                            style="font-weight: 300; font-size: 12px">Slow walking is possible</span>
+                    </div>
+                    <div id="walk_difficult_5" name="walk_difficult_5"><img src="../static/img/level_5.png"><span
+                            style="font-weight: 300; font-size: 12px">Energetic like a youth</span>
+                    </div>
+                </div>
+                <div id="walk_texture_line">
+                    <div class="left-texture">
+                        <p class="separator">Mobility aid is required</p>
+                    </div>
+                    <div class="right-texture">
+                        <p class="separator">Can exercise without assistance</p>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger"
+                        onclick="submitHaveDifficultWalking()">Submit
+                </button>
+                <br><br><br>
 
-        {% for row in rows %}
-          {% if row.category == "activity" %}
-            <div id="{{ row.name }}" name="{{ row.name }}"><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
-          {% endif%}
-        {% endfor %}
+                <div><h5>how is the quality of food in your nursing home?</h5></div>
+                <br>
+                <div id="food_quality" name="food_quality" class="feel-icon-grid">
+                    <div id="food_quality_1" name="food_quality_1"><img src="../static/img/level_1.png"><span
+                            style="font-weight: 300; font-size: 12px">Awful, Can't eat them all</span>
+                    </div>
+                    <div id="food_quality_2" name="food_quality_2"><img src="../static/img/level_2.png"><span
+                            style="font-weight: 300; font-size: 12px">Awful, Hard to enjoy</span>
+                    </div>
+                    <div id="food_quality_3" name="food_quality_3"><img src="../static/img/level_3.png"><span
+                            style="font-weight: 300; font-size: 12px">OK, but not enjoyable</span>
+                    </div>
+                    <div id="food_quality_4" name="food_quality_4"><img src="../static/img/level_4.png"><span
+                            style="font-weight: 300; font-size: 12px">Quite good</span>
+                    </div>
+                    <div id="food_quality_5" name="food_quality_5"><img src="../static/img/level_5.png"><span
+                            style="font-weight: 300; font-size: 12px">Best food that ever seen</span>
+                    </div>
+                </div>
+                <div id="food_texture_line">
+                    <div class="left-texture">
+                        <p class="separator">Unpalatable</p>
+                    </div>
+                    <div class="right-texture">
+                        <p class="separator">Delicious</p>
+                    </div>
+                </div>
 
-      </div>
-      <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitActivity()">Submit</button>
-    </div>
-
-    <div class="icon-container">
-      <h3>Wellbeing</h3>
-      <h6>Tell us about your feeling now~</h6>
-      <div class="icon-grid">
-
-        {% for row in rows %}
-          {% if row.category == "wellbeing" %}
-            <div><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
-          {% endif%}
-        {% endfor %}
-
-      </div>
-      <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitFeeling()">Submit</button>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body" style="    height: 200px; display: flex; align-items: center;">
-          <img src="../static/img/Happy.png" style="width: 70px;height: 70px;">
-          <span style="font-size: 20px; font-weight: 600;" id="infoId">
-
-          </span>
+                <button type="button" class="btn btn-danger"
+                        onclick="submitFoodQuality()">Submit
+                </button>
+                <br><br><br>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Go Back</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <input id="json" name="json" value="" style="" type="hidden" readonly/>
-  <script>
-    document.querySelectorAll('.icon-grid div').forEach(div=>{
-      if(div.id !== 'more'){
-        div.addEventListener('click', ()=>{
-          if(div.getAttribute("choosed") == 'Y') {
-            div.setAttribute("choosed", '')
-            div.style.background = '#e6e6e6'
-          }else{
-            div.setAttribute("choosed", 'Y')
-            div.style.background = '#f15a24'
-          }
-        })
-      }
-    })
 
-    function submitActivity(){
-      $('#json').val('');
-      document.querySelectorAll('.icon-grid div').forEach(div=>{
-        if(div.id !== 'more-activities'){
-          if(div.getAttribute("choosed") == 'Y') {
 
-            $('#json').val($('#json').val()+div.getAttribute("id")+',');
-          }
+        <input id="json" name="json" value="" style="" type="hidden" readonly/>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+    <script>
+        function getDefaultIconsHtml() {
+            let defaultActivityHtml = ""
+            let defaultWellbeingHtml = ""
+            {% for row in rows %}
+                {% if row.category == "activity" %}
+                    defaultActivityHtml += "<div id='{{ row.name.replace(' ','')}}' name='{{ row.name }}'> <img src='{{ row.file_path }}'><span>{{ row.name }}</span></div>"
+                {% endif %}
+                {% if row.category == "wellbeing" %}
+                    defaultWellbeingHtml += "<div id='{{ row.name.replace(' ','')}}' name='{{ row.name }}'> <img src='{{ row.file_path }}'><span>{{ row.name }}</span></div>"
+                {% endif %}
+            {% endfor %}
+
+            return [defaultActivityHtml, defaultWellbeingHtml]
         }
-      })
-      $('#infoId').html('Your activity plan have been submitted!')
-    }
 
-    function submitFeeling(){
-      $('#infoId').html('Your feelings have been submitted!')
-    }
+        function resetGridContainerDefault() {
+            {# TODO: May be need to reactive with backstage #}
+            let container_id = $("#add_container_id").text()
+            let [defaultActivityHtml, defaultWellbeingHtml] = getDefaultIconsHtml()
+            if (container_id === "activity") {
+                $("#activity").html(defaultActivityHtml)
+            } else if (container_id === "wellbeing") {
+                $("#wellbeing").html(defaultWellbeingHtml)
+            }
 
-  </script>
-</form>
+        }
+
+
+        {# monitor grid-container width and change grid columns count #}
+        $(".input-page").css("width", function (index, value) {
+
+            let mathValue = value.split("px")
+            console.log(mathValue)
+            let columnsCount = Math.min(Math.trunc(mathValue[0] / 130), 5)
+            console.log(columnsCount)
+            $(".icon-container").css("width", (columnsCount * 130).toString() + "px")
+            $(".icon-grid").css("grid-template-columns", "repeat(" + columnsCount + ", 130px)")
+            $(".feel-icon-grid").css("grid-template-columns", "repeat(" + columnsCount + ", 130px)")
+            resetGridContainerDefault()
+            $("#walk_texture_line").html("")
+            $("#food_texture_line").html("")
+        })
+
+    </script>
+    <script>
+        $("#activity").on("click", "div", function (event) {
+            var div = $(this)
+            console.log(div)
+            if (div.attr("choosed") === 'Y') {
+                div.attr("choosed", '')
+                div.css("background", '#e6e6e6')
+            } else {
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+        $("#wellbeing").on("click", "div", function (event) {
+            let div = $(this)
+            if (div.attr("choosed") === 'Y') {
+                div.attr("choosed", '')
+                div.css("background", '#e6e6e6')
+            } else {
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+
+        $("#reaction").on("click", "div", function (event) {
+            let div = $(this)
+            if (div.attr("choosed") == 'Y') {
+                div.attr("choosed", '')
+                div.style.background = '#e6e6e6'
+            } else {
+                $.each(div.siblings(), function (i, item) {
+                    item.setAttribute("choosed", '')
+                    item.style.background = '#e6e6e6'
+                })
+
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+
+        $("#have_difficult_walking").on("click", "div", function (event) {
+            let div = $(this)
+            if (div.attr("choosed") == 'Y') {
+                div.attr("choosed", '')
+                div.style.background = '#e6e6e6'
+            } else {
+                $.each(div.siblings(), function (i, item) {
+                    item.setAttribute("choosed", '')
+                    item.style.background = '#e6e6e6'
+                })
+
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+        $("#food_quality").on("click", "div", function (event) {
+            let div = $(this)
+            if (div.attr("choosed") == 'Y') {
+                div.attr("choosed", '')
+                div.style.background = '#e6e6e6'
+            } else {
+                $.each(div.siblings(), function (i, item) {
+                    item.setAttribute("choosed", '')
+                    item.style.background = '#e6e6e6'
+                })
+
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+
+
+        function submitActivity() {
+            var choosedActivity = []
+            document.getElementById("activity").querySelectorAll('div').forEach(div => {
+                if (div.id !== 'more-activities' && div.getAttribute("choosed") === "Y") {
+                    choosedActivity.push(div.getAttribute("id"))
+                    div.setAttribute("choosed", '')
+                    div.style.background = '#e6e6e6'
+                }
+            })
+
+            {# TODO: save selections #}
+            if (choosedActivity.length === 0) {
+                alert("there is no activity icon being selected")
+            } else {
+                console.log(choosedActivity.toString())
+                alert("commit activity successfully with content\n " + choosedActivity.toString())
+            }
+
+        }
+
+        function submitFeeling() {
+            var choosedFeeling = []
+            document.getElementById("wellbeing").querySelectorAll('div').forEach(div => {
+                if (div.id !== 'more-feelings' && div.getAttribute("choosed") === "Y") {
+                    choosedFeeling.push(div.getAttribute("id"))
+                    div.setAttribute("choosed", '')
+                    div.style.background = '#e6e6e6'
+                }
+            })
+            {# TODO: save selections #}
+            if (choosedFeeling.length === 0) {
+                alert("there is no wellbeing icon being selected")
+            } else {
+                console.log(choosedFeeling.toString())
+                alert("commit wellbeing successfully with content\n" + choosedFeeling.toString())
+                choosedFeeling = []
+            }
+        }
+
+        function submitReaction() {
+            var choosedReaction = []
+            document.getElementById("reaction").querySelectorAll('div').forEach(div => {
+                if (div.getAttribute("choosed") === "Y") {
+                    choosedReaction.push(div.getAttribute("id"))
+                    div.setAttribute("choosed", '')
+                    div.style.background = '#e6e6e6'
+                }
+            })
+            {# TODO: save selections #}
+            if (choosedReaction.length === 0) {
+                alert("there is no negative reaction icon being selected")
+            } else {
+                console.log(choosedReaction.toString())
+                alert("commit negative reaction successfully with content\n" + choosedReaction.toString())
+                choosedReaction = []
+            }
+        }
+
+        function submitHaveDifficultWalking() {
+            var choosedHaveDifficultWalking = []
+            document.getElementById("have_difficult_walking").querySelectorAll('div').forEach(div => {
+                if (div.getAttribute("choosed") === "Y") {
+                    choosedHaveDifficultWalking.push(div.getAttribute("id"))
+                    div.setAttribute("choosed", '')
+                    div.style.background = '#e6e6e6'
+                }
+            })
+            {# TODO: save selections #}
+            if (choosedHaveDifficultWalking.length === 0) {
+                alert("there is no difficulty felling icon being selected")
+            } else {
+                console.log(choosedHaveDifficultWalking.toString())
+                alert("commit difficult felling of walk successfully with content\n" + choosedHaveDifficultWalking.toString())
+                choosedHaveDifficultWalking = []
+            }
+        }
+
+        function submitFoodQuality() {
+            var choosedFoodQuality = []
+            document.getElementById("food_quality").querySelectorAll('div').forEach(div => {
+                if (div.getAttribute("choosed") === "Y") {
+                    choosedFoodQuality.push(div.getAttribute("id"))
+                    div.setAttribute("choosed", '')
+                    div.style.background = '#e6e6e6'
+                }
+            })
+            {# TODO: save selections #}
+            if (choosedFoodQuality.length === 0) {
+                alert("there is no food quality feeling icon being selected")
+            } else {
+                console.log(choosedFoodQuality.toString())
+                alert("commit felling of food quality with content\n" + choosedFoodQuality.toString())
+                choosedFoodQuality = []
+            }
+        }
+    </script>
 {% endblock %}
