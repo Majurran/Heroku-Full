@@ -52,7 +52,7 @@
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
-      var python = {{ graphJSON | safe }};
+      var graphs = {{ graphJSON | safe }};
       Plotly.plot('chart', graphs, {});
 
       var activites = {{ graphJSON_activities | safe }};
