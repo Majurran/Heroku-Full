@@ -6,7 +6,7 @@
     <div class="icon-container">
       <h3>Activity</h3>
       <h6>What are you planning to do today?</h6>
-      <div class="icon-grid">
+      <div class="icon-grid" id="activity-icon-grid">
 
         {% for row in rows %}
           {% if row.category == "activity" %}
@@ -15,22 +15,22 @@
         {% endfor %}
 
       </div>
-      <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitActivity()">Submit</button>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitActivity()">Submit</button>
     </div>
 
-    <div class="icon-container">
+    <div class="icon-container" id="wellbeing-icon-grid">
       <h3>Wellbeing</h3>
       <h6>Tell us about your feeling now~</h6>
       <div class="icon-grid">
 
         {% for row in rows %}
           {% if row.category == "wellbeing" %}
-            <div><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
+            <div id="{{ row.name }}" name="{{ row.name }}"><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
           {% endif%}
         {% endfor %}
         
       </div>
-      <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitFeeling()">Submit</button>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="submitFeeling()">Submit</button>
     </div>
   </div>
 
@@ -45,13 +45,15 @@
           </span>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Go Back</button>
+          <button type="submit" class="btn btn-danger"  onclick="submitInput()">Go Back</button>
         </div>
       </div>
     </div>
   </div>
-  <input id="json" name="json" value="" style="" type="hidden" readonly/>
+  <input id="json_activity" name="json_activity" value="" style="" type="hidden" readonly/>
+  <input id="json_wellbeing" name="json_wellbeing" value="" style="" type="hidden" readonly/>
   <script>
+    let CATEGORY_TYPE = '';
     document.querySelectorAll('.icon-grid div').forEach(div=>{
       if(div.id !== 'more'){
         div.addEventListener('click', ()=>{
@@ -67,20 +69,35 @@
     })
 
     function submitActivity(){
-      $('#json').val('');
-      document.querySelectorAll('.icon-grid div').forEach(div=>{
-        if(div.id !== 'more-activities'){
-          if(div.getAttribute("choosed") == 'Y') {
-
-            $('#json').val($('#json').val()+div.getAttribute("id")+',');
-          }
-        }
-      })
+      CATEGORY_TYPE = "Activity";
       $('#infoId').html('Your activity plan have been submitted!')
     }
 
     function submitFeeling(){
+      CATEGORY_TYPE = "Wellbeing";
       $('#infoId').html('Your feelings have been submitted!')
+    }
+
+    function submitInput() {
+      if (CATEGORY_TYPE == "Activity") {
+        $('#json_activity').val('');
+        document.querySelectorAll('#activity-icon-grid div').forEach(div=>{
+          if(div.id !== 'more-activities'){
+            if(div.getAttribute("choosed") == 'Y') {
+              $('#json_activity').val($('#json_activity').val()+div.getAttribute("id")+',');
+            }
+          }
+        })
+      } else if (CATEGORY_TYPE == "Wellbeing") {
+        $('#json_wellbeing').val('');
+        document.querySelectorAll('#wellbeing-icon-grid div').forEach(div=>{
+          if(div.id !== 'more-wellbeing'){
+            if(div.getAttribute("choosed") == 'Y') {
+              $('#json_wellbeing').val($('#json_wellbeing').val()+div.getAttribute("id")+',');
+            }
+          }
+        })
+      }
     }
 
   </script>

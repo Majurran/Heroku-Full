@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import InputOptions
+from .models import InputOptions, Input
 from . import db
 import json
 import plotly
@@ -87,6 +87,29 @@ def dashboard_page():
     return render_template("outputs.html", user=current_user, graphJSON=graphJSON, graphJSON_activities=graphJSON_activities, num_elderly=num_elderly,
         emoji_name = emoji_name, activity_name=activity_name, percentage_happiness=percentage_happiness)
 
+@views.route('/public-dashboard', methods=['GET'])
+def public_dashboard_page():
+    activity=["Cycling", "Travelling", "Boating", "Write Diary", "Drinking", "Playing the piano"]
+    activity_frequency=[15, 17, 9, 12, 11,15]
+
+    activities_bar_chart = go.Figure(data=[go.Bar(x=activity, y=activity_frequency)])
+    activities_bar_chart.update_layout(
+                width=1500,
+                height=600,
+    )
+    graph_activities = json.dumps(activities_bar_chart, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+    moods = ['happy', 'sad', 'ok']
+    percentage = [35, 15, 50]
+    mood_pie_chart = go.Figure(data = [go.Pie(labels = moods, values = percentage)])
+    mood_pie_chart.update_layout(
+                width=1500,
+                height=600,
+    )
+    mood_ratio = json.dumps(mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    return render_template("public-dashboard.html",graph_activities=graph_activities, mood_ratio=mood_ratio)
 
 @views.route('/instructions', methods=['GET'])
 @login_required
@@ -124,9 +147,34 @@ def edit_input_options():
 def guest_inputs():
     input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
     
+    """ 
+    Clicks on either wellbeing or activity submit button, assumes only one category submit at a time, because it will ignore
+    the other options if other category input options are chosen. 
+    Eg. Happy is selected, click the activity submit button, nothing happens.
+    """
     if request.method == 'POST': 
-        my_var = request.form.get('json')
-        print(my_var)
+        # Empty strings returned if no options are selected
+        activity_csv = request.form.get('json_activity')
+        wellbeing_csv = request.form.get('json_wellbeing')
+        # print(activity_csv)
+        # print(wellbeing_csv)
+
+        activity_list = activity_csv.split(',')[:-1]
+        wellbeing_list = wellbeing_csv.split(',')[:-1]
+        
+        for activity in activity_list:          
+            # user_id=0 means Guest account for the nursing home
+            activity_input = Input(category="activity", name=activity, user_id=0, nursing_home_id=current_user.nursing_home_id)
+            db.session.add(activity_input)
+            db.session.commit()
+            print(activity)
+        
+        for wellbeing in wellbeing_list:          
+            # user_id=0 means Guest account for the nursing home
+            wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=0, nursing_home_id=current_user.nursing_home_id)
+            db.session.add(wellbeing_input)
+            db.session.commit()
+            print(wellbeing)
     
     return render_template("guest_inputs.html", user=current_user, rows=input_options_rows)
 
