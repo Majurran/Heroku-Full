@@ -7,12 +7,17 @@
   <!-- CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
-  
+  <link rel="stylesheet" href="https://demos.creative-tim.com/paper-dashboard/assets/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://demos.creative-tim.com/paper-dashboard/assets/css/paper-dashboard.min.css?v=2.0.1"/>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 </head>
 <!-- Carousel -->
+<div id="background">
+
+
 <div id="myCarousel" class="carousel slide">
 
   <!-- Menu -->
@@ -27,12 +32,89 @@
       
       <!-- Item 1 -->
     <div class="item active">
-      <div id="Activities-Graph" class="Activities-Graph"></div>
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+           <div class="card card-stats">
+              <div class="card-body ">
+                 <div class="row">
+                    <div class="col-5 col-md-4">
+                       <div class="icon-big text-center icon-warning">
+                          <i class="nc-icon nc-globe text-warning"></i>
+                       </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                       <div class="numbers">
+                          <p class="card-category">Number of Residents on Website</p>
+                          <p class="card-title">9,750</p>
+                          <p></p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="card-footer ">
+                 <hr>
+                 <div class="stats">
+                    <i class="fa fa-refresh"></i>
+                    Update Now
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+           <div class="card card-stats">
+              <div class="card-body ">
+                 <div class="row">
+                    <div class="col-5 col-md-4">
+                       <div class="icon-big text-center icon-warning">
+                          <i class="nc-icon nc-money-coins text-success"></i>
+                       </div>
+                    </div>
+                    <div class="col-7 col-md-8">
+                       <div class="numbers">
+                          <p class="card-category">Number of Nursing homes Registered</p>
+                          <p class="card-title">24</p>
+                          <p></p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="card-footer ">
+                 <hr>
+                 <div class="stats">
+                    <i class="fa fa-calendar-o"></i>
+                    Last day
+                 </div>
+              </div>
+           </div>
+        </div>
+
+     </div>
+     <div class="row">
+      <div class="col-md-12">
+      <div class="card ">
+      <div class="card-header ">
+      <h5 class="card-title">Users Behavior</h5>
+      <p class="card-category">24 Hours performance</p>
+      </div>
+      <div class="card-body "><div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+      <div id="Mood-Graph" class="Mood-Graph"></div>
+      </div>
+      <div class="card-footer ">
+      <hr>
+      <div class="stats">
+      <i class="fa fa-history"></i> Updated 3 minutes ago
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      
+
     </div>
       
       <!-- Item 2 -->
     <div class="item">
-      <div id="Mood-Graph" class="Mood-Graph"></div>
+      <div id="Activities-Graph" class="Activities-Graph"></div>
     </div>
       
       <!-- Item 3 -->
@@ -65,7 +147,7 @@
       </button>
   </div>
 </div>
-
+</div>
 
 
 
