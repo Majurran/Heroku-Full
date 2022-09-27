@@ -37,18 +37,14 @@
     <div id="navbar">
       <div class="navbar-nav" style="width: 98vw;justify-content:space-between;">
         {% if user.is_authenticated %}
-          <a href="/" style="text-decoration:none;color:black;"><span class="nav-item nav-link" style="font-size: 30px;">Elderly Wellbeing</span></a>
+          <a href="{{ home_href }}" style="text-decoration:none;color:black;"><span class="nav-item nav-link" style="font-size: 30px;">Elderly Wellbeing</span></a>
           <div class="d-flex flex-nav" style="line-height: 45px;margin-right:65px;">
-            <span class="nav-item nav-link font24">Welcome back, {{ user.username }}</span>
+            <span class="nav-item nav-link font24">
+              Welcome back, {{ name }},
+            </span>
             <span class="nav-item nav-link current-time font24"></span>
             <span class="nav-item nav-link pointer font24" onclick="location.href='/logout'">Log out</span>
           </div>
-          {#<a class="nav-item nav-link" id="home" href="/">Home</a>
-                  <a class="nav-item nav-link" id="inputs" href="/inputs">Inputs</a>
-                  <a class="nav-item nav-link" id="edit-inputs-options" href="/edit-input-options">Edit</a>
-                  <a class="nav-item nav-link" id="outputs" href="/outputs">Outputs</a>
-                  <a class="nav-item nav-link" id="instructions" href="/instructions">Instructions</a>#}
-          {#                        <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>#}
         {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>

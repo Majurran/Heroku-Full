@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import InputOptions, Input
+from .models import InputOptions, Input, NursingHome
 from . import db
 import json
 import plotly
@@ -9,46 +9,33 @@ import plotly.graph_objs as go
 import pandas as pd
 views = Blueprint('views', __name__)
 
+# Hyper ref for base.html
+ADMIN_HOME_HREF = "/admin"
+USER_HOME_HREF = "/user"
+GUEST_HOME_HREF = "/guest-inputs"
 
-@views.route('/', methods=['GET', 'POST'])
+# Returns Nursing Home name or Guest or User Name for base.html -> "Welcome back, <name>"
+def get_name(user):
+    if user == "admin" or user == "guest":
+        row = NursingHome.query.filter_by(id=current_user.nursing_home_id).first()
+        return row.name
+    elif user == "resident":
+        return current_user.first_name
+    else:
+        return ""
+
+# ===============================================================================================================
+# ==================================================== ADMIN ====================================================
+# ===============================================================================================================
+@views.route('/admin', methods=['GET'])
 @login_required
-def home():
-    return render_template("home.html", user=current_user)
+def admin_home():
+    return render_template("admin/home.html", user=current_user, name=get_name("admin"), home_href=ADMIN_HOME_HREF)
 
-# Don't need for project, but can keep for comments as reference for now
-# @views.route('/delete-note', methods=['POST'])
-# def delete_note():
-#     note = json.loads(request.data)
-#     noteId = note['noteId']
-#     note = Note.query.get(noteId)
-#     if note:
-#         if note.user_id == current_user.id:
-#             db.session.delete(note)
-#             db.session.commit()
 
-#     return jsonify({})
-
-@views.route('/inputs', methods=['GET'])
+@views.route('/admin/outputs', methods=['GET'])
 @login_required
-def user_input_page():
-    input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    return render_template("inputs.html", user=current_user, rows=input_options_rows)
-
-
-@views.route('/inputs', methods=['POST'])
-@login_required
-def user_input_page_post():
-    my_var = request.form.get('json')
-    print(my_var)
-    
-    input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    
-    return render_template("inputs.html", user=current_user, rows=input_options_rows)
-
-
-@views.route('/outputs', methods=['GET'])
-@login_required
-def dashboard_page():
+def admin_dashboard_page():
     # Nursing home data
     df = pd.DataFrame(dict(
         date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10"],
@@ -84,9 +71,44 @@ def dashboard_page():
     activity_name = "Drinking"
     percentage_happiness = 80
 
-    return render_template("outputs.html", user=current_user, graphJSON=graphJSON, graphJSON_activities=graphJSON_activities, num_elderly=num_elderly,
-        emoji_name = emoji_name, activity_name=activity_name, percentage_happiness=percentage_happiness)
+    return render_template("admin/outputs.html", user=current_user, graphJSON=graphJSON, graphJSON_activities=graphJSON_activities,
+        num_elderly=num_elderly, emoji_name = emoji_name, activity_name=activity_name, percentage_happiness=percentage_happiness, 
+        name=get_name("admin"), home_href=ADMIN_HOME_HREF)
 
+
+@views.route('/admin/instructions', methods=['GET'])
+@login_required
+def admin_instruction():
+    return render_template("admin/instruction.html", user=current_user, name=get_name("admin"), home_href=ADMIN_HOME_HREF)
+
+
+@views.route('/admin/profile', methods=['GET'])
+@login_required
+def admin_profile():
+    # return render_template("profile.html", user=current_user)
+    return render_template("admin/profile_update.html", user=current_user, name=get_name("admin"), home_href=ADMIN_HOME_HREF)
+
+
+@views.route('/admin/edit-input-options', methods=['GET', 'POST'])
+@login_required
+def admin_edit_input_options():
+    return render_template("admin/edit_input.html", user=current_user, name=get_name("admin"), home_href=ADMIN_HOME_HREF)
+
+
+@views.route('/inputs', methods=['GET', 'POST'])
+@login_required
+def user_input_page():
+    if request.method == 'GET': 
+        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    else:
+        my_var = request.form.get('json')
+        print(my_var)
+        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    return render_template("inputs.html", user=current_user, rows=input_options_rows, home_href=ADMIN_HOME_HREF)
+
+# ===============================================================================================================
+# =============================================== Public Dashboard ==============================================
+# ===============================================================================================================
 @views.route('/public-dashboard', methods=['GET'])
 def public_dashboard_page():
     activity=["Cycling", "Travelling", "Boating", "Write Diary", "Drinking", "Playing the piano"]
@@ -111,33 +133,17 @@ def public_dashboard_page():
     
     return render_template("public-dashboard.html",graph_activities=graph_activities, mood_ratio=mood_ratio)
 
-@views.route('/instructions', methods=['GET'])
-@login_required
-def instruction():
-    return render_template("instruction.html", user=current_user)
-
-
-@views.route('/profile', methods=['GET'])
-@login_required
-def profile():
-    # return render_template("profile.html", user=current_user)
-    return render_template("profile_update.html", user=current_user)
-
-
-@views.route('/edit-input-options', methods=['GET', 'POST'])
-@login_required
-def edit_input_options():
-    return render_template("edit_input.html", user=current_user)
-
-
+# ===============================================================================================================
+# ==================================================== GUEST ====================================================
+# ===============================================================================================================
 @views.route('/guest-inputs', methods=['GET', 'POST'])
 @login_required
 def guest_inputs():
     input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
     
     """ 
-    Clicks on either wellbeing or activity submit button, assumes only one category submit at a time, because it will ignore
-    the other options if other category input options are chosen. 
+    Clicks on either wellbeing or activity submit button, assumes only one category submit at a time, 
+    because it will ignore the other options if other category input options are chosen. 
     Eg. Happy is selected, click the activity submit button, nothing happens.
     """
     if request.method == 'POST': 
@@ -164,9 +170,10 @@ def guest_inputs():
             db.session.commit()
             print(wellbeing)
     
-    return render_template("guest_inputs.html", user=current_user, rows=input_options_rows)
+    return render_template("input/guest_inputs.html", user=current_user, rows=input_options_rows, name=get_name("guest"),
+        home_href=GUEST_HOME_HREF)
 
 @views.route('/home_user', methods=['GET', 'POST'])
 @login_required
 def home_user():
-    return render_template("home_user.html", user=current_user)
+    return render_template("home_user.html", user=current_user, name=get_name("resident"), home_href=ADMIN_HOME_HREF)

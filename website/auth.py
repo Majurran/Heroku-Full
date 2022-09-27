@@ -12,14 +12,11 @@ auth = Blueprint('auth', __name__)
 def login():
     if request.method == 'POST':
         login_type = request.form.get('login-type') # Staff/User is "login" while Guest is "login-guest"
-        
         # Staff/User
         if login_type == "login":
             email = request.form.get('email')
             password = request.form.get('password')
-            
             user = User.query.filter_by(email=email).first()
-            
             if user:
                 # if check_password_hash(user.password, password):
                 if user.password == password:
@@ -27,10 +24,9 @@ def login():
                     admin = user.admin
                     login_user(user, remember=True)
                     if admin:
-                        return redirect(url_for('views.home'))
+                        return redirect(url_for('views.admin_home'))
                     else:
                         return redirect(url_for('views.home_user'))
-                        
                 else:
                     flash('Incorrect password, try again.', category='error')
             else:
@@ -38,7 +34,6 @@ def login():
         # Guest
         elif login_type == "login-guest":
             nursing_home_ID = request.form.get('homeId')
-            
             guest = User.query.filter_by(nursing_home_id=nursing_home_ID).first()
             if guest:
                 login_user(guest, remember=True)
@@ -48,18 +43,11 @@ def login():
         else:
             flash('Something went wrong, could not find the right login form', category='error')
 
-    return render_template("login.html", user=current_user)
+    return render_template("auth/login.html", user=current_user)
 
 
-@auth.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('auth.login'))
-
-# TODO: Needs some clean up and the front end as well, need to decide which input labels to record/keep
 @auth.route('/sign-up-nursing-home', methods=['GET', 'POST'])
-def sign_up():
+def sign_up_nursing_home():
     if request.method == 'POST':
         # Creates the one admin profile for each nursing home
         nursing_home_name = request.form.get('nursing-home-name')
@@ -138,14 +126,13 @@ def sign_up():
                 db.session.add(new_wellbeing)
                 db.session.commit()
             
-            return render_template("sign_up.html", success='OK')
+            return render_template("auth/sign_up.html", success='OK')
 
-    return render_template("sign_up.html", user=current_user, success='')
+    return render_template("auth/sign_up.html", user=current_user, success='')
 
 
-# TODO: Resident User needs to merge together with the original sign up page, for the time being just getting the functionality working
 @auth.route('/sign-up-resident', methods=['GET', 'POST'])
-def sign_up_user_temporary():
+def sign_up_resident():
     if request.method == 'POST':       
         # User form
         nursing_home_name = request.form.get('nursing-home-name')   # Use for verification, has to match an existing one
@@ -184,8 +171,15 @@ def sign_up_user_temporary():
                 db.session.add(new_account)
                 db.session.commit()
                 
-                return render_template("sign_up_resident.html", success='OK')
+                return render_template("auth/sign_up_resident.html", success='OK')
         else:
             flash('Incorrect nursing home ID and nursing home name.', category='error')
 
-    return render_template("sign_up_resident.html", user=current_user, success='')
+    return render_template("auth/sign_up_resident.html", user=current_user, success='')
+
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
