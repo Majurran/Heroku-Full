@@ -172,8 +172,38 @@ def guest_inputs():
     
     return render_template("input/guest_inputs.html", user=current_user, rows=input_options_rows, name=get_name("guest"),
         home_href=GUEST_HOME_HREF)
-
-@views.route('/home_user', methods=['GET', 'POST'])
+    
+@views.route('/inputs', methods=['GET', 'POST'])
 @login_required
-def home_user():
-    return render_template("home_user.html", user=current_user, name=get_name("resident"), home_href=ADMIN_HOME_HREF)
+def guest_input():
+    if request.method == 'GET': 
+        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    else:
+        my_var = request.form.get('json')
+        print(my_var)
+        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    return render_template("input/inputs.html", user=current_user, rows=input_options_rows, home_href=GUEST_HOME_HREF)
+
+# ===============================================================================================================
+# ================================================= RESIDENT ====================================================
+# ===============================================================================================================
+@views.route('/user', methods=['GET', 'POST'])
+@login_required
+def user_home():
+    return render_template("user/home_user.html", user=current_user, name=get_name("resident"), home_href=USER_HOME_HREF)
+
+@views.route('/user/profile', methods=['GET', 'POST'])
+@login_required
+def user_profile():
+    return render_template("user/profile_update_user.html", user=current_user, name=get_name("resident"), home_href=USER_HOME_HREF)
+
+@views.route('/user/inputs', methods=['GET', 'POST'])
+@login_required
+def user_input():
+    if request.method == 'GET': 
+        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    else:
+        my_var = request.form.get('json')
+        print(my_var)
+        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    return render_template("input/inputs.html", user=current_user, rows=input_options_rows, home_href=USER_HOME_HREF)
