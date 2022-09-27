@@ -1,6 +1,6 @@
 $(function () {
   $('#myCarousel').carousel({
-      interval:2000,
+      interval:12000,
       pause: "false"
   });
   
