@@ -6,37 +6,25 @@
   <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css"/>
   <link rel="stylesheet" type="text/css" href="../static/style.css"/>
-  <title>
-    Login
-  </title>
+  <title>Login</title>
   <style>
     .form-group {
-      display:flex;justify-content: center;
+      display:flex;
+      justify-content: center;
     }
-      
     @media screen and (max-width: 1350px) {
       .right {
         display: none !important;
       }
       .login-page .left {
         width: 90%;
-  
-    }
-  
-  
-
-      
+      }
     }
     @media screen and (max-width: 500px) {
-    
-  
-    .left form {
-      width: 100% !important;
+      .left form {
+        width: 100% !important;
+      }
     }
-
-      
-    }
-  
   </style>
 </head>
 <body>
@@ -93,10 +81,7 @@
           <input type="hidden" name="login-type" value="login">
           <button type="button" class="btn btn-danger cru" data-toggle="modal" data-target="#guestLoginModalId">Login as a guest</button>
           <button type="button" class="btn btn-warning cru" onclick="location.href='/sign-up-nursing-home'">Sign Up</button>
-
-          <!-- Ideally probably have the User forms together in a form switch in the original sign up page -->
-          <button type="button" class="btn btn-warning cru" onclick="location.href='/sign-up-user-temp'">Sign Up - User Temporary Button</button>
-          <button type="submit" class="btn btn-secondary cru">Forget Password</button>
+          <button type="button" class="btn btn-secondary cru">Forget Password</button>
         </div>
       </form>
     </div>
@@ -117,7 +102,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        
+
           <div class="modal-body">
               <div class="form-row mb-2">
                 To login as a guest, just simply provide the nursing home ID.
@@ -148,12 +133,11 @@
             <button type="submit" class="btn btn-warning mr-2">Login as a guest</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
           </div>
-        
       </div>
     </div>
   </div>
   </form>
-  
+
   <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

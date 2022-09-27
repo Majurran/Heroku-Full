@@ -144,15 +144,15 @@ def sign_up():
 
 
 # TODO: Resident User needs to merge together with the original sign up page, for the time being just getting the functionality working
-@auth.route('/sign-up-user-temp', methods=['GET', 'POST'])
+@auth.route('/sign-up-resident', methods=['GET', 'POST'])
 def sign_up_user_temporary():
     if request.method == 'POST':       
         # User form
         nursing_home_name = request.form.get('nursing-home-name')   # Use for verification, has to match an existing one
         nursing_home_id = request.form.get('homeId')                # Use for verification, has to match an existing one
-        first_name = request.form.get('first-name')
-        last_name = request.form.get('last-name')
-        phone_number = request.form.get('phone-number')
+        first_name = request.form.get('firstName')
+        last_name = request.form.get('lastName')
+        phone_number = request.form.get('phone')
         gender = request.form.get('gender')                         
         email = request.form.get('email')
         password1 = request.form.get('password1')
@@ -184,8 +184,8 @@ def sign_up_user_temporary():
                 db.session.add(new_account)
                 db.session.commit()
                 
-                return render_template("sign_up_custom_user.html", success='OK')
+                return render_template("sign_up_resident.html", success='OK')
         else:
             flash('Incorrect nursing home ID and nursing home name.', category='error')
 
-    return render_template("sign_up_custom_user.html", user=current_user, success='')
+    return render_template("sign_up_resident.html", user=current_user, success='')
