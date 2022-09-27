@@ -58,7 +58,7 @@ def logout():
     return redirect(url_for('auth.login'))
 
 # TODO: Needs some clean up and the front end as well, need to decide which input labels to record/keep
-@auth.route('/sign-up', methods=['GET', 'POST'])
+@auth.route('/sign-up-nursing-home', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
         # Creates the one admin profile for each nursing home
@@ -138,10 +138,6 @@ def sign_up():
                 db.session.add(new_wellbeing)
                 db.session.commit()
             
-            
-            # login_user(new_user, remember=True)
-            # flash('Account created!', category='success')
-            # return redirect(url_for('views.home'))
             return render_template("sign_up.html", success='OK')
 
     return render_template("sign_up.html", user=current_user, success='')
@@ -152,8 +148,8 @@ def sign_up():
 def sign_up_user_temporary():
     if request.method == 'POST':       
         # User form
-        nursing_home_name = request.form.get('nursing-home-name')   # Use for verification
-        nursing_home_id = request.form.get('homeId')                # Use for verification
+        nursing_home_name = request.form.get('nursing-home-name')   # Use for verification, has to match an existing one
+        nursing_home_id = request.form.get('homeId')                # Use for verification, has to match an existing one
         first_name = request.form.get('first-name')
         last_name = request.form.get('last-name')
         phone_number = request.form.get('phone-number')
