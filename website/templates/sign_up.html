@@ -229,7 +229,7 @@
             <div class="form-group" style="margin-left: 1.25rem;">
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="True">I agree the Terms and
+                        <input type="checkbox" class="form-check-input" name="agreeCheck" value="True">I agree the Terms and
                         Conditions of using this platform
                     </label>
                 </div>
@@ -245,7 +245,7 @@
 
 
 <!-- Modal for guest login -->
-<form method="POST" class="form-inline">
+<!-- <form method="POST" class="form-inline">
     <div class="modal fade" id="guestLoginModalId" tabindex="-1" aria-labelledby="guestLoginModalIdLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -283,7 +283,7 @@
                     </div>
                 </div>
                 <div class="my-modal-footer">
-                    <!-- Guest Login Form Type -->
+                    <!-- Guest Login Form Type 
                     <input type="hidden" name="login-type" value="login-guest">
                     <button type="submit" class="btn btn-warning mr-2">Login as a guest</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
@@ -292,7 +292,7 @@
             </div>
         </div>
     </div>
-</form>
+</form> -->
 
 <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
 {#<script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>#}

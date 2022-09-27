@@ -2,15 +2,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+import os
 
 db = SQLAlchemy()
-DB_NAME = "database_ver9.db"  # Change name if the models.py gets updated for now
-
+DB_NAME = "database_ver10.db"  # Change name if the models.py gets updated for now
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join("sqlite_db", DB_NAME)}'
     db.init_app(app)
 
     from .views import views
@@ -19,7 +19,6 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    # from .models import User, Note
     from .models import User
 
     create_database(app)
@@ -34,8 +33,7 @@ def create_app():
 
     return app
 
-
 def create_database(app):
-    if not path.exists('website/' + DB_NAME):
+    if not path.exists(os.path.join("website", "sqlite_db", DB_NAME)):
         db.create_all(app=app)
         print('Created Database!')
