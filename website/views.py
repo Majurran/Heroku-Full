@@ -170,7 +170,7 @@ def guest_inputs():
             db.session.commit()
             print(wellbeing)
     
-    return render_template("input/guest_inputs.html", user=current_user, rows=input_options_rows, name=get_name("guest"),
+    return render_template("guest_inputs.html", user=current_user, rows=input_options_rows, name=get_name("guest"),
         home_href=GUEST_HOME_HREF)
     
 @views.route('/inputs', methods=['GET', 'POST'])
@@ -192,12 +192,12 @@ def guest_input():
 def user_home():
     return render_template("user/home_user.html", user=current_user, name=get_name("resident"), home_href=USER_HOME_HREF)
 
-@views.route('/user/profile', methods=['GET', 'POST'])
+@views.route('/user-profile', methods=['GET', 'POST'])
 @login_required
 def user_profile():
     return render_template("user/profile_update_user.html", user=current_user, name=get_name("resident"), home_href=USER_HOME_HREF)
 
-@views.route('/user/inputs', methods=['GET', 'POST'])
+@views.route('/user-inputs', methods=['GET', 'POST'])
 @login_required
 def user_input():
     if request.method == 'GET': 
@@ -206,4 +206,4 @@ def user_input():
         my_var = request.form.get('json')
         print(my_var)
         input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    return render_template("input/inputs.html", user=current_user, rows=input_options_rows, home_href=USER_HOME_HREF)
+    return render_template("inputs.html", user=current_user, rows=input_options_rows, name=get_name("resident"), home_href=USER_HOME_HREF)
