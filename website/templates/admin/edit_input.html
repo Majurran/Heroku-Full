@@ -23,8 +23,7 @@
 
                     {% for row in rows %}
                         {% if row.category == "activity" %}
-                            <div id="{{ row.name.replace(' ','') }}" name="{{ row.name }}"><img
-                                    src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
+                            <div id="{{ row.name.replace(' ','') }}" name="{{ row.name }}"><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
                         {% endif %}
                     {% endfor %}
 

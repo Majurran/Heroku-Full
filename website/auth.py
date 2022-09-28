@@ -95,25 +95,25 @@ def sign_up_nursing_home():
             wellbeing_list = ['Happy', 'Upvote', 'Congratulations', 'Love', 'Upset', 'Sick', 'Sleeping', 'Angry']
             
             activity_list_file_path = [
-                "./static/input_option_img/Go Cycling.png",
-                "./static/input_option_img/Go Travel.png",
-                "./static/input_option_img/Birthday Party.png",
-                "./static/input_option_img/Go Boating.png",
-                "./static/input_option_img/Write Diary.png",
-                "./static/input_option_img/Drinking.png",
-                "./static/input_option_img/Play the Piano.png",
-                "./static/input_option_img/Online Shopping.png"
+                "/static/input_option_img/Go Cycling.png",
+                "/static/input_option_img/Go Travel.png",
+                "/static/input_option_img/Birthday Party.png",
+                "/static/input_option_img/Go Boating.png",
+                "/static/input_option_img/Write Diary.png",
+                "/static/input_option_img/Drinking.png",
+                "/static/input_option_img/Play the Piano.png",
+                "/static/input_option_img/Online Shopping.png"
             ]
             
             wellbeing_list_file_path = [
-                "./static/input_option_img/Happy.png",
-                "./static/input_option_img/Upvote.png",
-                "./static/input_option_img/Congratulations.png",
-                "./static/input_option_img/Love.png",
-                "./static/input_option_img/Upset.png",
-                "./static/input_option_img/Sick.png",
-                "./static/input_option_img/Sleeping.png",
-                "./static/input_option_img/Angry.png"
+                "/static/input_option_img/Happy.png",
+                "/static/input_option_img/Upvote.png",
+                "/static/input_option_img/Congratulations.png",
+                "/static/input_option_img/Love.png",
+                "/static/input_option_img/Upset.png",
+                "/static/input_option_img/Sick.png",
+                "/static/input_option_img/Sleeping.png",
+                "/static/input_option_img/Angry.png"
             ]
             
             for i,activity in enumerate(activity_list):

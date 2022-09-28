@@ -97,7 +97,8 @@ def admin_profile():
 @views.route('/admin/edit-input-options', methods=['GET', 'POST'])
 @login_required
 def admin_edit_input_options():
-    return render_template("admin/edit_input.html", user=current_user, name=get_name("admin"), home_href=ADMIN_HOME_HREF)
+    input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    return render_template("admin/edit_input.html", user=current_user, name=get_name("admin"), rows=input_options_rows, home_href=ADMIN_HOME_HREF)
 
 
 @views.route('/inputs', methods=['GET', 'POST'])
@@ -197,12 +198,12 @@ def guest_input():
 def user_home():
     return render_template("user/home_user.html", user=current_user, name=get_name("resident"), home_href=USER_HOME_HREF)
 
-@views.route('/user-profile', methods=['GET', 'POST'])
+@views.route('/user/profile', methods=['GET', 'POST'])
 @login_required
 def user_profile():
     return render_template("user/profile_update_user.html", user=current_user, name=get_name("resident"), home_href=USER_HOME_HREF)
 
-@views.route('/user-inputs', methods=['GET', 'POST'])
+@views.route('/user/inputs', methods=['GET', 'POST'])
 @login_required
 def user_input():
     if request.method == 'GET': 
