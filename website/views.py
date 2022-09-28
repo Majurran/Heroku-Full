@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, jsonify, redirect,
 from flask_login import login_required, current_user
 from .models import InputOptions, Input, NursingHome
 from . import db
-import json
+import json, os
 import plotly
 import plotly.express as px
 import plotly.graph_objs as go
@@ -94,10 +94,29 @@ def admin_profile():
     return render_template("admin/profile_update.html", user=current_user, name=get_name("admin"), home_href=ADMIN_HOME_HREF)
 
 
+IMAGE_UPLOAD_PATH = os.path.join("static", "input_option_img")
+
 @views.route('/admin/edit-input-options', methods=['GET', 'POST'])
 @login_required
 def admin_edit_input_options():
     input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    if request.method == 'POST':
+        # Empty strings returned if no options are selected
+        activity_csv = request.form.get('edit_json_activity')
+        wellbeing_csv = request.form.get('edit_json_wellbeing')
+        print(activity_csv)
+        print(wellbeing_csv)
+        
+        print("Icon Name:", request.form.get("iconName"))
+        
+        
+        if request.files:
+            image = request.files["inputFile"]
+            # image.save(os.path.join(IMAGE_UPLOAD_PATH, image.filename))
+            print(image)
+        else:
+            print("Could not get anything from request.files")
+        
     return render_template("admin/edit_input.html", user=current_user, name=get_name("admin"), rows=input_options_rows, home_href=ADMIN_HOME_HREF)
 
 
