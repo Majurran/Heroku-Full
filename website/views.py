@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from .models import InputOptions, Input, NursingHome
 from . import db
@@ -27,6 +27,11 @@ def get_name(user):
 # ===============================================================================================================
 # ==================================================== ADMIN ====================================================
 # ===============================================================================================================
+@views.route('/', methods=['GET'])
+def root():
+    return redirect(url_for('auth.login'))
+
+
 @views.route('/admin', methods=['GET'])
 @login_required
 def admin_home():
@@ -116,7 +121,7 @@ def public_dashboard_page():
 
     activities_bar_chart = go.Figure(data=[go.Bar(x=activity, y=activity_frequency)])
     activities_bar_chart.update_layout(
-                width=1500,
+                width=600,
                 height=600,
     )
     graph_activities = json.dumps(activities_bar_chart, cls=plotly.utils.PlotlyJSONEncoder)
@@ -126,12 +131,71 @@ def public_dashboard_page():
     percentage = [35, 15, 50]
     mood_pie_chart = go.Figure(data = [go.Pie(labels = moods, values = percentage)])
     mood_pie_chart.update_layout(
-                width=1500,
-                height=600,
+                width=400,
+                height=400,
     )
     mood_ratio = json.dumps(mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
+
+    detailed_mood = ['happy', 'sad', 'ok']
+    detailed_percentage = [35, 15, 50]
+    detailed_mood_pie_chart = go.Figure(data = [go.Pie(labels = detailed_mood, values = detailed_percentage)])
+    detailed_mood_pie_chart.update_layout(
+                width=400,
+                height=400,
+    )
+    detailed_mood_ratio = json.dumps(detailed_mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+    df = pd.DataFrame(dict(
+        date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10"],
+        happiness=[75, 78, 81, 71, 74, 79]
+    ))
+
+    line_one = go.Figure()
+    line_one.add_trace(go.Scatter(name="",x=df["date"], y=df["happiness"]))
+    line_one.update_layout(
+                width=630,
+                height=260,
+    )
+    line_graph_one = json.dumps(line_one, cls=plotly.utils.PlotlyJSONEncoder)
+
+    line_two = go.Figure()
+    line_two.add_trace(go.Scatter(name="",x=df["date"], y=df["happiness"]))
+    line_two.update_layout(
+                width=630,
+                height=260,
+    )
+    line_graph_two = json.dumps(line_two, cls=plotly.utils.PlotlyJSONEncoder)
+
+    line_three = go.Figure()
+    line_three.add_trace(go.Scatter(name="",x=df["date"], y=df["happiness"]))
+    line_three.update_layout(
+                width=630,
+                height=260,
+    )
+    line_graph_three = json.dumps(line_three, cls=plotly.utils.PlotlyJSONEncoder)
+
+    line_four = go.Figure()
+    line_four.add_trace(go.Scatter(name="",x=df["date"], y=df["happiness"]))
+    line_four.update_layout(
+                width=630,
+                height=260,
+    )
+    line_graph_four = json.dumps(line_four, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+
     
-    return render_template("public-dashboard.html",graph_activities=graph_activities, mood_ratio=mood_ratio)
+
+    num_residents = 9760
+    num_nursing_home = 24
+
+    
+    return render_template("public-dashboard.html",graph_activities=graph_activities, mood_ratio=mood_ratio,
+                            detailed_mood_ratio=detailed_mood_ratio, line_graph_one=line_graph_one,
+                            line_graph_two=line_graph_two, line_graph_three=line_graph_three,
+                            line_graph_four=line_graph_four, num_residents=num_residents,
+                            num_nursing_home=num_nursing_home)
 
 # ===============================================================================================================
 # ==================================================== GUEST ====================================================
