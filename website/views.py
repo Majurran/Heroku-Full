@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from .models import InputOptions, Input, NursingHome
 from . import db
@@ -27,6 +27,11 @@ def get_name(user):
 # ===============================================================================================================
 # ==================================================== ADMIN ====================================================
 # ===============================================================================================================
+@views.route('/', methods=['GET'])
+def root():
+    return redirect(url_for('auth.login'))
+
+
 @views.route('/admin', methods=['GET'])
 @login_required
 def admin_home():
