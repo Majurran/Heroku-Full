@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, current_app
 from flask_login import login_required, current_user
 from .models import InputOptions, Input, NursingHome
 from . import db
+from werkzeug.utils import secure_filename
 import json, os
 import plotly
 import plotly.express as px
@@ -94,12 +95,15 @@ def admin_profile():
     return render_template("admin/profile_update.html", user=current_user, name=get_name("admin"), home_href=ADMIN_HOME_HREF)
 
 
-IMAGE_UPLOAD_PATH = os.path.join("static", "input_option_img")
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @views.route('/admin/edit-input-options', methods=['GET', 'POST'])
 @login_required
 def admin_edit_input_options():
     input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+    
     if request.method == 'POST':
         # Empty strings returned if no options are selected
         activity_csv = request.form.get('edit_json_activity')
@@ -107,17 +111,26 @@ def admin_edit_input_options():
         print(activity_csv)
         print(wellbeing_csv)
         
-        print("Icon Name:", request.form.get("iconName"))
+        # check if the post request has the file part
+        if 'image-icon' not in request.files:
+            flash('No Image File Selected')
+            return redirect(request.url)
         
+        image = request.files['image-icon']
+        print("app.instance_path:", current_app.static_url_path)
+        print("app.instance_path:", current_app.static_folder)
+
         
-        if request.files:
-            image = request.files["inputFile"]
-            # image.save(os.path.join(IMAGE_UPLOAD_PATH, image.filename))
-            print(image)
-        else:
-            print("Could not get anything from request.files")
+        # If the user does not select a file, the browser submits an empty file without a filename.
+        if image.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+
         
-    return render_template("admin/edit_input.html", user=current_user, name=get_name("admin"), rows=input_options_rows, home_href=ADMIN_HOME_HREF)
+    return render_template("admin/edit_input_ver2.html", user=current_user, name=get_name("admin"), rows=input_options_rows, home_href=ADMIN_HOME_HREF)
 
 
 @views.route('/inputs', methods=['GET', 'POST'])

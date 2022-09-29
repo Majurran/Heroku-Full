@@ -11,6 +11,10 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    
+    UPLOAD_FOLDER = os.path.join(app.static_folder, "input_option_img")
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    
     db.init_app(app)
 
     from .views import views

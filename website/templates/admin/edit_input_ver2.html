@@ -80,23 +80,20 @@
                                 <div class="col"></div>
                                 <div class="col-8">
                                     <input class="form-control" type="text" id="iconName" name="iconName"
-                                            placeholder="label name"/>
+                                            placeholder="Label name"/>
                                 </div>
                                 <div class="col"></div>
                             </div>
 
                             <div class="row">
-                                <div class="col">
-                                    <input type="file" id="inputFile" name="inputFile" accept="image/*"
-                                            style="height: 0; width: 0; overflow: hidden">
+                                <div class="col"></div>
+                                
+                                <div class="col-7">
+                                    <input type="file" class="custom-file-input" id="image-icon" name="image-icon" accept="image/*">
+                                    <label class="custom-file-label" for="image-icon">Upload Image...</label>
                                 </div>
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-primary btn-lg text-nowrap" id="btnSelectIconImage"
-                                            onclick="selectIconImage()">
-                                        Upload icon image
-                                    </button>
-                                </div>
-                                <div class="col"><div id="imgBase64" hidden="hidden"></div></div>
+
+                                <div class="col"></div>
                             </div>
 
                             <div class="row">
@@ -176,6 +173,7 @@
 
 {% block script %}
     <script>
+      /*
         function getDefaultIconsHtml() {
             let defaultActivityHtml = ""
             let defaultWellbeingHtml = ""
@@ -203,6 +201,7 @@
 
         }
 
+        
 
         {# monitor grid-container width and change grid columns count #}
         $(".input-page").css("width", function (index, value) {
@@ -216,7 +215,7 @@
             $(".edit-icon-grid").css("grid-template-columns", "repeat(" + columnsCount + ", 130px)")
             resetGridContainerDefault()
         })
-
+      */
     </script>
     <script>
 
@@ -242,6 +241,7 @@
                 }
         })
 
+        /*
         $("#addModal").on("show.bs.modal", function (event) {
             var button = $(event.relatedTarget)
             var recipient = button.data("whatever")
@@ -257,7 +257,7 @@
         function selectIconImage() {
             $('#inputFile').click()
         }
-
+        
         $("#inputFile").on("change", function () {
             let file = $(this)[0].files[0]
             let imgBase64 = ""
@@ -265,7 +265,7 @@
             let selectedImg = $("#selectImage")
             fileReader.readAsDataURL(file)
             fileReader.onload = function () {
-                imgBase64 = this.result  /* here read img file to base64 */
+                imgBase64 = this.result  /* here read img file to base64 
                 if (imgBase64 !== "") {
                     console.log(imgBase64)
                     selectedImg.innerHTML = imgBase64
@@ -274,6 +274,8 @@
                 }
             }
         })
+
+        
 
         function saveIconImage(){
             let labelName = $("#iconName").val()
@@ -368,8 +370,10 @@
 
             $("#deleteModal").modal('toggle')
         }
+        
+        */
 
-    </script>
+    </script> 
 
 
 
@@ -384,8 +388,6 @@
         input_category_type.setAttribute("value", CATEGORY_TYPE);
         console.log(CATEGORY_TYPE)
       }
-
-
 
       function saveActivity() {
         $('#edit_json_activity').val('');
