@@ -1,6 +1,27 @@
 {% extends "base.html" %}
 {% block title %}Edit Input Options{% endblock %}
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}      
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="alert alert-danger alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% else %}
+          <div class="alert alert-success alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
     <!-- TODO: Styles and stuff -->
     <div class="input-page">
         <div class="icon-container">
@@ -35,7 +56,7 @@
                     <h3>Wellbeing</h3></div>
                 <div style="float: right">
                     <button type="button" class="btn-add" data-toggle="modal" data-target="#addModal"
-                            data-whatever="wellbeing">
+                            data-whatever="wellbeing" onclick="add_wellbeing()">
                     </button>
                     <button type="button" class="btn-del" data-toggle="modal"
                             data-target="#deleteModal"
@@ -80,7 +101,7 @@
                                 <div class="col"></div>
                                 <div class="col-8">
                                     <input class="form-control" type="text" id="iconName" name="iconName"
-                                            placeholder="Label name"/>
+                                            placeholder="Label name" maxlength="15" required/>
                                 </div>
                                 <div class="col"></div>
                             </div>
@@ -89,7 +110,7 @@
                                 <div class="col"></div>
                                 
                                 <div class="col-7">
-                                    <input type="file" class="custom-file-input" id="image-icon" name="image-icon" accept="image/*">
+                                    <input type="file" class="custom-file-input" id="image-icon" name="image-icon" accept="image/*" required>
                                     <label class="custom-file-label" for="image-icon">Upload Image...</label>
                                 </div>
 
@@ -389,12 +410,13 @@
         console.log(CATEGORY_TYPE)
       }
 
-      function saveActivity() {
-        $('#edit_json_activity').val('');
-        document.querySelectorAll('#activity_grid div').forEach(div=>{
-          console.log(div);
-          $('#edit_json_activity').val($('#edit_json_activity').val()+div.getAttribute("id")+',');
-        })
+      // Clicking the plus button for Wellbeing
+      function add_wellbeing() {
+        CATEGORY_TYPE = 'wellbeing';
+        var input_category_type = document.getElementById("category_type");
+        input_category_type.setAttribute("value", CATEGORY_TYPE);
+        console.log(CATEGORY_TYPE)
       }
+
     </script>
 {% endblock %}

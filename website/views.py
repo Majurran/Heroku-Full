@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from .models import InputOptions, Input, NursingHome
 from . import db
 from werkzeug.utils import secure_filename
-import json, os
+import json, os, uuid
 import plotly
 import plotly.express as px
 import plotly.graph_objs as go
@@ -106,10 +106,8 @@ def admin_edit_input_options():
     
     if request.method == 'POST':
         # Empty strings returned if no options are selected
-        activity_csv = request.form.get('edit_json_activity')
-        wellbeing_csv = request.form.get('edit_json_wellbeing')
-        print(activity_csv)
-        print(wellbeing_csv)
+        icon_name = request.form.get('iconName')
+        category_type = request.form.get('category_type')
         
         # check if the post request has the file part
         if 'image-icon' not in request.files:
@@ -117,18 +115,26 @@ def admin_edit_input_options():
             return redirect(request.url)
         
         image = request.files['image-icon']
-        print("app.instance_path:", current_app.static_url_path)
-        print("app.instance_path:", current_app.static_folder)
-
         
         # If the user does not select a file, the browser submits an empty file without a filename.
         if image.filename == '':
             flash('No selected file')
             return redirect(request.url)
+        
+        # If everything is successful add new input option to database
         if image and allowed_file(image.filename):
-            filename = secure_filename(image.filename)
+            random_characters = str(uuid.uuid1()) + "-" + str(uuid.uuid4())
+            filename = secure_filename(random_characters)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-
+            
+            # Add new Input Option to database
+            db_file_path = "/static/input_option_img/" + filename
+            new_input_option = InputOptions(category=category_type, name=icon_name, file_path=db_file_path, nursing_home_id=current_user.nursing_home_id)
+            db.session.add(new_input_option)
+            db.session.commit()
+            return redirect(request.url)
+        else:
+            flash("File extension not allowed, please use the following image format: png, jpg, jpeg, gif")
         
     return render_template("admin/edit_input_ver2.html", user=current_user, name=get_name("admin"), rows=input_options_rows, home_href=ADMIN_HOME_HREF)
 

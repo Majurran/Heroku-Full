@@ -14,6 +14,7 @@ def create_app():
     
     UPLOAD_FOLDER = os.path.join(app.static_folder, "input_option_img")
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['MAX_CONTENT_LENGTH'] = 2 * 1000 * 1000   # 2 MB max image limit
     
     db.init_app(app)
 
