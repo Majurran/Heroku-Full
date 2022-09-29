@@ -215,6 +215,14 @@ def public_dashboard_page():
     )
     detailed_mood_ratio = json.dumps(detailed_mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
 
+    states = ['NSW', 'QLD', 'NT', 'WA', 'SA', 'VIC', 'ACT', "Tas"]
+    states_percentage = [12, 12, 12, 12, 12, 12, 12, 16]
+    state_pie = go.Figure(data = [go.Pie(labels = states, values = states_percentage)])
+    state_pie.update_layout(
+                width=400,
+                height=400,
+    )
+    state_pie_chart = json.dumps(state_pie, cls=plotly.utils.PlotlyJSONEncoder)
 
     df = pd.DataFrame(dict(
         date=["2020-01-10", "2020-02-10", "2020-03-10", "2020-04-10", "2020-05-10", "2020-06-10"],
@@ -260,12 +268,11 @@ def public_dashboard_page():
     num_residents = 9760
     num_nursing_home = 24
 
-    
     return render_template("public-dashboard.html",graph_activities=graph_activities, mood_ratio=mood_ratio,
-                            detailed_mood_ratio=detailed_mood_ratio, line_graph_one=line_graph_one,
-                            line_graph_two=line_graph_two, line_graph_three=line_graph_three,
-                            line_graph_four=line_graph_four, num_residents=num_residents,
-                            num_nursing_home=num_nursing_home)
+                            detailed_mood_ratio=detailed_mood_ratio, state_pie_chart=state_pie_chart,
+                            line_graph_one=line_graph_one, line_graph_two=line_graph_two,
+                            line_graph_three=line_graph_three, line_graph_four=line_graph_four, 
+                            num_residents=num_residents, num_nursing_home=num_nursing_home)
 
 # ===============================================================================================================
 # ==================================================== GUEST ====================================================

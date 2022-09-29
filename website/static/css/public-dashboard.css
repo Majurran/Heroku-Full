@@ -1,5 +1,58 @@
+/* project styles */
+.project-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+}
+.project-container title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 25px;
+}
+
+.project-container article {
+  flex: 1;
+  background-color: #efeff5;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-left: 300px;
+  max-width: 400px;
+  gap: 20px;
+}
+.project-container .project {
+  padding: 20px;
+  background: white;
+  border-left: 10px solid orange;
+  border-radius: 10px;
+  width: 400px;
+  display: grid;
+}
+.project-container .head {
+  padding-left: 20px;
+}
+.project > div:last-of-type {
+  display: grid;
+  grid-auto-flow: column;
+  place-content: end;
+  gap: 10px;
+}
+.project > div:first-line {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 30px;
+}
+
 #carouselButtons {
   margin-left: 100px;
   position: absolute;
   bottom: 0px;
-} 
+}
+
+.population_container{
+  margin-left: 5px;
+  margin-right: 500px;
+}
