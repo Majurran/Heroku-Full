@@ -123,7 +123,8 @@ def admin_edit_input_options():
         
         # If everything is successful add new input option to database
         if image and allowed_file(image.filename):
-            random_characters = str(uuid.uuid1()) + "-" + str(uuid.uuid4())
+            random_characters = str(uuid.uuid1()) + "-" + str(uuid.uuid4()) + "." + str(image.filename.rsplit('.', 1)[1].lower())
+            
             filename = secure_filename(random_characters)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
             
