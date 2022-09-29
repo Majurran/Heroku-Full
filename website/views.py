@@ -264,6 +264,9 @@ def public_dashboard_page():
 
 
     
+    messages = ["Sentence A", "Hi Eric","Woof"]
+
+    
 
     num_residents = 9760
     num_nursing_home = 24
@@ -272,7 +275,7 @@ def public_dashboard_page():
                             detailed_mood_ratio=detailed_mood_ratio, state_pie_chart=state_pie_chart,
                             line_graph_one=line_graph_one, line_graph_two=line_graph_two,
                             line_graph_three=line_graph_three, line_graph_four=line_graph_four, 
-                            num_residents=num_residents, num_nursing_home=num_nursing_home)
+                            num_residents=num_residents, num_nursing_home=num_nursing_home,sentences=messages)
 
 # ===============================================================================================================
 # ==================================================== GUEST ====================================================
