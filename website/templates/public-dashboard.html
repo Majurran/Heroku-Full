@@ -3,8 +3,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1" />
    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
    <script src="{{ url_for('static', filename='js/public-dashboard.js') }}"></script>
-   <link rel="stylesheet" type="css" href="../static/public-dashboard.css" />
    <!-- CSS -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/public-dashboard.css') }}">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
    <link rel="stylesheet" href="https://demos.creative-tim.com/paper-dashboard/assets/css/bootstrap.min.css"/>
@@ -258,16 +258,93 @@
          </div>
       </div>
             <!-- Item 3 -->
-      <div class="item">
-         <img src="https://picsum.photos/1500/600/?image=3" />
-         <div class="container">
-            <div class="carousel-caption">
-               <h1>Percentage-based sizing</h1>
-               <p>With "mobile-first" there is now only one percentage-based grid.</p>
-               <p><a class="btn btn-large btn-primary" href="#">Browse gallery</a></p>
-            </div>
-         </div>
-      </div>
+                  <!-- Item 3 -->
+                  <div class="item">
+                     <!-- <img src="https://picsum.photos/1500/600/?image=3" />
+                     <div class="container">
+                        <div class="carousel-caption">
+                           <h1>Percentage-based sizing</h1>
+                           <p>With "mobile-first" there is now only one percentage-based grid.</p>
+                           <p><a class="btn btn-large btn-primary" href="#">Browse gallery</a></p> -->
+                           <div class="project-container">
+                              <article id="messages" style="background-color: #f4f3ef;">
+                                <div class="project title">
+                                    Message Board
+                                </div>
+                                <div class="project">
+                                  <div>
+                                    Super Duper Cool Project <br />
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, hic
+                                    consequatur tenetur vero maxime neque non harum repellendus iusto
+                                    quos veritatis dolore iure ab ex ea exercitationem minima commodi
+                                    officiis?
+                                  </div>
+                                  <div>
+                                  </div>
+                                </div>
+                                <div class="project">
+                                  <div>
+                                    Cool Project <br />
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed
+                                    dolore natus hic illo, officia minus deleniti voluptas fugit
+                                    quisquam saepe quos recusandae itaque qui eum! Est, magni
+                                    distinctio? Fuga, iusto.
+                                  </div>
+                                  <div>
+                                  </div>
+                                </div>
+                                <div class="project">
+                                  <div>
+                                    Super Cool Project <br />
+                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
+                                    ipsa, hic porro aspernatur accusamus dolorum delectus illo amet
+                                    enim animi expedita eos totam vero quidem magnam voluptate
+                                    voluptatem velit possimus quasi. Ipsam, facilis!
+                                  </div>
+                                  <div>
+                                  </div>
+                                </div>
+                                <div class="project">
+                                  <div>
+                                    Impossible App <br />
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum,
+                                    voluptatum exercitationem eius voluptatem quasi dolor rem velit
+                                    ad? Porro doloribus ipsam blanditiis neque saepe sed commodi
+                                    consequatur repudiandae. Quae, repellendus!
+                                  </div>
+                                  <div>
+                                  </div>
+                                </div>
+                                <div class="project">
+                                  <div>
+                                    Interesting Project <br />
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo autem
+                                    omnis ratione necessitatibus, accusamus consequatur odio cum
+                                    voluptatum nisi dolore similique consequuntur. Et, optio officia!
+                                  </div>
+                                  <div>
+                                  </div>
+                                </div>
+                                <div class="project">
+                                  <div>
+                                    Impossible Project <br />
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
+                                    molestias dolorem ut voluptas hic explicabo reprehenderit nobis
+                                    necessitatibus! In, nobis!
+                                  </div>
+                                  <div>
+            
+                                  </div>
+                                </div>
+                              </article>
+                              <div class="population_container">
+                                 <div id="Population-Pie-Chart" class="Population-Pie-Chart">
+                                 </div>
+                              </div>
+                            </div>
+                        </div>
+                     </div>
+                  </div>
    </div>
 </body>
 <!-- Controls -->
@@ -305,6 +382,9 @@
    
    var detailed_mood = {{ detailed_mood_ratio | safe }};
    Plotly.plot('Detailed-Mood-Graph', detailed_mood, {});
+
+   var state_pie = {{ state_pie_chart | safe }};
+   Plotly.plot('Population-Pie-Chart', state_pie, {});
    
    var line_one = {{ line_graph_one | safe }};
    Plotly.plot('Line-Graph-One', line_one, {});
