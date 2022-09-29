@@ -105,38 +105,68 @@ def admin_edit_input_options():
     input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
     
     if request.method == 'POST':
-        # Empty strings returned if no options are selected
-        icon_name = request.form.get('iconName')
-        category_type = request.form.get('category_type')
+        edit_type = request.form.get('edit-type')   # add, remove, default
+        print(edit_type)
         
-        # check if the post request has the file part
-        if 'image-icon' not in request.files:
-            flash('No Image File Selected')
-            return redirect(request.url)
-        
-        image = request.files['image-icon']
-        
-        # If the user does not select a file, the browser submits an empty file without a filename.
-        if image.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        
-        # If everything is successful add new input option to database
-        if image and allowed_file(image.filename):
-            random_characters = str(uuid.uuid1()) + "-" + str(uuid.uuid4()) + "." + str(image.filename.rsplit('.', 1)[1].lower())
+        # Plus Sign Option, adding new input options
+        if edit_type == "add":
+            # Empty strings returned if no options are selected
+            icon_name = request.form.get('iconName')
+            category_type = request.form.get('category_type_add')
             
-            filename = secure_filename(random_characters)
-            image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+            # check if the post request has the file part
+            if 'image-icon' not in request.files:
+                flash('No Image File Selected')
+                return redirect(request.url)
             
-            # Add new Input Option to database
-            db_file_path = "/static/input_option_img/" + filename
-            new_input_option = InputOptions(category=category_type, name=icon_name, file_path=db_file_path, nursing_home_id=current_user.nursing_home_id)
-            db.session.add(new_input_option)
-            db.session.commit()
+            image = request.files['image-icon']
+            
+            # If the user does not select a file, the browser submits an empty file without a filename.
+            if image.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            
+            # If everything is successful add new input option to database
+            if image and allowed_file(image.filename):
+                random_characters = str(uuid.uuid1()) + "-" + str(uuid.uuid4()) + "." + str(image.filename.rsplit('.', 1)[1].lower())
+                
+                filename = secure_filename(random_characters)
+                image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                
+                # Add new Input Option to database
+                db_file_path = "/static/input_option_img/" + filename
+                new_input_option = InputOptions(category=category_type, name=icon_name, file_path=db_file_path, nursing_home_id=current_user.nursing_home_id)
+                db.session.add(new_input_option)
+                db.session.commit()
+                return redirect(request.url)
+            else:
+                flash("File extension not allowed, please use the following image format: png, jpg, jpeg, gif")
+                
+        # Minus Sign Option, remove selected input options
+        elif edit_type == 'remove':
+            # activity or wellbeing, to make sure to only delete options from those categories in case someone manually changes the option-id number in inspect mode
+            category_type = request.form.get('category_type_remove') 
+            
+            # Gets the highlighted options (using their ID) to delete from the database
+            selected_input_options_id = request.form.get('remove_selected_input_options_id')            # E.g option-23,option-24,option-25,
+            input_option_id_set = set(selected_input_options_id.replace("option-","").split(",")[:-1])  # E.g {'23', '24', '25'}
+
+            # Filter the input_option_id_set to keep only valid input option ID based on nursing_home_id, and category
+            existing_input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id, category=category_type).all()
+            existing_input_options_id_set = {str(row.id) for row in existing_input_options_rows}
+            valid_selected_input_options_id_set = input_option_id_set.intersection(existing_input_options_id_set) # Filter and keep valid input option ID
+            
+            # print("Category_type:", category_type)
+            # print("Selected Input Options:", selected_input_options_id)
+            # print("Input Set ID:", input_option_id_set)
+            # print("Exist Set ID:", existing_input_options_id_set)
+            # print("Valid Set ID:", valid_selected_input_options_id_set)
+            
+            for num_id in valid_selected_input_options_id_set:
+                row = InputOptions.query.get(int(num_id))
+                db.session.delete(row)
+                db.session.commit()
             return redirect(request.url)
-        else:
-            flash("File extension not allowed, please use the following image format: png, jpg, jpeg, gif")
-        
     return render_template("admin/edit_input_ver2.html", user=current_user, name=get_name("admin"), rows=input_options_rows, home_href=ADMIN_HOME_HREF)
 
 

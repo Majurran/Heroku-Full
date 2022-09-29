@@ -34,7 +34,7 @@
                     </button>
                     <button type="button" class="btn-del" data-toggle="modal"
                             data-target="#deleteModal"
-                            data-whatever="activity">
+                            data-whatever="activity" onclick="remove_activity()">
                     </button>
                 </div>
             </div>
@@ -43,7 +43,7 @@
 
                 {% for row in rows %}
                     {% if row.category == "activity" %}
-                        <div id="{{ row.name.replace(' ','') }}" name="{{ row.name }}"><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
+                        <div id="option-{{ row.id }}" name="{{ row.name }}"><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
                     {% endif %}
                 {% endfor %}
 
@@ -60,7 +60,7 @@
                     </button>
                     <button type="button" class="btn-del" data-toggle="modal"
                             data-target="#deleteModal"
-                            data-whatever="wellbeing">
+                            data-whatever="wellbeing" onclick="remove_wellbeing()">
                     </button>
                 </div>
             </div>
@@ -69,7 +69,7 @@
 
                 {% for row in rows %}
                     {% if row.category == "wellbeing" %}
-                        <div id="{{ row.name.replace(' ','') }}" name="{{ row.name }}">
+                        <div id="option-{{ row.id }}" name="{{ row.name }}" name="{{ row.name }}">
                         <img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
                     {% endif %}
                 {% endfor %}
@@ -87,7 +87,8 @@
 
                     <div class="container">
                         <form id="inputs-form" name="inputs-form" method="POST" enctype="multipart/form-data">
-                            <input id="category_type" name="category_type" value="" type="hidden" readonly/>
+                            <input id="edit-type" name="edit-type" value="add" type="hidden" readonly/>
+                            <input id="category_type_add" name="category_type_add" value="" type="hidden" readonly/>
 
                             <div class="row" type="">
                                 <div class="col"></div>
@@ -120,8 +121,7 @@
                             <div class="row">
                                 <div class="col"><div hidden="hidden" id="add_container_id"></div></div>
                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-secondary btn-lg text-nowrap"
-                                            onclick="saveIconImage()">
+                                    <button type="submit" class="btn btn-secondary btn-lg text-nowrap">
                                         Add Option
                                     </button>
                                 </div>
@@ -152,20 +152,23 @@
             <div class="modal-content">
                 <div class="modal-body" style=" height: 400px; background: #e6e6e6">
                     <div class="container">
-                        <form role="form">
+                        <form id="inputs-form" name="inputs-form" method="POST">
+                            <input id="edit-type" name="edit-type" value="remove" type="hidden" readonly/>
+                            <input id="category_type_remove" name="category_type_remove" value="" type="hidden" readonly/>
+                            <input id="remove_selected_input_options_id" name="remove_selected_input_options_id" value="" type="hidden" readonly/>
+
                             <div class="row" type="">
                                 <div class="col"></div>
                                 <div class="col-auto">
-                                    <h3 class="text-center">Are you sure to delete selected emoji icons</h3>
+                                    <h3 class="text-center">Are you sure you want to delete the selected emoji icons?</h3>
                                 </div>
                                 <div class="col"></div>
                             </div> <br>
                             <div class="row">
                                 <div class="col"><div hidden="hidden" id="del_container_id"></div></div>
                                 <div class="col-auto">
-                                    <button type="reset" class="form-group btn btn-secondary btn-lg text-nowrap"
-                                            onclick="deleteIconImage()">
-                                        Save
+                                    <button type="submit" class="form-group btn btn-secondary btn-lg text-nowrap" onclick="remove_input_option()">
+                                        Delete
                                     </button>
                                 </div>
                                 <div class="col"></div>
@@ -186,10 +189,6 @@
             </div>
         </div>
     </div>
-
-    <!-- JSON INPUT BACKEND -->
-    <input id="edit_json_activity" name="edit_json_activity" value="" type="hidden" readonly/>
-    <input id="edit_json_wellbeing" name="edit_json_wellbeing" value="" type="hidden" readonly/>
 {% endblock %}
 
 {% block script %}
@@ -396,27 +395,61 @@
 
     </script> 
 
-
-
     <!-- Backend for sending the current options in the page back to the views.py in the POST to update the database -->
     <script>
       let CATEGORY_TYPE = '';
       
-      // Clicking the plus button for Activity
+      // Clicking the PLUS button for Activity
       function add_activity() {
         CATEGORY_TYPE = 'activity';
-        var input_category_type = document.getElementById("category_type");
+        var input_category_type = document.getElementById("category_type_add");
         input_category_type.setAttribute("value", CATEGORY_TYPE);
-        console.log(CATEGORY_TYPE)
+        console.log("Add Button:", CATEGORY_TYPE)
       }
 
-      // Clicking the plus button for Wellbeing
+      // Clicking the PLUS button for Wellbeing
       function add_wellbeing() {
         CATEGORY_TYPE = 'wellbeing';
-        var input_category_type = document.getElementById("category_type");
+        var input_category_type = document.getElementById("category_type_add");
         input_category_type.setAttribute("value", CATEGORY_TYPE);
-        console.log(CATEGORY_TYPE)
+        console.log("Add Button:", CATEGORY_TYPE)
       }
+
+      // Clicking the MINUS button for Activity
+      function remove_activity() {
+        CATEGORY_TYPE = 'activity';
+        var input_category_type = document.getElementById("category_type_remove");
+        input_category_type.setAttribute("value", CATEGORY_TYPE);
+        console.log("Minus Button:", CATEGORY_TYPE)
+      }
+
+      // Clicking the MINUS button for Wellbeing
+      function remove_wellbeing() {
+        CATEGORY_TYPE = 'wellbeing';
+        var input_category_type = document.getElementById("category_type_remove");
+        input_category_type.setAttribute("value", CATEGORY_TYPE);
+        console.log("Minus Button:", CATEGORY_TYPE)
+      }
+
+      // Try to delete with fetch thingo using the input_option_id for jinja
+      function remove_input_option() {
+        if (CATEGORY_TYPE == "activity") {
+          $('#remove_selected_input_options_id').val('');
+          document.querySelectorAll('#activity_grid div').forEach(div=>{
+            if(div.getAttribute("choosed") == 'Y') {
+              $('#remove_selected_input_options_id').val($('#remove_selected_input_options_id').val()+div.getAttribute("id")+',');
+            }
+          })
+        } else if (CATEGORY_TYPE == "wellbeing") {
+          $('#remove_selected_input_options_id').val('');
+          document.querySelectorAll('#wellbeing_grid div').forEach(div=>{
+            if(div.getAttribute("choosed") == 'Y') {
+              $('#remove_selected_input_options_id').val($('#remove_selected_input_options_id').val()+div.getAttribute("id")+',');
+            }
+          })
+        }
+      }
+
 
     </script>
 {% endblock %}
