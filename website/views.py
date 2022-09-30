@@ -105,8 +105,8 @@ def admin_edit_input_options():
     input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
     
     if request.method == 'POST':
-        edit_type = request.form.get('edit-type')   # add, remove, default
-        print(edit_type)
+        edit_type = request.form.get('edit-type')   # add, remove, reset
+        # print(edit_type)
         
         # Plus Sign Option, adding new input options
         if edit_type == "add":
@@ -138,9 +138,9 @@ def admin_edit_input_options():
                 new_input_option = InputOptions(category=category_type, name=icon_name, file_path=db_file_path, nursing_home_id=current_user.nursing_home_id)
                 db.session.add(new_input_option)
                 db.session.commit()
-                return redirect(request.url)
             else:
                 flash("File extension not allowed, please use the following image format: png, jpg, jpeg, gif")
+            return redirect(request.url)
                 
         # Minus Sign Option, remove selected input options
         elif edit_type == 'remove':
@@ -167,6 +167,62 @@ def admin_edit_input_options():
                 db.session.delete(row)
                 db.session.commit()
             return redirect(request.url)
+        
+        # Reset Button, remove all the input options based on the category type and add the default ones back in like 
+        #   we did in the sign_up_nursing_home() function in auth.py
+        elif edit_type == 'reset':
+            # print(edit_type)
+            category_type = request.form.get('category_type_reset') 
+            # print(category_type)
+            
+            # Delete existing rows 
+            existing_input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id, category=category_type).all()
+            for row in existing_input_options_rows:
+                db.session.delete(row)
+                db.session.commit()
+                
+            if category_type == "activity":
+                
+                # Add back the default input options
+                # Default activity and wellbeing list from prototype design
+                activity_list = ['Go Cycling', 'Go Travel', 'Birthday Party', 'Go Boating', 'Write Diary', 'Drinking', 'Play the Piano', 'Online Shopping']
+                
+                activity_list_file_path = [
+                    "/static/input_option_img/Go Cycling.png",
+                    "/static/input_option_img/Go Travel.png",
+                    "/static/input_option_img/Birthday Party.png",
+                    "/static/input_option_img/Go Boating.png",
+                    "/static/input_option_img/Write Diary.png",
+                    "/static/input_option_img/Drinking.png",
+                    "/static/input_option_img/Play the Piano.png",
+                    "/static/input_option_img/Online Shopping.png"
+                ]
+                
+                for i,activity in enumerate(activity_list):
+                    new_activity = InputOptions(category="activity", name=activity, file_path=activity_list_file_path[i], nursing_home_id=current_user.nursing_home_id)
+                    db.session.add(new_activity)
+                    db.session.commit()
+            
+            elif category_type == "wellbeing":    
+                wellbeing_list = ['Happy', 'Upvote', 'Congratulations', 'Love', 'Upset', 'Sick', 'Sleeping', 'Angry']
+                wellbeing_list_file_path = [
+                    "/static/input_option_img/Happy.png",
+                    "/static/input_option_img/Upvote.png",
+                    "/static/input_option_img/Congratulations.png",
+                    "/static/input_option_img/Love.png",
+                    "/static/input_option_img/Upset.png",
+                    "/static/input_option_img/Sick.png",
+                    "/static/input_option_img/Sleeping.png",
+                    "/static/input_option_img/Angry.png"
+                ]
+                
+                for i,wellbeing in enumerate(wellbeing_list):
+                    new_wellbeing = InputOptions(category="wellbeing", name=wellbeing, file_path=wellbeing_list_file_path[i], nursing_home_id=current_user.nursing_home_id)
+                    db.session.add(new_wellbeing)
+                    db.session.commit()
+                    
+            return redirect(request.url)
+            
     return render_template("admin/edit_input_ver2.html", user=current_user, name=get_name("admin"), rows=input_options_rows, home_href=ADMIN_HOME_HREF)
 
 

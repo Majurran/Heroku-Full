@@ -29,15 +29,13 @@
                 <div style="float:left">
                     <h3>Activity</h3></div>
                 <div style="float: right">
-                    <button type="button" class="btn-add" data-toggle="modal" data-target="#addModal"
-                            data-whatever="activity" onclick="add_activity()">
-                    </button>
-                    <button type="button" class="btn-del" data-toggle="modal"
-                            data-target="#deleteModal"
-                            data-whatever="activity" onclick="remove_activity()">
-                    </button>
+                    <button type="button" class="btn-add" data-toggle="modal" data-target="#addModal" data-whatever="activity" onclick="add_activity()"></button>
+                    <button type="button" class="btn-del" data-toggle="modal" data-target="#deleteModal" data-whatever="activity" onclick="remove_activity()"></button>
+                    <!-- Reset Button From: https://www.flaticon.com/free-icon/reset_5632370?term=reset&page=1&position=4&page=1&position=4&related_id=5632370&origin=tag -->
+                    <button type="button" class="btn-reset" data-toggle="modal" data-target="#resetModal" data-whatever="activity" onclick="reset_activity()"></button>
                 </div>
             </div>
+            <br>
             <div><h5>What are you planning to do today?</h5></div>
             <div class="edit-icon-grid" id="activity_grid">
 
@@ -55,15 +53,13 @@
                 <div style="float:left">
                     <h3>Wellbeing</h3></div>
                 <div style="float: right">
-                    <button type="button" class="btn-add" data-toggle="modal" data-target="#addModal"
-                            data-whatever="wellbeing" onclick="add_wellbeing()">
-                    </button>
-                    <button type="button" class="btn-del" data-toggle="modal"
-                            data-target="#deleteModal"
-                            data-whatever="wellbeing" onclick="remove_wellbeing()">
-                    </button>
+                    <button type="button" class="btn-add" data-toggle="modal" data-target="#addModal" data-whatever="wellbeing" onclick="add_wellbeing()"></button>
+                    <button type="button" class="btn-del" data-toggle="modal" data-target="#deleteModal" data-whatever="wellbeing" onclick="remove_wellbeing()"></button>
+                    <!-- Reset Button From: https://www.flaticon.com/free-icon/reset_5632370?term=reset&page=1&position=4&page=1&position=4&related_id=5632370&origin=tag -->
+                    <button type="button" class="btn-reset" data-toggle="modal" data-target="#resetModal" data-whatever="wellbeing" onclick="reset_wellbeing()"></button>
                 </div>
             </div>
+            <br>
             <div><h5>Tell us about your feeling now~</h5></div>
             <div class="edit-icon-grid" id="wellbeing_grid">
 
@@ -96,32 +92,32 @@
                                     <h3 class="text-center">Add New Input Option</h3>
                                 </div>
                                 <div class="col"></div>
-                            </div><br>
+                            </div>
+                            <br>
 
                             <div class="row">
                                 <div class="col"></div>
                                 <div class="col-8">
-                                    <input class="form-control" type="text" id="iconName" name="iconName"
-                                            placeholder="Label name" maxlength="15" required/>
+                                    <input class="form-control" type="text" id="iconName" name="iconName" placeholder="Label name" maxlength="15" required/>
                                 </div>
                                 <div class="col"></div>
                             </div>
+                            <br>
 
                             <div class="row">
                                 <div class="col"></div>
-                                
                                 <div class="col-7">
                                     <input type="file" class="custom-file-input" id="image-icon" name="image-icon" accept="image/*" required>
                                     <label class="custom-file-label" for="image-icon">Upload Image...</label>
                                 </div>
-
                                 <div class="col"></div>
                             </div>
+                            <br>
 
                             <div class="row">
                                 <div class="col"><div hidden="hidden" id="add_container_id"></div></div>
                                 <div class="col-auto">
-                                    <button type="submit" class="btn btn-secondary btn-lg text-nowrap">
+                                    <button type="submit" class="btn btn-primary btn-lg text-nowrap">
                                         Add Option
                                     </button>
                                 </div>
@@ -131,9 +127,8 @@
                             <div class="row">
                                 <div class="col"></div>
                                 <div class="col-auto">
-                                    <button type="reset" class="btn btn-danger btn-lg text-nowrap"
-                                            onclick="resetAddedToDefault()">
-                                        Reset to default
+                                    <button type="button" class="btn btn-danger btn-lg text-nowrap" onclick="close_modal()">
+                                        Cancel
                                     </button>
                                 </div>
                                 <div class="col"></div>
@@ -176,9 +171,50 @@
                             <div class="row">
                                 <div class="col"></div>
                                 <div class="col-auto">
-                                    <button type="reset" class="form-group btn btn-danger btn-lg text-nowrap"
-                                            onclick="resetDeletedToDefault()">
-                                        Reset to default
+                                    <button type="button" class="form-group btn btn-danger btn-lg text-nowrap" onclick="close_modal()">
+                                        Cancel
+                                    </button>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Modal Content -->
+    <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetodalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body" style=" height: 400px; background: #e6e6e6">
+                    <div class="container">
+                        <form id="inputs-form" name="inputs-form" method="POST">
+                            <input id="edit-type" name="edit-type" value="reset" type="hidden" readonly/>
+                            <input id="category_type_reset" name="category_type_reset" value="" type="hidden" readonly/>
+
+                            <div class="row" type="">
+                                <div class="col"></div>
+                                <div class="col-auto">
+                                    <h3 class="text-center">Are you sure you want to reset the input options back to default?</h3>
+                                </div>
+                                <div class="col"></div>
+                            </div> <br>
+                            <div class="row">
+                                <div class="col"><div hidden="hidden" id="del_container_id"></div></div>
+                                <div class="col-auto">
+                                    <button type="submit" class="form-group btn btn-secondary btn-lg text-nowrap">
+                                        Reset to Default
+                                    </button>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col"></div>
+                                <div class="col-auto">
+                                    <button type="button" class="form-group btn btn-danger btn-lg text-nowrap" onclick="close_modal()">
+                                        Cancel
                                     </button>
                                 </div>
                                 <div class="col"></div>
@@ -193,52 +229,6 @@
 
 {% block script %}
     <script>
-      /*
-        function getDefaultIconsHtml() {
-            let defaultActivityHtml = ""
-            let defaultWellbeingHtml = ""
-            {% for row in rows %}
-                {% if row.category == "activity" %}
-                    defaultActivityHtml += "<div id='{{ row.name.replace(' ','')}}' name='{{ row.name }}'> <img src='{{ row.file_path }}'><span>{{ row.name }}</span></div>"
-                {% endif %}
-                {% if row.category == "wellbeing" %}
-                    defaultWellbeingHtml += "<div id='{{ row.name.replace(' ','')}}' name='{{ row.name }}'> <img src='{{ row.file_path }}'><span>{{ row.name }}</span></div>"
-                {% endif %}
-            {% endfor %}
-
-            return [defaultActivityHtml, defaultWellbeingHtml]
-        }
-
-        function resetGridContainerDefault() {
-            {# TODO: May be need to reactive with backstage #}
-            let container_id = $("#add_container_id").text()
-            let [defaultActivityHtml, defaultWellbeingHtml] = getDefaultIconsHtml()
-            if (container_id === "activity") {
-                $("#activity_grid").html(defaultActivityHtml)
-            } else if (container_id === "wellbeing") {
-                $("#wellbeing_grid").html(defaultWellbeingHtml)
-            }
-
-        }
-
-        
-
-        {# monitor grid-container width and change grid columns count #}
-        $(".input-page").css("width", function (index, value) {
-            console.log(value)
-            let mathValue = value.split("px")
-            console.log(mathValue)
-            let columnsCount = Math.min(Math.trunc(mathValue[0] / 130), 3)
-            console.log(columnsCount)
-            $(".modal").css("width", Math.min(mathValue,500).toString()+"px")
-            $(".icon-container").css("width", (columnsCount * 130).toString() + "px")
-            $(".edit-icon-grid").css("grid-template-columns", "repeat(" + columnsCount + ", 130px)")
-            resetGridContainerDefault()
-        })
-      */
-    </script>
-    <script>
-
         $("#activity_grid").on("click", "div", function (event){
             var div = $(this)
             console.log(div)
@@ -260,143 +250,7 @@
                     div.css("background",'#f15a24')
                 }
         })
-
-        /*
-        $("#addModal").on("show.bs.modal", function (event) {
-            var button = $(event.relatedTarget)
-            var recipient = button.data("whatever")
-            $("#add_container_id").text(recipient)
-        })
-
-        $("#deleteModal").on("show.bs.modal", function (event) {
-            var button = $(event.relatedTarget)
-            var recipient = button.data("whatever")
-            $("#del_container_id").text(recipient)
-        })
-
-        function selectIconImage() {
-            $('#inputFile').click()
-        }
-        
-        $("#inputFile").on("change", function () {
-            let file = $(this)[0].files[0]
-            let imgBase64 = ""
-            let fileReader = new FileReader()
-            let selectedImg = $("#selectImage")
-            fileReader.readAsDataURL(file)
-            fileReader.onload = function () {
-                imgBase64 = this.result  /* here read img file to base64 
-                if (imgBase64 !== "") {
-                    console.log(imgBase64)
-                    selectedImg.innerHTML = imgBase64
-                    $("#imgBase64").text(imgBase64)
-                    $("#btnSelectIconImage").attr("disabled", true)
-                }
-            }
-        })
-
-        
-
-        function saveIconImage(){
-            let labelName = $("#iconName").val()
-            if(labelName == null || labelName === ""){
-                alert("label name cannot be empty!!")
-                return
-            }
-
-            let imgBase64 = $("#imgBase64").text()
-            if(imgBase64 == null || imgBase64 === ""){
-                alert("there is no image uploaded!!")
-                return;
-            }
-
-            let container = $("#add_container_id").text()
-            if(container == null || container === ""){
-                alert("there is no container id")
-            }
-
-            {# TODO: May be need to reactive with backstage #}
-            if(container === "activity"){
-                $("#activity_grid").append('<div id="'+labelName+'" name="'+labelName+'"><img src="'+imgBase64+'"><span>'+labelName+'</span></div>')
-
-            }else if(container === "wellbeing"){
-                $("#wellbeing_grid").append('<div id="'+labelName+'" name="'+labelName+'"><img src="'+imgBase64+'"><span>'+labelName+'</span></div>')
-
-            }
-            $("#iconName").val("")
-            $("#inputFile").val("")
-            $("#imgBase64").text("")
-            $("#btnSelectIconImage").attr("disabled", false)
-        }
-
-        function deleteIconImage(){
-            {# TODO: May be need to reactive with backstage #}
-            let container_id = $("#del_container_id").text()
-            if(container_id === "activity") {
-                document.getElementById("activity_grid").querySelectorAll('div').forEach(div => {
-                    if (div.id !== 'more-activities' && div.getAttribute("choosed") === "Y") {
-                        let id = div.getAttribute("id")
-                        $("#" + id).remove()
-                    }
-                })
-            }else if(container_id === "wellbeing"){
-                document.getElementById("wellbeing_grid").querySelectorAll('div').forEach(div => {
-                    if (div.id !== 'more-wellbeings' && div.getAttribute("choosed") === "Y") {
-                        let id = div.getAttribute("id")
-                        $("#" + id).remove()
-                    }
-                })
-            }
-        }
-
-        function getDefaultIconsHtml(){
-            let defaultActivityHtml = ""
-            let defaultWellbeingHtml = ""
-            {% for row in rows %}
-                {% if row.category == "activity" %}
-                    defaultActivityHtml += "<div id='{{ row.name.replace(' ','')}}' name='{{ row.name }}'> <img src='{{ row.file_path }}'><span>{{ row.name }}</span></div>"
-                {% endif %}
-                {% if row.category == "wellbeing" %}
-                    defaultWellbeingHtml += "<div id='{{ row.name.replace(' ','')}}' name='{{ row.name }}'> <img src='{{ row.file_path }}'><span>{{ row.name }}</span></div>"
-                {% endif %}
-            {% endfor %}
-
-            return [defaultActivityHtml, defaultWellbeingHtml]
-        }
-
-        function resetAddedToDefault(){
-            {# TODO: May be need to reactive with backstage #}
-            let container_id = $("#add_container_id").text()
-            let [defaultActivityHtml, defaultWellbeingHtml] = getDefaultIconsHtml()
-            if(container_id === "activity") {
-                $("#activity_grid").html(defaultActivityHtml)
-            }else if(container_id === "wellbeing"){
-                $("#wellbeing_grid").html(defaultWellbeingHtml)
-            }
-
-            {#divAddEventListener()#}
-            $("#addModal").modal('toggle')
-        }
-
-        function resetDeletedToDefault(){
-            {# TODO: May be need to reactive with backstage #}
-            let container_id = $("#del_container_id").text()
-            let [defaultActivityHtml, defaultWellbeingHtml] = getDefaultIconsHtml()
-            if(container_id === "activity") {
-                $("#activity_grid").html(defaultActivityHtml)
-            }else if(container_id === "wellbeing"){
-                $("#wellbeing_grid").html(defaultWellbeingHtml)
-            }
-
-            $("#deleteModal").modal('toggle')
-        }
-        
-        */
-
-    </script> 
-
-    <!-- Backend for sending the current options in the page back to the views.py in the POST to update the database -->
-    <script>
+      // Backend for sending the current options in the page back to the views.py in the POST to update the database 
       let CATEGORY_TYPE = '';
       
       // Clicking the PLUS button for Activity
@@ -431,6 +285,22 @@
         console.log("Minus Button:", CATEGORY_TYPE)
       }
 
+      // Clicking the RESET button for Activity
+      function reset_activity() {
+        CATEGORY_TYPE = 'activity';
+        var input_category_type = document.getElementById("category_type_reset");
+        input_category_type.setAttribute("value", CATEGORY_TYPE);
+        console.log("Reset Button:", CATEGORY_TYPE)
+      }
+
+      // Clicking the RESET button for Wellbeing
+      function reset_wellbeing() {
+        CATEGORY_TYPE = 'wellbeing';
+        var input_category_type = document.getElementById("category_type_reset");
+        input_category_type.setAttribute("value", CATEGORY_TYPE);
+        console.log("Reset Button:", CATEGORY_TYPE)
+      }
+
       // Try to delete with fetch thingo using the input_option_id for jinja
       function remove_input_option() {
         if (CATEGORY_TYPE == "activity") {
@@ -450,6 +320,8 @@
         }
       }
 
-
+      function close_modal() {
+        console.log("TODO: close modal");
+      }
     </script>
 {% endblock %}

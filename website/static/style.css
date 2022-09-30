@@ -405,6 +405,16 @@ i{
     border: none;
 }
 
+.btn-reset{
+    border-radius: 0%;
+    width: 46px;
+    height: 46px;
+    margin-left: 10px;
+    background: url(../static/img/reset.png);
+    background-size: cover;
+    border: none;
+}
+
 
 /* not active */
 .nav-pills .nav-link:not(.active) {
