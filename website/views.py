@@ -193,7 +193,9 @@ def public_dashboard_page():
     activities_bar_chart.update_layout(
                 width=600,
                 height=600,
+                title = "title"
     )
+
     graph_activities = json.dumps(activities_bar_chart, cls=plotly.utils.PlotlyJSONEncoder)
 
 
@@ -203,6 +205,7 @@ def public_dashboard_page():
     mood_pie_chart.update_layout(
                 width=400,
                 height=400,
+                title = "title"
     )
     mood_ratio = json.dumps(mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -212,6 +215,7 @@ def public_dashboard_page():
     detailed_mood_pie_chart.update_layout(
                 width=400,
                 height=400,
+                title = "title"
     )
     detailed_mood_ratio = json.dumps(detailed_mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
 
