@@ -44,12 +44,12 @@ Using the Prettier formatter messes up the Jinja2 format in the HTML files.
 You can use djLint to format the HTML pages with Jinja2.
 djLint documentation: https://djlint.com/docs/formatter/
 
-To review what may change in formatting run:
+To review what may change in formatting run (or change the . to another file path like a folder or specific file):
 ```bash
-djlint . --check
+djlint . --check --quiet --indent 2
 ```
 
-To format the code and update files run:
+To format the code and update files run (or change the . to another file path like a folder or specific file):
 ```bash
-djlint . --reformat
+djlint . --reformat --quiet --indent 2
 ```
