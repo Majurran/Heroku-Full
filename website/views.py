@@ -29,7 +29,8 @@ def get_name(user):
 # ==================================================== ADMIN ====================================================
 # ===============================================================================================================
 @views.route('/', methods=['GET'])
-def root():
+@views.route('/index', methods=['GET'])
+def index():
     return redirect(url_for('auth.login'))
 
 
@@ -225,18 +226,6 @@ def admin_edit_input_options():
             
     return render_template("admin/edit_input_ver2.html", user=current_user, name=get_name("admin"), rows=input_options_rows, home_href=ADMIN_HOME_HREF)
 
-
-@views.route('/inputs', methods=['GET', 'POST'])
-@login_required
-def user_input_page():
-    if request.method == 'GET': 
-        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    else:
-        my_var = request.form.get('json')
-        print(my_var)
-        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    return render_template("inputs.html", user=current_user, rows=input_options_rows, home_href=ADMIN_HOME_HREF)
-
 # ===============================================================================================================
 # =============================================== Public Dashboard ==============================================
 # ===============================================================================================================
@@ -342,7 +331,7 @@ def public_dashboard_page():
 # ===============================================================================================================
 @views.route('/guest-inputs', methods=['GET', 'POST'])
 @login_required
-def guest_inputs():
+def guest_input():
     input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
     
     """ 
@@ -376,17 +365,6 @@ def guest_inputs():
     
     return render_template("guest_inputs.html", user=current_user, rows=input_options_rows, name=get_name("guest"),
         home_href=GUEST_HOME_HREF)
-    
-@views.route('/inputs', methods=['GET', 'POST'])
-@login_required
-def guest_input():
-    if request.method == 'GET': 
-        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    else:
-        my_var = request.form.get('json')
-        print(my_var)
-        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    return render_template("input/inputs.html", user=current_user, rows=input_options_rows, home_href=GUEST_HOME_HREF)
 
 # ===============================================================================================================
 # ================================================= RESIDENT ====================================================
@@ -404,10 +382,159 @@ def user_profile():
 @views.route('/user/inputs', methods=['GET', 'POST'])
 @login_required
 def user_input():
-    if request.method == 'GET': 
-        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    else:
-        my_var = request.form.get('json')
-        print(my_var)
-        input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    return render_template("inputs.html", user=current_user, rows=input_options_rows, name=get_name("resident"), home_href=USER_HOME_HREF)
+    input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
+
+    if request.method == 'POST': 
+        # Empty strings returned if no options are selected
+        input_category = request.form.get('input_category')     # activity, wellbeing, medication_reaction, difficulty_walking, food_quality
+        activity_csv = request.form.get('input_activity')
+        wellbeing_csv = request.form.get('input_wellbeing')
+        medication_reaction_csv = request.form.get('input_medication_reaction') # negative_reaction_yes, negative_reaction_no
+        difficulty_walking_csv = request.form.get('input_difficulty_walking')   # walk_difficult_1, walk_difficult_2, ..., walk_difficult_5
+        food_quality_csv = request.form.get('input_food_quality')               # food_quality_1, food_quality_2, ..., food_quality_5
+        
+        print()
+        print(input_category)
+        print()
+        
+        print("CSV-activity:", activity_csv)
+        print("CSV-wellbeing:", wellbeing_csv)
+        print("CSV-medication:", medication_reaction_csv)
+        print("CSV-walk:", difficulty_walking_csv)
+        print("CSV-food:", food_quality_csv)
+        
+        print()
+
+        activity_list = activity_csv.split(',')[:-1]
+        wellbeing_list = wellbeing_csv.split(',')[:-1]
+        medication_reaction_list = medication_reaction_csv.split(',')[:-1]
+        difficulty_walking_list = difficulty_walking_csv.split(',')[:-1]
+        food_quality_list = food_quality_csv.split(',')[:-1]
+        
+        input_activity_set = set(activity_list)
+        input_wellbeing_set = set(wellbeing_list)
+        
+        print("LIST-activity:", activity_list)
+        print("LIST-wellbeing:", wellbeing_list)
+        print("LIST-medication:", medication_reaction_list)
+        print("LIST-walk:", difficulty_walking_list)
+        print("LIST-food:", food_quality_list)
+        
+        print()
+        
+        # Filter and keep valid inputs, in case someone changes the input names to something else using inspect mode
+        existing_input_options_activity_rows = InputOptions.query.filter_by(category="activity", nursing_home_id=current_user.nursing_home_id).all()
+        existing_input_options_wellbeing_rows = InputOptions.query.filter_by(category="wellbeing", nursing_home_id=current_user.nursing_home_id).all()
+        valid_input_option_activity_name_set = {str(row.name) for row in existing_input_options_activity_rows}
+        valid_input_option_wellbeing_name_set = {str(row.name) for row in existing_input_options_wellbeing_rows}
+        
+        valid_selected_input_options_activity = input_activity_set.intersection(valid_input_option_activity_name_set)
+        valid_selected_input_options_wellbeing = input_wellbeing_set.intersection(valid_input_option_wellbeing_name_set)
+
+        # Convert the yes/no, 1-5 rating questions into right value
+        if input_category == 'medication_reaction':
+            if len(medication_reaction_list) == 1:
+                if medication_reaction_list[0] == "negative_reaction_no":
+                    medication_input_value = "no"
+                elif medication_reaction_list[0] == "negative_reaction_yes":
+                    medication_input_value = "yes"
+                else:
+                    flash("Please don't change the id values for medication")
+                    return redirect(request.url)
+            elif len(medication_reaction_list) == 0:
+                flash("No inputs submitted for medication")
+                return redirect(request.url)
+            else:
+                flash("Please don't change the id values for medication")
+                return redirect(request.url)
+            
+            # Insert Medication Y/N data to Database
+            medication_input = Input(category="medication", name=medication_input_value, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
+            db.session.add(medication_input)
+            db.session.commit()
+            return redirect(request.url)
+            
+        if input_category == 'difficulty_walking':
+            if len(difficulty_walking_list) == 1:
+                if difficulty_walking_list[0] == "walk_difficult_1":
+                    difficulty_walking_input_value = 1
+                elif difficulty_walking_list[0] == "walk_difficult_2":
+                    difficulty_walking_input_value = 2
+                elif difficulty_walking_list[0] == "walk_difficult_3":
+                    difficulty_walking_input_value = 3
+                elif difficulty_walking_list[0] == "walk_difficult_4":
+                    difficulty_walking_input_value = 4
+                elif difficulty_walking_list[0] == "walk_difficult_5":
+                    difficulty_walking_input_value = 5
+                else:
+                    flash("Please don't change the id values for difficulty walking")
+                    return redirect(request.url)
+            elif len(difficulty_walking_list) == 0:
+                flash("No inputs submitted for difficulty walking")
+                return redirect(request.url)
+            else:
+                flash("Please don't change the id values for difficulty walking")
+                return redirect(request.url)
+            
+            # Insert difficulty walking rating 1-5 data to Database
+            difficulty_walking_input = Input(category="difficulty_walking", name=difficulty_walking_input_value, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
+            db.session.add(difficulty_walking_input)
+            db.session.commit()
+            return redirect(request.url)
+            
+        if input_category == 'food_quality':
+            if len(food_quality_list) == 1:
+                if food_quality_list[0] == "food_quality_1":
+                    food_quality_input_value = 1
+                elif food_quality_list[0] == "food_quality_2":
+                    food_quality_input_value = 2
+                elif food_quality_list[0] == "food_quality_3":
+                    food_quality_input_value = 3
+                elif food_quality_list[0] == "food_quality_4":
+                    food_quality_input_value = 4
+                elif food_quality_list[0] == "food_quality_5":
+                    food_quality_input_value = 5
+                else:
+                    flash("Please don't change the id values for food quality")
+                    return redirect(request.url)
+            elif len(food_quality_list) == 0:
+                flash("No inputs submitted for food quality")
+                return redirect(request.url)
+            else:
+                flash("Please don't change the id values for food quality")
+                return redirect(request.url)
+            
+            # Insert difficulty walking rating 1-5 data to Database TODO
+            # difficulty_walking_input = Input(category="difficulty_walking", name=difficulty_walking_input_value, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
+            # db.session.add(difficulty_walking_input)
+            # db.session.commit()
+            # return redirect(request.url)
+        
+        print(valid_selected_input_options_activity)
+        print(valid_selected_input_options_wellbeing)
+        
+        # for activity in activity_list:          
+        #     # user_id=0 means Guest account for the nursing home
+        #     # if current_user.admin:
+        #     #     activity_input = Input(category="activity", name=activity, user_id=0, nursing_home_id=current_user.nursing_home_id)
+        #     # # Else use resident user_id
+        #     # else:
+        #     #     activity_input = Input(category="activity", name=activity, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
+        #     # db.session.add(activity_input)
+        #     # db.session.commit()
+        #     print(activity)
+        
+        # for wellbeing in wellbeing_list:          
+        #     # user_id=0 means Guest account for the nursing home
+        #     # if current_user.admin:
+        #     #     wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=0, nursing_home_id=current_user.nursing_home_id)
+        #     # # Else use resident user_id
+        #     # else:
+        #     #     wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
+        #     # db.session.add(wellbeing_input)
+        #     # db.session.commit()
+        #     print(wellbeing)
+        
+        return redirect(request.url)
+            
+    return render_template("inputs_ver2.html", user=current_user, rows=input_options_rows, name=get_name("resident"), home_href=USER_HOME_HREF)

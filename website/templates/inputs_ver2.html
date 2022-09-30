@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block style %}<style></style>{% endblock %}
+{% block content %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="alert alert-danger alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% else %}
+          <div class="alert alert-success alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <form id="inputs-form" name="inputs-form" method="POST">
+    <div class="input-page">
+      <div class="icon-container">
+        <div style="height: 50px">
+          <div style="float:left">
+            <h3>Activity</h3>
+          </div>
+        </div>
+        <div>
+          <h5>What are you planning to do today?</h5>
+        </div>
+        <div id="activity" name="activity" class="icon-grid">
+          {% for row in rows %}
+            {% if row.category == "activity" %}
+              <div id="{{ row.name }}" name="{{ row.name }}">
+                <img src="{{ row.file_path }}">
+                <span>{{ row.name }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <button type="button"   
+                class="btn btn-danger" 
+                data-toggle="modal"
+                data-target="#exampleModal"
+                onclick="submitActivity()">
+          Submit
+        </button>
+        <br>
+        <br>
+        <br>
+        <div style="height: 50px">
+          <div class="d-inline" style="float:left">
+            <h3>Wellbeing</h3>
+          </div>
+        </div>
+        <div>
+          <h5>Tell us about your feeling now~</h5>
+        </div>
+        <div id="wellbeing" name="wellbeing" class="icon-grid">
+          {% for row in rows %}
+            {% if row.category == "wellbeing" %}
+              <div id="{{ row.name }}" name="{{ row.name }}">
+                <img src="{{ row.file_path }}">
+                <span>{{ row.name }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <button type="button" 
+                class="btn btn-danger" 
+                data-toggle="modal"
+                data-target="#exampleModal"
+                onclick="submitFeeling()">
+          Submit
+        </button>
+        <br>
+        <br>
+        <br>
+        <div>
+          <h5>Do you have a negative reaction to any medication you have to take?</h5>
+        </div>
+        <br>
+        <div id="reaction"
+             name="reaction"
+             class="reaction-icon-grid"
+             style="width: 260px">
+          <div id="negative_reaction_yes" name="negative_reaction_yes">
+            <span style="color: #c82333">YES</span>
+          </div>
+          <div id="negative_reaction_no" name="negative_reaction_no">
+            <span style="color: #1c7430">NO</span>
+          </div>
+        </div>
+        <button type="button" 
+                class="btn btn-danger" 
+                data-toggle="modal"
+                data-target="#exampleModal"
+                onclick="submitMedicationReaction()">
+          Submit
+        </button>
+        <br>
+        <br>
+        <br>
+        <div>
+          <h5>Do you have any difficulty in walking?</h5>
+        </div>
+        <br>
+        <div id="have_difficult_walking"
+             name="feed_difficult_walking"
+             class="feel-icon-grid">
+          <div id="walk_difficult_1" name="walk_difficult_1">
+            <img src="../static/img/level_1.png">
+            <span style="font-weight: 300; font-size: 12px">Unable to leave bed</span>
+          </div>
+          <div id="walk_difficult_2" name="walk_difficult_2">
+            <img src="../static/img/level_2.png">
+            <span style="font-weight: 300; font-size: 12px">Wheelchair is required</span>
+          </div>
+          <div id="walk_difficult_3" name="walk_difficult_3">
+            <img src="../static/img/level_3.png">
+            <span style="font-weight: 300; font-size: 12px">Walk stick is required</span>
+          </div>
+          <div id="walk_difficult_4" name="walk_difficult_4">
+            <img src="../static/img/level_4.png">
+            <span style="font-weight: 300; font-size: 12px">Slow walking is possible</span>
+          </div>
+          <div id="walk_difficult_5" name="walk_difficult_5">
+            <img src="../static/img/level_5.png">
+            <span style="font-weight: 300; font-size: 12px">Energetic like a youth</span>
+          </div>
+        </div>
+        <div id="walk_texture_line">
+          <div class="left-texture">
+            <p class="separator">Mobility aid is required</p>
+          </div>
+          <div class="right-texture">
+            <p class="separator">Can exercise without assistance</p>
+          </div>
+        </div>
+        <button type="button"
+                class="btn btn-danger"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                onclick="submitHaveDifficultWalking()">
+          Submit
+        </button>
+        <br>
+        <br>
+        <br>
+        <div>
+          <h5>How is the quality of food in your nursing home?</h5>
+        </div>
+        <br>
+        <div id="food_quality" name="food_quality" class="feel-icon-grid">
+          <div id="food_quality_1" name="food_quality_1">
+            <img src="../static/img/level_1.png">
+            <span style="font-weight: 300; font-size: 12px">Awful, Can't eat them all</span>
+          </div>
+          <div id="food_quality_2" name="food_quality_2">
+            <img src="../static/img/level_2.png">
+            <span style="font-weight: 300; font-size: 12px">Awful, Hard to enjoy</span>
+          </div>
+          <div id="food_quality_3" name="food_quality_3">
+            <img src="../static/img/level_3.png">
+            <span style="font-weight: 300; font-size: 12px">OK, but not enjoyable</span>
+          </div>
+          <div id="food_quality_4" name="food_quality_4">
+            <img src="../static/img/level_4.png">
+            <span style="font-weight: 300; font-size: 12px">Quite good</span>
+          </div>
+          <div id="food_quality_5" name="food_quality_5">
+            <img src="../static/img/level_5.png">
+            <span style="font-weight: 300; font-size: 12px">Best food that ever seen</span>
+          </div>
+        </div>
+        <div id="food_texture_line">
+          <div class="left-texture">
+            <p class="separator">
+              Unpalatable
+            </p>
+          </div>
+          <div class="right-texture">
+            <p class="separator">
+              Delicious
+            </p>
+          </div>
+        </div>
+        <button type="button" 
+                class="btn btn-danger" 
+                data-toggle="modal"
+                data-target="#exampleModal"
+                onclick="submitFoodQuality()">
+          Submit
+        </button>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade"
+         id="exampleModal"
+         tabindex="-1"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body"
+               style="height: 200px;
+                      display: flex;
+                      align-items: center;">
+            <img src="../static/img/Happy.png" style="width: 70px;height: 70px;">
+            <span style="font-size: 20px; font-weight: 600;" id="infoId"></span>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger" onclick="submitInput()">Go Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- INPUTS for the backend form (currently 5 questions) -->
+    <input id="input_activity"
+           name="input_activity"
+           value=""
+           type="hidden"
+           readonly/>
+    <input id="input_wellbeing"
+           name="input_wellbeing"
+           value=""
+           type="hidden"
+           readonly/>
+    <input id="input_medication_reaction"
+           name="input_medication_reaction"
+           value=""
+           type="hidden"
+           readonly/>
+    <input id="input_difficulty_walking"
+           name="input_difficulty_walking"
+           value=""
+           type="hidden"
+           readonly/> 
+    <input id="input_food_quality"
+           name="input_food_quality"
+           value=""
+           type="hidden"
+           readonly/>  
+
+    <input id="input_category"
+           name="input_category"
+           value=""
+           type="hidden"
+           readonly/>      
+  </form>
+{% endblock %}
+{% block script %}
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+  <script>
+        $("#activity").on("click", "div", function (event) {
+            var div = $(this)
+            console.log(div)
+            if (div.attr("choosed") === 'Y') {
+                div.attr("choosed", '')
+                div.css("background", '#e6e6e6')
+            } else {
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+        $("#wellbeing").on("click", "div", function (event) {
+            let div = $(this)
+            if (div.attr("choosed") === 'Y') {
+                div.attr("choosed", '')
+                div.css("background", '#e6e6e6')
+            } else {
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+
+        $("#reaction").on("click", "div", function (event) {
+            let div = $(this)
+            if (div.attr("choosed") == 'Y') {
+                div.attr("choosed", '')
+                div.style.background = '#e6e6e6'
+            } else {
+                $.each(div.siblings(), function (i, item) {
+                    item.setAttribute("choosed", '')
+                    item.style.background = '#e6e6e6'
+                })
+
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+
+        $("#have_difficult_walking").on("click", "div", function (event) {
+            let div = $(this)
+            if (div.attr("choosed") == 'Y') {
+                div.attr("choosed", '')
+                div.style.background = '#e6e6e6'
+            } else {
+                $.each(div.siblings(), function (i, item) {
+                    item.setAttribute("choosed", '')
+                    item.style.background = '#e6e6e6'
+                })
+
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+        $("#food_quality").on("click", "div", function (event) {
+            let div = $(this)
+            if (div.attr("choosed") == 'Y') {
+                div.attr("choosed", '')
+                div.style.background = '#e6e6e6'
+            } else {
+                $.each(div.siblings(), function (i, item) {
+                    item.setAttribute("choosed", '')
+                    item.style.background = '#e6e6e6'
+                })
+
+                div.attr("choosed", 'Y')
+                div.css("background", '#f15a24')
+            }
+        })
+
+      // ===========================================================================================================================
+      // ======================================= BACKEND FUNCTIONALITY FOR HTTP POST ===============================================
+      let CATEGORY_TYPE = '';
+      function submitActivity() {
+          CATEGORY_TYPE = "activity";
+          $('#infoId').html('Your activity input have been submitted!')
+      }
+      
+      function submitFeeling() {
+          CATEGORY_TYPE = "wellbeing";
+          $('#infoId').html('Your feelings input have been submitted!')
+      }
+
+      function submitMedicationReaction() {
+          CATEGORY_TYPE = "medication_reaction";
+          $('#infoId').html('Your medication reaction input have been submitted!')
+      }
+
+      function submitHaveDifficultWalking() {
+          CATEGORY_TYPE = "difficulty_walking";
+          $('#infoId').html('Your difficulty in walking input have been submitted!')
+      }
+
+      function submitFoodQuality() {
+          CATEGORY_TYPE = "food_quality";
+          $('#infoId').html('Your food quality input have been submitted!')
+      }
+
+      function submitInput() {
+          if (CATEGORY_TYPE == "activity") {
+              $('#input_category').val('activity');
+              $('#input_activity').val('');
+              document.querySelectorAll('#activity div').forEach(div => {
+                  if (div.getAttribute("choosed") == 'Y') {
+                      $('#input_activity').val($('#input_activity').val() + div.getAttribute("id") + ',');
+                  }
+              })
+          } else if (CATEGORY_TYPE == "wellbeing") {
+            $('#input_category').val('wellbeing');
+              $('#input_wellbeing').val('');
+              document.querySelectorAll('#wellbeing div').forEach(div => {
+                  if (div.getAttribute("choosed") == 'Y') {
+                      $('#input_wellbeing').val($('#input_wellbeing').val() + div.getAttribute("id") + ',');
+                  }
+              })
+          } else if (CATEGORY_TYPE == "medication_reaction") {
+            $('#input_category').val('medication_reaction');
+            $('#input_medication_reaction').val('');
+            document.querySelectorAll('#reaction div').forEach(div => {
+                if (div.getAttribute("choosed") == 'Y') {
+                    $('#input_medication_reaction').val($('#input_medication_reaction').val() + div.getAttribute("id") + ',');
+                }
+            })
+          } else if (CATEGORY_TYPE == "difficulty_walking") {
+            $('#input_category').val('difficulty_walking');
+            $('#input_difficulty_walking').val('');
+            document.querySelectorAll('#have_difficult_walking div').forEach(div => {
+                if (div.getAttribute("choosed") == 'Y') {
+                    $('#input_difficulty_walking').val($('#input_difficulty_walking').val() + div.getAttribute("id") + ',');
+                }
+            })
+          } else if (CATEGORY_TYPE == "food_quality") {
+            $('#input_category').val('food_quality');
+            $('#input_food_quality').val('');
+            document.querySelectorAll('#food_quality div').forEach(div => {
+                if (div.getAttribute("choosed") == 'Y') {
+                    $('#input_food_quality').val($('#input_food_quality').val() + div.getAttribute("id") + ',');
+                }
+            })
+        }
+      }
+  </script>
+{% endblock %}
