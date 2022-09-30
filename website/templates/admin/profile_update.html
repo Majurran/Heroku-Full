@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"/>
-  <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css"/>
-  <link rel="stylesheet" type="text/css" href="../static/style.css"/>
-  <title>Profile Update</title>
-  <style>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet"
+          type="text/css"
+          href="../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          type="text/css"
+          href="../static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/style.css"/>
+    <title>Profile Update</title>
+    <style>
     .form_div {
       background: #e6e6e6;
       padding: 8% 10% 10%;
@@ -21,91 +25,89 @@
         display: none;
       }
     }
-  </style>
-</head>
-<body>
-<div class="signup-page">
-  <img class="img1" src="../static/img/login_maple2.png">
-  <img class="img2" src="../static/img/login_maple2.png">
-  <img class="img3" src="../static/img/login_maple1.png">
-  <img class="img4" src="../static/img/login_maple1.png">
-  <div class="form_div">
-    <form method="POST">
-      <h3 align="center" style="margin-bottom: 30px; border-bottom: solid 3px rgb(140,98,57); padding-bottom: 30px;">
-        Welcome to Elderly Home
-      </h3>
-      <div>
-        Your current nursing home name: {{ user.nursing_home_name }}<br>
-        Your current nursing home ID: {{ user.nursing_home_id }}
+    </style>
+  </head>
+  <body>
+    <div class="signup-page">
+      <img class="img1" src="../static/img/login_maple2.png">
+      <img class="img2" src="../static/img/login_maple2.png">
+      <img class="img3" src="../static/img/login_maple1.png">
+      <img class="img4" src="../static/img/login_maple1.png">
+      <div class="form_div">
+        <form method="POST">
+          <h3 align="center"
+              style="margin-bottom: 30px;
+                     border-bottom: solid 3px rgb(140,98,57);
+                     padding-bottom: 30px;">
+            Welcome to Elderly Home
+          </h3>
+          <div>
+            Your current nursing home name: {{ user.nursing_home_name }}
+            <br>
+            Your current nursing home ID: {{ user.nursing_home_id }}
+          </div>
+          <br>
+          <div class="form-group">
+            <input type="text"
+                   class="form-control"
+                   id="nursing-home-name"
+                   name="nursing-home-name"
+                   placeholder="Change the name of nursing home"
+                   required/>
+          </div>
+          <div class="form-group">
+            <input type="text"
+                   class="form-control"
+                   id="homeId"
+                   name="homeId"
+                   placeholder="Change the nursing home ID"
+                   required/>
+          </div>
+          <div class="form-group">
+            <input type="email"
+                   class="form-control"
+                   id="email"
+                   name="email"
+                   placeholder="Change your email address"
+                   required/>
+          </div>
+          {% if not user.admin %}
+            <div class="form-group">
+              <input class="form-control"
+                     id="phone"
+                     name="phone"
+                     placeholder="Change your phone"
+                     required/>
+            </div>
+          {% endif %}
+          <div class="form-group">
+            <input type="password"
+                   class="form-control"
+                   id="password1"
+                   name="password1"
+                   placeholder="Set a new password"
+                   required/>
+          </div>
+          <div class="form-group">
+            <input type="password"
+                   class="form-control"
+                   id="password2"
+                   name="password2"
+                   placeholder="Confirm your new password"
+                   required/>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-warning">Submit</button>
+            <button type="button"
+                    class="btn btn-secondary"
+                    onclick="location.href='/admin'">Go Back</button>
+          </div>
+        </form>
       </div>
-      <br>
-      <div class="form-group">
-        <input type="text"
-                class="form-control"
-                id="nursing-home-name"
-                name="nursing-home-name"
-                placeholder="Change the name of nursing home"
-                required/>
-      </div>
-
-      <div class="form-group">
-        <input type="text"
-                class="form-control"
-                id="homeId"
-                name="homeId"
-                placeholder="Change the nursing home ID"
-                required/>
-      </div>
-
-      <div class="form-group">
-        <input type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                placeholder="Change your email address"
-                required/>
-      </div>
-      {% if not user.admin %}
-        <div class="form-group">
-            <input
-                    class="form-control"
-                    id="phone"
-                    name="phone"
-                    placeholder="Change your phone"
-                    required/>
-        </div>
-      {% endif %}
-
-      <div class="form-group">
-        <input type="password"
-                class="form-control"
-                id="password1"
-                name="password1"
-                placeholder="Set a new password"
-                required/>
-      </div>
-
-      <div class="form-group">
-        <input type="password"
-                class="form-control"
-                id="password2"
-                name="password2"
-                placeholder="Confirm your new password"
-                required/>
-      </div>
-
-      <div class="form-group">
-        <button type="submit" class="btn btn-warning">Submit</button>
-        <button type="button" class="btn btn-secondary" onclick="location.href='/admin'">Go Back</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
-{#<script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>#}
-<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
-</body>
+    </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+    {#<script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>#}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+  </body>
 </html>
-

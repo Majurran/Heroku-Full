@@ -1,175 +1,212 @@
 {% extends "base.html" %}
 {% block title %}Edit Input Options{% endblock %}
 {% block content %}
-    <!-- TODO: Styles and stuff -->
-    <form id="inputs-form" name="inputs-form" method="POST">
-        <div class="input-page">
-            <div class="icon-container">
-                <div style="height: 50px">
-                    <div style="float:left">
-                        <h3>Activity</h3></div>
-                    <div style="float: right">
-                        <button type="button" class="btn-add" data-toggle="modal" data-target="#addModal"
-                                data-whatever="activity">
-                        </button>
-                        <button type="button" class="btn-del" data-toggle="modal"
-                                data-target="#deleteModal"
-                                data-whatever="activity">
-                        </button>
-                    </div>
-                </div>
-                <div><h5>What are you planning to do today?</h5></div>
-                <div class="edit-icon-grid" id="activity_grid">
-
-                    {% for row in rows %}
-                        {% if row.category == "activity" %}
-                            <div id="{{ row.name.replace(' ','') }}" name="{{ row.name }}"><img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
-                        {% endif %}
-                    {% endfor %}
-
-                </div>
-            </div>
-
-            <div class="icon-container">
-                <div style="height: 50px">
-                    <div style="float:left">
-                        <h3>Wellbeing</h3></div>
-                    <div style="float: right">
-                        <button type="button" class="btn-add" data-toggle="modal" data-target="#addModal"
-                                data-whatever="wellbeing">
-                        </button>
-                        <button type="button" class="btn-del" data-toggle="modal"
-                                data-target="#deleteModal"
-                                data-whatever="wellbeing">
-                        </button>
-                    </div>
-                </div>
-                <div><h5>Tell us about your feeling now~</h5></div>
-                <div class="edit-icon-grid" id="wellbeing_grid">
-
-                    {% for row in rows %}
-                        {% if row.category == "wellbeing" %}
-                            <div id="{{ row.name.replace(' ','') }}" name="{{ row.name }}">
-                            <img src="{{ row.file_path }}"><span>{{ row.name }}</span></div>
-                        {% endif %}
-                    {% endfor %}
-
-                </div>
-            </div>
+  <!-- TODO: Styles and stuff -->
+  <form id="inputs-form" name="inputs-form" method="POST">
+    <div class="input-page">
+      <div class="icon-container">
+        <div style="height: 50px">
+          <div style="float:left">
+            <h3>Activity</h3>
+          </div>
+          <div style="float: right">
+            <button type="button"
+                    class="btn-add"
+                    data-toggle="modal"
+                    data-target="#addModal"
+                    data-whatever="activity"></button>
+            <button type="button"
+                    class="btn-del"
+                    data-toggle="modal"
+                    data-target="#deleteModal"
+                    data-whatever="activity"></button>
+          </div>
         </div>
-
-        <!-- modal content -->
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body" style=" height: 400px; background: #e6e6e6">
-
-                        <div class="container">
-                            <form role="form">
-
-                                <div class="row" type="">
-                                    <div class="col"></div>
-                                    <div class="col-auto">
-                                        <h3 class="text-center">Add New Input Option</h3>
-                                    </div>
-                                    <div class="col"></div>
-                                </div><br>
-                                <div class="row">
-                                    <div class="col"></div>
-                                    <div class="col-8">
-                                        <input class="form-control" type="text" id="iconName" name="iconName"
-                                               placeholder="label name"/>
-                                    </div>
-                                    <div class="col"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="file" id="inputFile" name="inputFile" accept="image/*"
-                                               style="height: 0; width: 0; overflow: hidden">
-                                    </div>
-                                    <div class="col-auto">
-                                        <button type="button" class="btn btn-primary btn-lg text-nowrap" id="btnSelectIconImage"
-                                                onclick="selectIconImage()">
-                                            Upload icon image
-                                        </button>
-                                    </div>
-                                    <div class="col"><div id="imgBase64" hidden="hidden"></div></div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col"><div hidden="hidden" id="add_container_id"></div></div>
-                                    <div class="col-auto">
-                                        <button type="button" class="btn btn-secondary btn-lg text-nowrap"
-                                                onclick="saveIconImage()">
-                                            Save
-                                        </button>
-                                    </div>
-                                    <div class="col"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col"></div>
-                                    <div class="col-auto">
-                                        <button type="reset" class="btn btn-danger btn-lg text-nowrap"
-                                                onclick="resetAddedToDefault()">
-                                            Reset to default
-                                        </button>
-                                    </div>
-                                    <div class="col"></div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div>
+          <h5>What are you planning to do today?</h5>
         </div>
-
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body" style=" height: 400px; background: #e6e6e6">
-                        <div class="container">
-                            <form role="form">
-                                <div class="row" type="">
-                                    <div class="col"></div>
-                                    <div class="col-auto">
-                                        <h3 class="text-center">Are you sure to delete selected emoji icons</h3>
-                                    </div>
-                                    <div class="col"></div>
-                                </div> <br>
-                                <div class="row">
-                                    <div class="col"><div hidden="hidden" id="del_container_id"></div></div>
-                                    <div class="col-auto">
-                                        <button type="reset" class="form-group btn btn-secondary btn-lg text-nowrap"
-                                                onclick="deleteIconImage()">
-                                            Save
-                                        </button>
-                                    </div>
-                                    <div class="col"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col"></div>
-                                    <div class="col-auto">
-                                        <button type="reset" class="form-group btn btn-danger btn-lg text-nowrap"
-                                                onclick="resetDeletedToDefault()">
-                                            Reset to default
-                                        </button>
-                                    </div>
-                                    <div class="col"></div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="edit-icon-grid" id="activity_grid">
+          {% for row in rows %}
+            {% if row.category == "activity" %}
+              <div id="{{ row.name.replace(' ','') }}" name="{{ row.name }}">
+                <img src="{{ row.file_path }}">
+                <span>{{ row.name }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
-        <input id="json" name="json" value="" style="" type="hidden" readonly/>
-    </form>
+      </div>
+      <div class="icon-container">
+        <div style="height: 50px">
+          <div style="float:left">
+            <h3>Wellbeing</h3>
+          </div>
+          <div style="float: right">
+            <button type="button"
+                    class="btn-add"
+                    data-toggle="modal"
+                    data-target="#addModal"
+                    data-whatever="wellbeing"></button>
+            <button type="button"
+                    class="btn-del"
+                    data-toggle="modal"
+                    data-target="#deleteModal"
+                    data-whatever="wellbeing">
+            </button>
+          </div>
+        </div>
+        <div>
+          <h5>Tell us about your feeling now~</h5>
+        </div>
+        <div class="edit-icon-grid" id="wellbeing_grid">
+          {% for row in rows %}
+            {% if row.category == "wellbeing" %}
+              <div id="{{ row.name.replace(' ','') }}" name="{{ row.name }}">
+                <img src="{{ row.file_path }}">
+                <span>{{ row.name }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- modal content -->
+    <div class="modal fade"
+         id="addModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="addModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body" style=" height: 400px; background: #e6e6e6">
+            <div class="container">
+              <form role="form">
+                <div class="row" type="">
+                  <div class="col"></div>
+                  <div class="col-auto">
+                    <h3 class="text-center">Add New Input Option</h3>
+                  </div>
+                  <div class="col"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col"></div>
+                  <div class="col-8">
+                    <input class="form-control"
+                           type="text"
+                           id="iconName"
+                           name="iconName"
+                           placeholder="label name"/>
+                  </div>
+                  <div class="col"></div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <input type="file"
+                           id="inputFile"
+                           name="inputFile"
+                           accept="image/*"
+                           style="height: 0; width: 0; overflow: hidden">
+                  </div>
+                  <div class="col-auto">
+                    <button type="button"
+                            class="btn btn-primary btn-lg text-nowrap"
+                            id="btnSelectIconImage"
+                            onclick="selectIconImage()">
+                      Upload icon image
+                    </button>
+                  </div>
+                  <div class="col">
+                    <div id="imgBase64" hidden="hidden"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div hidden="hidden" id="add_container_id"></div>
+                  </div>
+                  <div class="col-auto">
+                    <button type="button"
+                            class="btn btn-secondary btn-lg text-nowrap"
+                            onclick="saveIconImage()">Save</button>
+                  </div>
+                  <div class="col"></div>
+                </div>
+                <div class="row">
+                  <div class="col"></div>
+                  <div class="col-auto">
+                    <button type="reset"
+                            class="btn btn-danger btn-lg text-nowrap"
+                            onclick="resetAddedToDefault()">
+                      Reset to default
+                    </button>
+                  </div>
+                  <div class="col"></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade"
+         id="deleteModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body" style=" height: 400px; background: #e6e6e6">
+            <div class="container">
+              <form role="form">
+                <div class="row" type="">
+                  <div class="col"></div>
+                  <div class="col-auto">
+                    <h3 class="text-center">Are you sure to delete selected emoji icons</h3>
+                  </div>
+                  <div class="col"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col">
+                    <div hidden="hidden" id="del_container_id">
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <button type="reset"
+                            class="form-group btn btn-secondary btn-lg text-nowrap"
+                            onclick="deleteIconImage()">
+                      Save
+                    </button>
+                  </div>
+                  <div class="col">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                  </div>
+                  <div class="col-auto">
+                    <button type="reset"
+                            class="form-group btn btn-danger btn-lg text-nowrap"
+                            onclick="resetDeletedToDefault()">
+                      Reset to default
+                    </button>
+                  </div>
+                  <div class="col">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input id="json" name="json" value="" style="" type="hidden" readonly/>
+  </form>
 {% endblock %}
-
 {% block script %}
-    <script>
+  <script>
         function getDefaultIconsHtml() {
             let defaultActivityHtml = ""
             let defaultWellbeingHtml = ""
@@ -211,9 +248,8 @@
             resetGridContainerDefault()
         })
 
-    </script>
-    <script>
-
+  </script>
+  <script>
         $("#activity_grid").on("click", "div", function (event){
             var div = $(this)
             console.log(div)
@@ -363,5 +399,5 @@
             $("#deleteModal").modal('toggle')
         }
 
-    </script>
+  </script>
 {% endblock %}

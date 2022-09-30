@@ -157,8 +157,8 @@ body{
 
 /* add text in line */
 .separator>*{
-  display: inline-block;
-  vertical-align: middle;
+    display: inline-block;
+    vertical-align: middle;
 }
 .separator {
     text-align: center;
@@ -189,13 +189,13 @@ body{
     float: left;
     display: inline-block;
     width: 60%;
-  padding: 10px;
+    padding: 10px;
 }
 .right-texture {
     float: right;
     display: inline-block;
     width: 40%;
-  padding: 10px;
+    padding: 10px;
 }
 
 /* output */
@@ -363,13 +363,10 @@ i{
     cursor: pointer;
     /*min-width: 300px;*/
     /* max-height: 356px; */
-  
 }
 .home-item div{
- 
     min-width: 300px;
     /* max-height: 356px; */
-  
 }
 .home-item img{
     width: 20vh;
