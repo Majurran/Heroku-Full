@@ -87,8 +87,8 @@
             <div class="col-md-8">
                <div class="card">
                   <div class="card-header ">
-                     <h5 class="card-title">Email Statistics</h5>
-                     <p class="card-category">Last Campaign Performance</p>
+                     <h5 class="card-title">Mood statistics</h5>
+                     <p class="card-category">Mood visualisation</p>
                   </div>
                   <div class="card-body">
                      <!-- <div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor">
@@ -120,8 +120,8 @@
             <div class="col-md-4">
                <div class="card card-chart">
                   <div class="card-header">
-                     <h5 class="card-title">NASDAQ: AAPL</h5>
-                     <p class="card-category">Line Chart with Points</p>
+                     <h5 class="card-title">Activities-wellbeing</h5>
+                     <p class="card-category">bar chart representation</p>
                   </div>
                   <div class="card-body">
                      <div style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;" class="chartjs-size-monitor">
@@ -271,71 +271,17 @@
                                 <div class="project title">
                                     Message Board
                                 </div>
-                                <div class="project">
-                                  <div>
-                                    Super Duper Cool Project <br />
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, hic
-                                    consequatur tenetur vero maxime neque non harum repellendus iusto
-                                    quos veritatis dolore iure ab ex ea exercitationem minima commodi
-                                    officiis?
-                                  </div>
-                                  <div>
-                                  </div>
-                                </div>
-                                <div class="project">
-                                  <div>
-                                    Cool Project <br />
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed
-                                    dolore natus hic illo, officia minus deleniti voluptas fugit
-                                    quisquam saepe quos recusandae itaque qui eum! Est, magni
-                                    distinctio? Fuga, iusto.
-                                  </div>
-                                  <div>
-                                  </div>
-                                </div>
-                                <div class="project">
-                                  <div>
-                                    Super Cool Project <br />
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
-                                    ipsa, hic porro aspernatur accusamus dolorum delectus illo amet
-                                    enim animi expedita eos totam vero quidem magnam voluptate
-                                    voluptatem velit possimus quasi. Ipsam, facilis!
-                                  </div>
-                                  <div>
-                                  </div>
-                                </div>
-                                <div class="project">
-                                  <div>
-                                    Impossible App <br />
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum,
-                                    voluptatum exercitationem eius voluptatem quasi dolor rem velit
-                                    ad? Porro doloribus ipsam blanditiis neque saepe sed commodi
-                                    consequatur repudiandae. Quae, repellendus!
-                                  </div>
-                                  <div>
-                                  </div>
-                                </div>
-                                <div class="project">
-                                  <div>
-                                    Interesting Project <br />
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo autem
-                                    omnis ratione necessitatibus, accusamus consequatur odio cum
-                                    voluptatum nisi dolore similique consequuntur. Et, optio officia!
-                                  </div>
-                                  <div>
-                                  </div>
-                                </div>
-                                <div class="project">
-                                  <div>
-                                    Impossible Project <br />
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
-                                    molestias dolorem ut voluptas hic explicabo reprehenderit nobis
-                                    necessitatibus! In, nobis!
-                                  </div>
-                                  <div>
-            
-                                  </div>
-                                </div>
+                                {% for sentence in sentences %}
+
+                                 <div class="project">
+                                       <div>
+                                          <!-- Super Duper Cool Project <br /> -->
+                                          {{ sentence }}
+                                       </div>
+                                    <div>
+                                    </div>
+                                 </div>
+                                {% endfor %}
                               </article>
                               <div class="population_container">
                                  <div id="Population-Pie-Chart" class="Population-Pie-Chart">

@@ -56,3 +56,18 @@
   margin-left: 5px;
   margin-right: 500px;
 }
+
+
+/* Page 1 styles */
+.row > .col-md-8 {
+  flex: 1 1 50%;
+}
+
+.row > .col-md-4 {
+  flex: 1 1 40%;
+  max-width: 43%;
+}
+
+.col-md-4 .card .card-body {
+  padding: 0;
+}

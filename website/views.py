@@ -249,7 +249,9 @@ def public_dashboard_page():
     activities_bar_chart.update_layout(
                 width=600,
                 height=600,
+                title = "title"
     )
+
     graph_activities = json.dumps(activities_bar_chart, cls=plotly.utils.PlotlyJSONEncoder)
 
 
@@ -259,6 +261,7 @@ def public_dashboard_page():
     mood_pie_chart.update_layout(
                 width=400,
                 height=400,
+                title = "title"
     )
     mood_ratio = json.dumps(mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -268,6 +271,7 @@ def public_dashboard_page():
     detailed_mood_pie_chart.update_layout(
                 width=400,
                 height=400,
+                title = "title"
     )
     detailed_mood_ratio = json.dumps(detailed_mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
 
@@ -320,6 +324,9 @@ def public_dashboard_page():
 
 
     
+    messages = ["Sentence A", "Hi Eric","Woof"]
+
+    
 
     num_residents = 9760
     num_nursing_home = 24
@@ -328,7 +335,7 @@ def public_dashboard_page():
                             detailed_mood_ratio=detailed_mood_ratio, state_pie_chart=state_pie_chart,
                             line_graph_one=line_graph_one, line_graph_two=line_graph_two,
                             line_graph_three=line_graph_three, line_graph_four=line_graph_four, 
-                            num_residents=num_residents, num_nursing_home=num_nursing_home)
+                            num_residents=num_residents, num_nursing_home=num_nursing_home,sentences=messages)
 
 # ===============================================================================================================
 # ==================================================== GUEST ====================================================
