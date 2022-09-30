@@ -46,10 +46,10 @@ djLint documentation: https://djlint.com/docs/formatter/
 
 To review what may change in formatting run (or change the . to another file path like a folder or specific file):
 ```bash
-djlint . --check --quiet --indent 2
+djlint . --check --format-js --format-css --quiet --indent 2
 ```
 
 To format the code and update files run (or change the . to another file path like a folder or specific file):
 ```bash
-djlint . --reformat --quiet --indent 2
+djlint . --reformat --format-js --format-css --quiet --indent 2
 ```
