@@ -44,8 +44,8 @@
             {% endif %}
           {% endfor %}
         </div>
-        <button type="button"   
-                class="btn btn-danger" 
+        <button type="button"
+                class="btn btn-danger"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 onclick="submitActivity()">
@@ -72,8 +72,8 @@
             {% endif %}
           {% endfor %}
         </div>
-        <button type="button" 
-                class="btn btn-danger" 
+        <button type="button"
+                class="btn btn-danger"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 onclick="submitFeeling()">
@@ -97,8 +97,8 @@
             <span style="color: #1c7430">NO</span>
           </div>
         </div>
-        <button type="button" 
-                class="btn btn-danger" 
+        <button type="button"
+                class="btn btn-danger"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 onclick="submitMedicationReaction()">
@@ -191,8 +191,8 @@
             </p>
           </div>
         </div>
-        <button type="button" 
-                class="btn btn-danger" 
+        <button type="button"
+                class="btn btn-danger"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 onclick="submitFoodQuality()">
@@ -219,7 +219,9 @@
             <span style="font-size: 20px; font-weight: 600;" id="infoId"></span>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-danger" onclick="submitInput()">Go Back</button>
+            <button type="submit" class="btn btn-danger" onclick="submitInput()">
+              Go Back
+            </button>
           </div>
         </div>
       </div>
@@ -244,138 +246,138 @@
            name="input_difficulty_walking"
            value=""
            type="hidden"
-           readonly/> 
+           readonly/>
     <input id="input_food_quality"
            name="input_food_quality"
            value=""
            type="hidden"
-           readonly/>  
-
+           readonly/>
     <input id="input_category"
            name="input_category"
            value=""
            type="hidden"
-           readonly/>      
+           readonly/>
   </form>
 {% endblock %}
 {% block script %}
   <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
   <script>
-        $("#activity").on("click", "div", function (event) {
-            var div = $(this)
-            console.log(div)
-            if (div.attr("choosed") === 'Y') {
-                div.attr("choosed", '')
-                div.css("background", '#e6e6e6')
-            } else {
-                div.attr("choosed", 'Y')
-                div.css("background", '#f15a24')
-            }
-        })
-        $("#wellbeing").on("click", "div", function (event) {
-            let div = $(this)
-            if (div.attr("choosed") === 'Y') {
-                div.attr("choosed", '')
-                div.css("background", '#e6e6e6')
-            } else {
-                div.attr("choosed", 'Y')
-                div.css("background", '#f15a24')
-            }
-        })
-
-        $("#reaction").on("click", "div", function (event) {
-            let div = $(this)
-            if (div.attr("choosed") == 'Y') {
-                div.attr("choosed", '')
-                div.style.background = '#e6e6e6'
-            } else {
-                $.each(div.siblings(), function (i, item) {
-                    item.setAttribute("choosed", '')
-                    item.style.background = '#e6e6e6'
-                })
-
-                div.attr("choosed", 'Y')
-                div.css("background", '#f15a24')
-            }
-        })
-
-        $("#have_difficult_walking").on("click", "div", function (event) {
-            let div = $(this)
-            if (div.attr("choosed") == 'Y') {
-                div.attr("choosed", '')
-                div.style.background = '#e6e6e6'
-            } else {
-                $.each(div.siblings(), function (i, item) {
-                    item.setAttribute("choosed", '')
-                    item.style.background = '#e6e6e6'
-                })
-
-                div.attr("choosed", 'Y')
-                div.css("background", '#f15a24')
-            }
-        })
-        $("#food_quality").on("click", "div", function (event) {
-            let div = $(this)
-            if (div.attr("choosed") == 'Y') {
-                div.attr("choosed", '')
-                div.style.background = '#e6e6e6'
-            } else {
-                $.each(div.siblings(), function (i, item) {
-                    item.setAttribute("choosed", '')
-                    item.style.background = '#e6e6e6'
-                })
-
-                div.attr("choosed", 'Y')
-                div.css("background", '#f15a24')
-            }
-        })
-
-      // ===========================================================================================================================
-      // ======================================= BACKEND FUNCTIONALITY FOR HTTP POST ===============================================
-      let CATEGORY_TYPE = '';
-      function submitActivity() {
-          CATEGORY_TYPE = "activity";
-          $('#infoId').html('Your activity input have been submitted!')
-      }
-      
-      function submitFeeling() {
-          CATEGORY_TYPE = "wellbeing";
-          $('#infoId').html('Your feelings input have been submitted!')
-      }
-
-      function submitMedicationReaction() {
-          CATEGORY_TYPE = "medication_reaction";
-          $('#infoId').html('Your medication reaction input have been submitted!')
-      }
-
-      function submitHaveDifficultWalking() {
-          CATEGORY_TYPE = "difficulty_walking";
-          $('#infoId').html('Your difficulty in walking input have been submitted!')
-      }
-
-      function submitFoodQuality() {
-          CATEGORY_TYPE = "food_quality";
-          $('#infoId').html('Your food quality input have been submitted!')
-      }
-
-      function submitInput() {
-          if (CATEGORY_TYPE == "activity") {
-              $('#input_category').val('activity');
-              $('#input_activity').val('');
-              document.querySelectorAll('#activity div').forEach(div => {
-                  if (div.getAttribute("choosed") == 'Y') {
-                      $('#input_activity').val($('#input_activity').val() + div.getAttribute("id") + ',');
-                  }
-              })
-          } else if (CATEGORY_TYPE == "wellbeing") {
+    $("#activity").on("click", "div", function(event) {
+        var div = $(this)
+        console.log(div)
+        if (div.attr("choosed") === 'Y') {
+            div.attr("choosed", '')
+            div.css("background", '#e6e6e6')
+        } else {
+            div.attr("choosed", 'Y')
+            div.css("background", '#f15a24')
+        }
+    })
+    $("#wellbeing").on("click", "div", function(event) {
+        let div = $(this)
+        if (div.attr("choosed") === 'Y') {
+            div.attr("choosed", '')
+            div.css("background", '#e6e6e6')
+        } else {
+            div.attr("choosed", 'Y')
+            div.css("background", '#f15a24')
+        }
+    })
+    
+    $("#reaction").on("click", "div", function(event) {
+        let div = $(this)
+        if (div.attr("choosed") == 'Y') {
+            div.attr("choosed", '')
+            div.style.background = '#e6e6e6'
+        } else {
+            $.each(div.siblings(), function(i, item) {
+                item.setAttribute("choosed", '')
+                item.style.background = '#e6e6e6'
+            })
+    
+            div.attr("choosed", 'Y')
+            div.css("background", '#f15a24')
+        }
+    })
+    
+    $("#have_difficult_walking").on("click", "div", function(event) {
+        let div = $(this)
+        if (div.attr("choosed") == 'Y') {
+            div.attr("choosed", '')
+            div.style.background = '#e6e6e6'
+        } else {
+            $.each(div.siblings(), function(i, item) {
+                item.setAttribute("choosed", '')
+                item.style.background = '#e6e6e6'
+            })
+    
+            div.attr("choosed", 'Y')
+            div.css("background", '#f15a24')
+        }
+    })
+    $("#food_quality").on("click", "div", function(event) {
+        let div = $(this)
+        if (div.attr("choosed") == 'Y') {
+            div.attr("choosed", '')
+            div.style.background = '#e6e6e6'
+        } else {
+            $.each(div.siblings(), function(i, item) {
+                item.setAttribute("choosed", '')
+                item.style.background = '#e6e6e6'
+            })
+    
+            div.attr("choosed", 'Y')
+            div.css("background", '#f15a24')
+        }
+    })
+    
+    // ===========================================================================================================================
+    // ======================================= BACKEND FUNCTIONALITY FOR HTTP POST ===============================================
+    let CATEGORY_TYPE = '';
+    
+    function submitActivity() {
+        CATEGORY_TYPE = "activity";
+        $('#infoId').html('Your activity input have been submitted!')
+    }
+    
+    function submitFeeling() {
+        CATEGORY_TYPE = "wellbeing";
+        $('#infoId').html('Your feelings input have been submitted!')
+    }
+    
+    function submitMedicationReaction() {
+        CATEGORY_TYPE = "medication_reaction";
+        $('#infoId').html('Your medication reaction input have been submitted!')
+    }
+    
+    function submitHaveDifficultWalking() {
+        CATEGORY_TYPE = "difficulty_walking";
+        $('#infoId').html('Your difficulty in walking input have been submitted!')
+    }
+    
+    function submitFoodQuality() {
+        CATEGORY_TYPE = "food_quality";
+        $('#infoId').html('Your food quality input have been submitted!')
+    }
+    
+    function submitInput() {
+        if (CATEGORY_TYPE == "activity") {
+            $('#input_category').val('activity');
+            $('#input_activity').val('');
+            document.querySelectorAll('#activity div').forEach(div => {
+                if (div.getAttribute("choosed") == 'Y') {
+                    $('#input_activity').val($('#input_activity').val() + div.getAttribute("id") + ',');
+                }
+            })
+        } else if (CATEGORY_TYPE == "wellbeing") {
             $('#input_category').val('wellbeing');
-              $('#input_wellbeing').val('');
-              document.querySelectorAll('#wellbeing div').forEach(div => {
-                  if (div.getAttribute("choosed") == 'Y') {
-                      $('#input_wellbeing').val($('#input_wellbeing').val() + div.getAttribute("id") + ',');
-                  }
-              })
-          } else if (CATEGORY_TYPE == "medication_reaction") {
+            $('#input_wellbeing').val('');
+            document.querySelectorAll('#wellbeing div').forEach(div => {
+                if (div.getAttribute("choosed") == 'Y') {
+                    $('#input_wellbeing').val($('#input_wellbeing').val() + div.getAttribute("id") + ',');
+                }
+            })
+        } else if (CATEGORY_TYPE == "medication_reaction") {
             $('#input_category').val('medication_reaction');
             $('#input_medication_reaction').val('');
             document.querySelectorAll('#reaction div').forEach(div => {
@@ -383,7 +385,7 @@
                     $('#input_medication_reaction').val($('#input_medication_reaction').val() + div.getAttribute("id") + ',');
                 }
             })
-          } else if (CATEGORY_TYPE == "difficulty_walking") {
+        } else if (CATEGORY_TYPE == "difficulty_walking") {
             $('#input_category').val('difficulty_walking');
             $('#input_difficulty_walking').val('');
             document.querySelectorAll('#have_difficult_walking div').forEach(div => {
@@ -391,7 +393,7 @@
                     $('#input_difficulty_walking').val($('#input_difficulty_walking').val() + div.getAttribute("id") + ',');
                 }
             })
-          } else if (CATEGORY_TYPE == "food_quality") {
+        } else if (CATEGORY_TYPE == "food_quality") {
             $('#input_category').val('food_quality');
             $('#input_food_quality').val('');
             document.querySelectorAll('#food_quality div').forEach(div => {
@@ -400,6 +402,6 @@
                 }
             })
         }
-      }
+    }
   </script>
 {% endblock %}

@@ -37,7 +37,7 @@ def login():
             guest = User.query.filter_by(nursing_home_id=nursing_home_ID).first()
             if guest:
                 login_user(guest, remember=True)
-                return redirect(url_for('views.guest_inputs'))
+                return redirect(url_for('views.user_input'))
             else:
                 flash('Wrong Nursing Home ID', category='error')
         else:

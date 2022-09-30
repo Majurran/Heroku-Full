@@ -13,7 +13,7 @@ views = Blueprint('views', __name__)
 # Hyper ref for base.html
 ADMIN_HOME_HREF = "/admin"
 USER_HOME_HREF = "/user"
-GUEST_HOME_HREF = "/guest-inputs"
+GUEST_HOME_HREF = "/user/inputs"
 
 # Returns Nursing Home name or Guest or User Name for base.html -> "Welcome back, <name>"
 def get_name(user):
@@ -326,58 +326,21 @@ def public_dashboard_page():
                             line_graph_three=line_graph_three, line_graph_four=line_graph_four, 
                             num_residents=num_residents, num_nursing_home=num_nursing_home,sentences=messages)
 
-# ===============================================================================================================
-# ==================================================== GUEST ====================================================
-# ===============================================================================================================
-@views.route('/guest-inputs', methods=['GET', 'POST'])
-@login_required
-def guest_input():
-    input_options_rows = InputOptions.query.filter_by(nursing_home_id=current_user.nursing_home_id).all()
-    
-    """ 
-    Clicks on either wellbeing or activity submit button, assumes only one category submit at a time, 
-    because it will ignore the other options if other category input options are chosen. 
-    Eg. Happy is selected, click the activity submit button, nothing happens.
-    """
-    if request.method == 'POST': 
-        # Empty strings returned if no options are selected
-        activity_csv = request.form.get('json_activity')
-        wellbeing_csv = request.form.get('json_wellbeing')
-        # print(activity_csv)
-        # print(wellbeing_csv)
-
-        activity_list = activity_csv.split(',')[:-1]
-        wellbeing_list = wellbeing_csv.split(',')[:-1]
-        
-        for activity in activity_list:          
-            # user_id=0 means Guest account for the nursing home
-            activity_input = Input(category="activity", name=activity, user_id=0, nursing_home_id=current_user.nursing_home_id)
-            db.session.add(activity_input)
-            db.session.commit()
-            print(activity)
-        
-        for wellbeing in wellbeing_list:          
-            # user_id=0 means Guest account for the nursing home
-            wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=0, nursing_home_id=current_user.nursing_home_id)
-            db.session.add(wellbeing_input)
-            db.session.commit()
-            print(wellbeing)
-    
-    return render_template("guest_inputs.html", user=current_user, rows=input_options_rows, name=get_name("guest"),
-        home_href=GUEST_HOME_HREF)
 
 # ===============================================================================================================
-# ================================================= RESIDENT ====================================================
+# =============================================== RESIDENT/GUEST ================================================
 # ===============================================================================================================
 @views.route('/user', methods=['GET', 'POST'])
 @login_required
 def user_home():
     return render_template("user/home_user.html", user=current_user, name=get_name("resident"), home_href=USER_HOME_HREF)
 
+
 @views.route('/user/profile', methods=['GET', 'POST'])
 @login_required
 def user_profile():
     return render_template("user/profile_update_user.html", user=current_user, name=get_name("resident"), home_href=USER_HOME_HREF)
+
 
 @views.route('/user/inputs', methods=['GET', 'POST'])
 @login_required
@@ -393,17 +356,17 @@ def user_input():
         difficulty_walking_csv = request.form.get('input_difficulty_walking')   # walk_difficult_1, walk_difficult_2, ..., walk_difficult_5
         food_quality_csv = request.form.get('input_food_quality')               # food_quality_1, food_quality_2, ..., food_quality_5
         
-        print()
-        print(input_category)
-        print()
+        # print()
+        # print(input_category)
+        # print()
         
-        print("CSV-activity:", activity_csv)
-        print("CSV-wellbeing:", wellbeing_csv)
-        print("CSV-medication:", medication_reaction_csv)
-        print("CSV-walk:", difficulty_walking_csv)
-        print("CSV-food:", food_quality_csv)
+        # print("CSV-activity:", activity_csv)
+        # print("CSV-wellbeing:", wellbeing_csv)
+        # print("CSV-medication:", medication_reaction_csv)
+        # print("CSV-walk:", difficulty_walking_csv)
+        # print("CSV-food:", food_quality_csv)
         
-        print()
+        # print()
 
         activity_list = activity_csv.split(',')[:-1]
         wellbeing_list = wellbeing_csv.split(',')[:-1]
@@ -414,25 +377,63 @@ def user_input():
         input_activity_set = set(activity_list)
         input_wellbeing_set = set(wellbeing_list)
         
-        print("LIST-activity:", activity_list)
-        print("LIST-wellbeing:", wellbeing_list)
-        print("LIST-medication:", medication_reaction_list)
-        print("LIST-walk:", difficulty_walking_list)
-        print("LIST-food:", food_quality_list)
+        # print("LIST-activity:", activity_list)
+        # print("LIST-wellbeing:", wellbeing_list)
+        # print("LIST-medication:", medication_reaction_list)
+        # print("LIST-walk:", difficulty_walking_list)
+        # print("LIST-food:", food_quality_list)
         
-        print()
+        # print()
         
         # Filter and keep valid inputs, in case someone changes the input names to something else using inspect mode
-        existing_input_options_activity_rows = InputOptions.query.filter_by(category="activity", nursing_home_id=current_user.nursing_home_id).all()
-        existing_input_options_wellbeing_rows = InputOptions.query.filter_by(category="wellbeing", nursing_home_id=current_user.nursing_home_id).all()
+        existing_input_options_activity_rows = InputOptions.query.filter_by(category="activity", 
+                                                                            nursing_home_id=current_user.nursing_home_id).all()
+        existing_input_options_wellbeing_rows = InputOptions.query.filter_by(category="wellbeing", 
+                                                                            nursing_home_id=current_user.nursing_home_id).all()
         valid_input_option_activity_name_set = {str(row.name) for row in existing_input_options_activity_rows}
         valid_input_option_wellbeing_name_set = {str(row.name) for row in existing_input_options_wellbeing_rows}
         
         valid_selected_input_options_activity = input_activity_set.intersection(valid_input_option_activity_name_set)
         valid_selected_input_options_wellbeing = input_wellbeing_set.intersection(valid_input_option_wellbeing_name_set)
 
+        if input_category == 'activity':
+            if len(valid_selected_input_options_activity) == 0:
+                flash("No inputs submitted for activity")
+                return redirect(request.url)
+            for activity in valid_selected_input_options_activity:          
+            # user_id=0 means Guest account for the nursing home
+                if current_user.admin:
+                    activity_input = Input(category="activity", name=activity, user_id=0, 
+                                            nursing_home_id=current_user.nursing_home_id)
+                # Else use resident user_id
+                else:
+                    activity_input = Input(category="activity", name=activity, user_id=current_user.id,
+                                            nursing_home_id=current_user.nursing_home_id)
+                db.session.add(activity_input)
+                db.session.commit()
+                # print(activity)
+            return redirect(request.url)
+        
+        elif input_category == 'wellbeing':
+            if len(valid_selected_input_options_wellbeing) == 0:
+                flash("No inputs submitted for wellbeing")
+                return redirect(request.url)
+            for wellbeing in valid_selected_input_options_wellbeing:          
+                # user_id=0 means Guest account for the nursing home
+                if current_user.admin:
+                    wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=0,
+                                            nursing_home_id=current_user.nursing_home_id)
+                # Else use resident user_id
+                else:
+                    wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=current_user.id,
+                                            nursing_home_id=current_user.nursing_home_id)
+                db.session.add(wellbeing_input)
+                db.session.commit()
+                # print(wellbeing)
+            return redirect(request.url)
+
         # Convert the yes/no, 1-5 rating questions into right value
-        if input_category == 'medication_reaction':
+        elif input_category == 'medication_reaction':
             if len(medication_reaction_list) == 1:
                 if medication_reaction_list[0] == "negative_reaction_no":
                     medication_input_value = "no"
@@ -449,12 +450,17 @@ def user_input():
                 return redirect(request.url)
             
             # Insert Medication Y/N data to Database
-            medication_input = Input(category="medication", name=medication_input_value, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
+            if current_user.admin:
+                medication_input = Input(category="medication", name=medication_input_value, user_id=0, 
+                                            nursing_home_id=current_user.nursing_home_id)
+            else:
+                medication_input = Input(category="medication", name=medication_input_value, user_id=current_user.id, 
+                                            nursing_home_id=current_user.nursing_home_id)
             db.session.add(medication_input)
             db.session.commit()
             return redirect(request.url)
             
-        if input_category == 'difficulty_walking':
+        elif input_category == 'difficulty_walking':
             if len(difficulty_walking_list) == 1:
                 if difficulty_walking_list[0] == "walk_difficult_1":
                     difficulty_walking_input_value = 1
@@ -477,12 +483,17 @@ def user_input():
                 return redirect(request.url)
             
             # Insert difficulty walking rating 1-5 data to Database
-            difficulty_walking_input = Input(category="difficulty_walking", name=difficulty_walking_input_value, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
+            if current_user.admin:
+                difficulty_walking_input = Input(category="difficulty_walking", name=difficulty_walking_input_value,
+                                                user_id=0, nursing_home_id=current_user.nursing_home_id)
+            else:
+                difficulty_walking_input = Input(category="difficulty_walking", name=difficulty_walking_input_value,
+                                                user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
             db.session.add(difficulty_walking_input)
             db.session.commit()
             return redirect(request.url)
             
-        if input_category == 'food_quality':
+        elif input_category == 'food_quality':
             if len(food_quality_list) == 1:
                 if food_quality_list[0] == "food_quality_1":
                     food_quality_input_value = 1
@@ -504,37 +515,21 @@ def user_input():
                 flash("Please don't change the id values for food quality")
                 return redirect(request.url)
             
-            # Insert difficulty walking rating 1-5 data to Database TODO
-            # difficulty_walking_input = Input(category="difficulty_walking", name=difficulty_walking_input_value, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
-            # db.session.add(difficulty_walking_input)
-            # db.session.commit()
-            # return redirect(request.url)
-        
-        print(valid_selected_input_options_activity)
-        print(valid_selected_input_options_wellbeing)
-        
-        # for activity in activity_list:          
-        #     # user_id=0 means Guest account for the nursing home
-        #     # if current_user.admin:
-        #     #     activity_input = Input(category="activity", name=activity, user_id=0, nursing_home_id=current_user.nursing_home_id)
-        #     # # Else use resident user_id
-        #     # else:
-        #     #     activity_input = Input(category="activity", name=activity, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
-        #     # db.session.add(activity_input)
-        #     # db.session.commit()
-        #     print(activity)
-        
-        # for wellbeing in wellbeing_list:          
-        #     # user_id=0 means Guest account for the nursing home
-        #     # if current_user.admin:
-        #     #     wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=0, nursing_home_id=current_user.nursing_home_id)
-        #     # # Else use resident user_id
-        #     # else:
-        #     #     wellbeing_input = Input(category="wellbeing", name=wellbeing, user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
-        #     # db.session.add(wellbeing_input)
-        #     # db.session.commit()
-        #     print(wellbeing)
+            # Insert difficulty walking rating 1-5 data to Database
+            if current_user.admin:
+                food_quality_input = Input(category="food_quality", name=food_quality_input_value, user_id=0,
+                                            nursing_home_id=current_user.nursing_home_id)
+            else:
+                food_quality_input = Input(category="food_quality", name=food_quality_input_value, user_id=current_user.id,
+                                            nursing_home_id=current_user.nursing_home_id)
+            db.session.add(food_quality_input)
+            db.session.commit()
+            return redirect(request.url)
         
         return redirect(request.url)
-            
-    return render_template("inputs_ver2.html", user=current_user, rows=input_options_rows, name=get_name("resident"), home_href=USER_HOME_HREF)
+    
+    # If Guest account
+    if current_user.admin:
+        return render_template("inputs_ver2.html", user=current_user, rows=input_options_rows, name=get_name("guest"), home_href=GUEST_HOME_HREF)
+    else:
+        return render_template("inputs_ver2.html", user=current_user, rows=input_options_rows, name=get_name("resident"), home_href=USER_HOME_HREF)
