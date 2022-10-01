@@ -5,7 +5,7 @@ from flask_login import LoginManager
 import os 
 
 db = SQLAlchemy()
-DB_NAME = "database_ver10.db"  # Change name if the models.py gets updated for now
+DB_NAME = "database_ver11.db"  # Change name if the models.py gets updated for now
 
 def create_app():
     app = Flask(__name__)

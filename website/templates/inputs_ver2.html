@@ -201,6 +201,19 @@
         <br>
         <br>
         <br>
+        <div>
+          <h5 style="font-size:1em">What experience would you like to share about your life currently in the nursing home?</h5>
+        </div>
+        <br>
+        <textarea id="input_message_board" name="input_message_board" rows="5" cols="69" maxlength="5000"></textarea>
+        <br>
+        <button type="button"
+                class="btn btn-danger"
+                data-toggle="modal"
+                data-target="#exampleModal"
+                onclick="submitMessage()">
+          Submit
+        </button>
       </div>
     </div>
     <!-- Modal -->
@@ -359,6 +372,11 @@
         CATEGORY_TYPE = "food_quality";
         $('#infoId').html('Your food quality input have been submitted!')
     }
+
+    function submitMessage() {
+        CATEGORY_TYPE = "message_text_area";
+        $('#infoId').html('Your input response have been submitted!')
+    }
     
     function submitInput() {
         if (CATEGORY_TYPE == "activity") {
@@ -401,7 +419,9 @@
                     $('#input_food_quality').val($('#input_food_quality').val() + div.getAttribute("id") + ',');
                 }
             })
-        }
+        } else if (CATEGORY_TYPE == "message_text_area") {
+            $('#input_category').val('message_text_area');
+      }
     }
   </script>
 {% endblock %}

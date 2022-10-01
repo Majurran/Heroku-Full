@@ -360,6 +360,7 @@ def user_input():
         medication_reaction_csv = request.form.get('input_medication_reaction') # negative_reaction_yes, negative_reaction_no
         difficulty_walking_csv = request.form.get('input_difficulty_walking')   # walk_difficult_1, walk_difficult_2, ..., walk_difficult_5
         food_quality_csv = request.form.get('input_food_quality')               # food_quality_1, food_quality_2, ..., food_quality_5
+        text_area_msg_board = request.form.get('input_message_board')
         
         # print()
         # print(input_category)
@@ -528,6 +529,21 @@ def user_input():
                 food_quality_input = Input(category="food_quality", name=food_quality_input_value, user_id=current_user.id,
                                             nursing_home_id=current_user.nursing_home_id)
             db.session.add(food_quality_input)
+            db.session.commit()
+            return redirect(request.url)
+        
+        elif input_category == 'message_text_area':
+            if len(text_area_msg_board) == 0:
+                flash("No inputs submitted")
+                return redirect(request.url)
+            
+            if current_user.admin:
+                text_area_msg_board_input = Input(category="nursing_home_life_experience", name=text_area_msg_board,
+                                                user_id=0, nursing_home_id=current_user.nursing_home_id)
+            else:
+                text_area_msg_board_input = Input(category="nursing_home_life_experience", name=text_area_msg_board, 
+                                                user_id=current_user.id, nursing_home_id=current_user.nursing_home_id)
+            db.session.add(text_area_msg_board_input)
             db.session.commit()
             return redirect(request.url)
         
