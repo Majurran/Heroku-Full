@@ -10,9 +10,10 @@
    <link rel="stylesheet" href="https://demos.creative-tim.com/paper-dashboard/assets/css/bootstrap.min.css"/>
    <link rel="stylesheet" href="https://demos.creative-tim.com/paper-dashboard/assets/css/paper-dashboard.min.css?v=2.0.1"/>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
-   {% block title %}Dashboard{% endblock %}
-   {% block content %}
+   <!-- {% block title %}Dashboard{% endblock %} -->
+   
 </head>
+{% block content %}
 <body style="background-color:f4f3ef;">
    <div id="myCarousel" class="carousel slide">
    <!-- Menu -->
@@ -266,31 +267,53 @@
                            <h1>Percentage-based sizing</h1>
                            <p>With "mobile-first" there is now only one percentage-based grid.</p>
                            <p><a class="btn btn-large btn-primary" href="#">Browse gallery</a></p> -->
-                           <div class="project-container">
-                              <article id="messages" style="background-color: #f4f3ef;">
-                                <div class="project title">
-                                    Message Board
-                                </div>
-                                {% for sentence in sentences %}
-
-                                 <div class="project">
-                                       <div>
-                                          <!-- Super Duper Cool Project <br /> -->
-                                          {{ sentence }}
-                                       </div>
-                                    <div>
-                                    </div>
+                           <div class="col-md-8" style="margin-left: 77px; height: 600px;">
+                              <div class="card" style="height: 600px;">
+                                 <div class="card-header ">
+                                    <h5 class="card-title">Message Board</h5>
+                                    <p class="card-category">Last Campaign Performance</p>
                                  </div>
-                                {% endfor %}
-                              </article>
-                              <div class="population_container">
-                                 <div id="Population-Pie-Chart" class="Population-Pie-Chart">
+                                 <div class="card-body ">
+                                    <div class="project-container">
+                                       <article id="messages" style="background-color: white;">
+                                         <!-- <div class="project title">
+                                             Message Board
+                                         </div> -->
+                                         {% for sentence in sentences %}
+         
+                                          <div class="project">
+                                                <div>
+                                                   Super Duper Cool Project <br />
+                                                   {{ sentence }}
+                                                </div>
+                                             <div>
+                                             </div>
+                                          </div>
+                                         {% endfor %}
+                                       </article>
+
+                                     </div>
                                  </div>
                               </div>
-                            </div>
+                           </div>
+                           <div class="col-md-3">
+                              <div class="card ">
+                                 <div class="card-header ">
+                                    <h5 class="card-title">State Representation</h5>
+                                    <p class="card-category">Location of Residents who responded.</p>
+                                 </div>
+                                 <div class="card-body ">
+                                    <div class="population_container">
+                                       <div id="Population-Pie-Chart" class="Population-Pie-Chart">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
                         </div>
-                     </div>
-                  </div>
+               </div>
+            </div>
    </div>
 </body>
 <!-- Controls -->
