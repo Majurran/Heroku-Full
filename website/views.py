@@ -314,8 +314,8 @@ def public_dashboard_page():
     percentage = [35, 15, 50]
     mood_pie_chart = go.Figure(data = [go.Pie(labels = moods, values = percentage)])
     mood_pie_chart.update_layout(
-                width=400,
-                height=400,
+                width=325,
+                height=425,
                 title = "title"
     )
     mood_ratio = json.dumps(mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
@@ -324,8 +324,8 @@ def public_dashboard_page():
     detailed_percentage = [35, 15, 50]
     detailed_mood_pie_chart = go.Figure(data = [go.Pie(labels = detailed_mood, values = detailed_percentage)])
     detailed_mood_pie_chart.update_layout(
-                width=400,
-                height=400,
+                width=325,
+                height=425,
                 title = "title"
     )
     detailed_mood_ratio = json.dumps(detailed_mood_pie_chart, cls=plotly.utils.PlotlyJSONEncoder)
