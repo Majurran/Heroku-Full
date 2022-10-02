@@ -302,7 +302,7 @@ def public_dashboard_page():
 
     activities_bar_chart = go.Figure(data=[go.Bar(x=activity, y=activity_frequency)])
     activities_bar_chart.update_layout(
-                width=600,
+                width=650,
                 height=600,
                 title = "title"
     )
@@ -314,7 +314,7 @@ def public_dashboard_page():
     percentage = [35, 15, 50]
     mood_pie_chart = go.Figure(data = [go.Pie(labels = moods, values = percentage)])
     mood_pie_chart.update_layout(
-                width=325,
+                width=319,
                 height=425,
                 title = "title"
     )
@@ -324,7 +324,7 @@ def public_dashboard_page():
     detailed_percentage = [35, 15, 50]
     detailed_mood_pie_chart = go.Figure(data = [go.Pie(labels = detailed_mood, values = detailed_percentage)])
     detailed_mood_pie_chart.update_layout(
-                width=325,
+                width=319,
                 height=425,
                 title = "title"
     )

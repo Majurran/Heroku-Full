@@ -19,7 +19,7 @@
   grid-template-columns: 1fr;
   padding-top: 0;
   padding-bottom: 0;
-  margin-left: 50px;
+  margin-left: 15px;
   /* max-width: 400px; */
   gap: 20px;
 }
@@ -28,8 +28,9 @@
   background: white;
   border-left: 10px solid orange;
   border-radius: 10px;
-  width: 1234px;
+  width: 100%;
   display: grid;
+  margin-right: 20px;
 }
 .project-container .head {
   padding-left: 20px;
@@ -78,6 +79,18 @@
 /* second page public dash-board styling */
 /* over-write the margin of -15px */
 .item > .row {
-  margin-right: 50px;
-  margin-left: 50px; 
+  margin-right: 77px;
+  margin-left: 77px; 
+}
+
+/* third page styling */
+.third.col-md-8 {
+  max-width: 60%;
+  margin-left: 77px;
+  height: 600px;
+}
+
+.third.col-md-3 {
+  flex:30%;
+  max-width: 30%;
 }
