@@ -60,12 +60,13 @@
 
 /* Page 1 styles */
 .row > .col-md-8 {
-  flex: 1 1 50%;
+  flex: 1 1 40%;
+  max-width: 50%;
 }
 
 .row > .col-md-4 {
-  flex: 1 1 40%;
-  max-width: 43%;
+  flex: 1 1 50%;
+  max-width: 50%;
 }
 
 .col-md-4 .card .card-body {
