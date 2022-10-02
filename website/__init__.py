@@ -7,8 +7,12 @@ import os
 db = SQLAlchemy()
 DB_NAME = "database_ver11.db"  # Change name if the models.py gets updated for now
 
-def create_app():
+from flask_socketio import SocketIO
+socketio = SocketIO()
+
+def create_app(debug=False):
     app = Flask(__name__)
+    app.debug = debug
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     
@@ -35,7 +39,7 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
-
+    socketio.init_app(app)
     return app
 
 def create_database(app):
