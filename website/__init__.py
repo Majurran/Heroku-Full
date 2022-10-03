@@ -8,11 +8,11 @@ db = SQLAlchemy()
 DB_NAME = "database_ver11.db"  # Change name if the models.py gets updated for now
 
 from flask_socketio import SocketIO
-socketio = SocketIO()
+socketio = SocketIO(manage_session=False)
 
 def create_app(debug=False):
     app = Flask(__name__)
-    app.debug = debug
+    #app.debug = debug
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     

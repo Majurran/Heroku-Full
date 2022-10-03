@@ -1,6 +1,7 @@
+
 from website import create_app, socketio
 
-app = create_app(debug=True)
+app = create_app()
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app,debug=True)
