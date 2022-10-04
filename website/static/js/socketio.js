@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         socket.emit('incoming-msg', {'msg': document.querySelector('#user_message').value,
             'username': username, 'room': room});
-        alert('Did it work?');
+        
         document.querySelector('#user_message').value = '';
     };
 
